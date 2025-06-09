@@ -432,8 +432,8 @@
     </div>
 
     <script>
-        // Game state - defined first
-        let gameState = {
+        // Game state - defined first with var for better compatibility
+        var gameState = {
             selectedItems: {},
             targetValue: 0,
             playerName: '',
@@ -441,7 +441,7 @@
         };
 
         // Weapon data
-        const weaponData = {
+        var weaponData = {
             rifles: [
                 { name: 'AK-47', skin: 'Redline (FT)', price: 85 },
                 { name: 'AK-47', skin: 'Vulcan (MW)', price: 650 },
