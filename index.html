@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f0f23);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122);
             color: #ffffff;
             min-height: 100vh;
             padding-top: 80px;
@@ -24,16 +24,16 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
-            border-bottom: 2px solid rgba(255, 107, 53, 0.3);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
             z-index: 1000;
             padding: 15px 0;
-            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
         }
 
         .nav-content {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -44,7 +44,7 @@
         .nav-logo {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ff6b35;
+            color: #ff6600;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
@@ -68,29 +68,78 @@
         }
 
         .nav-btn:hover {
-            background: rgba(255, 107, 53, 0.2);
-            border-color: rgba(255, 107, 53, 0.5);
+            background: rgba(0, 191, 255, 0.2);
+            border-color: rgba(0, 191, 255, 0.5);
             transform: translateY(-2px);
         }
 
         .nav-btn.active {
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(45deg, #ff6600, #00bfff);
             border-color: transparent;
         }
 
-        .container {
-            max-width: 1400px;
+        .main-container {
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
+            display: grid;
+            grid-template-columns: 200px 300px 1fr 200px;
+            gap: 30px;
+        }
+
+        .ad-space {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .ad-space h4 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .ad-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .affiliate-link {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6600, #00bfff);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .affiliate-link:hover {
+            transform: scale(1.05);
         }
 
         .header {
+            grid-column: 1 / -1;
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 0;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            background: linear-gradient(90deg, #ff6600, #00bfff);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3);
         }
 
         .header h1 {
@@ -105,13 +154,6 @@
             opacity: 0.9;
         }
 
-        .loadout-manager {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
         .loadout-sidebar {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
@@ -119,10 +161,12 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             height: fit-content;
+            position: sticky;
+            top: 100px;
         }
 
         .loadout-sidebar h3 {
-            color: #ff6b35;
+            color: #ff6600;
             margin-bottom: 20px;
             font-size: 1.4rem;
         }
@@ -143,20 +187,20 @@
         }
 
         .loadout-item:hover {
-            background: rgba(255, 107, 53, 0.1);
-            border-left-color: #ff6b35;
+            background: rgba(0, 191, 255, 0.1);
+            border-left-color: #00bfff;
             transform: translateX(5px);
         }
 
         .loadout-item.active {
-            background: rgba(255, 107, 53, 0.2);
-            border-left-color: #ff6b35;
+            background: rgba(0, 191, 255, 0.2);
+            border-left-color: #00bfff;
         }
 
         .new-loadout {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(45deg, #ff6600, #00bfff);
             border: none;
             border-radius: 8px;
             color: white;
@@ -169,10 +213,10 @@
             transform: scale(1.05);
         }
 
-        .weapon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        .weapons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
 
         .weapon-category {
@@ -185,19 +229,24 @@
         }
 
         .weapon-category:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
         }
 
         .category-title {
-            color: #ff6b35;
+            color: #ff6600;
             font-size: 1.3rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 107, 53, 0.3);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .weapon-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
         }
 
         .weapon-slot {
-            margin-bottom: 20px;
             padding: 15px;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
@@ -206,7 +255,7 @@
         }
 
         .weapon-slot:hover {
-            border-color: rgba(255, 107, 53, 0.5);
+            border-color: rgba(0, 191, 255, 0.5);
         }
 
         .weapon-name {
@@ -226,17 +275,18 @@
         }
 
         .skin-selector option {
-            background: #1a1a2e;
+            background: #0a0a0a;
             color: white;
         }
 
-        .rarity-legendary { border-left: 4px solid #eb4b4b; }
-        .rarity-covert { border-left: 4px solid #d32ce6; }
+        .rarity-legendary { border-left: 4px solid #ff6600; }
+        .rarity-covert { border-left: 4px solid #00bfff; }
         .rarity-classified { border-left: 4px solid #8847ff; }
         .rarity-restricted { border-left: 4px solid #4b69ff; }
-        .rarity-milspec { border-left: 4px solid #8650ac; }
+        .rarity-milspec { border-left: 4px solid #6a4c93; }
 
         .loadout-actions {
+            grid-column: 2 / 4;
             margin-top: 30px;
             text-align: center;
         }
@@ -252,17 +302,17 @@
         }
 
         .save-btn {
-            background: linear-gradient(45deg, #28a745, #20c997);
+            background: linear-gradient(45deg, #00bfff, #0080cc);
             color: white;
         }
 
         .delete-btn {
-            background: linear-gradient(45deg, #dc3545, #e74c3c);
+            background: linear-gradient(45deg, #ff3333, #cc0000);
             color: white;
         }
 
         .share-btn {
-            background: linear-gradient(45deg, #007bff, #0056b3);
+            background: linear-gradient(45deg, #ff6600, #cc5200);
             color: white;
         }
 
@@ -287,7 +337,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: linear-gradient(135deg, #0a0a0a, #001122);
             padding: 30px;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -304,18 +354,122 @@
             color: white;
         }
 
-        @media (max-width: 768px) {
-            .loadout-manager {
-                grid-template-columns: 1fr;
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 300px 1fr;
+                gap: 20px;
             }
             
-            .weapon-grid {
+            .ad-space {
+                display: none;
+            }
+            
+            .loadout-actions {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            
+            .weapon-slots {
                 grid-template-columns: 1fr;
             }
             
             .header h1 {
                 font-size: 2rem;
             }
+            
+            .loadout-sidebar {
+                position: static;
+            }
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0a0a0a, #001122);
+            border-top: 2px solid rgba(0, 191, 255, 0.3);
+            margin-top: 60px;
+            padding: 40px 0 20px;
+            color: #ffffff;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #00bfff;
+        }
+
+        .footer-section p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            display: inline-block;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(45deg, #ff6600, #00bfff);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #888888;
+        }
+
+        .footer-bottom a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: #ff6600;
         }
     </style>
 </head>
@@ -338,24 +492,37 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="main-container">
         <div class="header">
-            <h1>🔫 CS2 Loadout Builder</h1>
+            <h1>CS2 Loadout Builder</h1>
             <p>Create and customize your perfect Counter-Strike 2 weapon loadouts</p>
         </div>
 
-        <div class="loadout-manager">
-            <div class="loadout-sidebar">
-                <h3>My Loadouts</h3>
-                <ul class="loadout-list" id="loadoutList">
-                    <li class="loadout-item active" data-loadout="0">Default Loadout</li>
-                </ul>
-                <button class="new-loadout" onclick="createNewLoadout()">+ New Loadout</button>
+        <!-- Left Ad Space -->
+        <div class="ad-space">
+            <h4>Gaming Deals</h4>
+            <div class="ad-placeholder">
+                Advertisement Space
+                <br>
+                300x250
             </div>
+            <a href="#" class="affiliate-link">Steam Store</a>
+            <a href="#" class="affiliate-link">CS2 Skins</a>
+            <a href="#" class="affiliate-link">Gaming Gear</a>
+        </div>
 
-            <div class="weapon-grid">
-                <div class="weapon-category">
-                    <h3 class="category-title">🔫 Rifles</h3>
+        <div class="loadout-sidebar">
+            <h3>My Loadouts</h3>
+            <ul class="loadout-list" id="loadoutList">
+                <li class="loadout-item active" data-loadout="0">Default Loadout</li>
+            </ul>
+            <button class="new-loadout" onclick="createNewLoadout()">+ New Loadout</button>
+        </div>
+
+        <div class="weapons-container">
+            <div class="weapon-category">
+                <h3 class="category-title">Rifles</h3>
+                <div class="weapon-slots">
                     <div class="weapon-slot">
                         <div class="weapon-name">AK-47</div>
                         <select class="skin-selector" data-weapon="ak47">
@@ -399,9 +566,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="weapon-category">
-                    <h3 class="category-title">🔫 Pistols</h3>
+            <div class="weapon-category">
+                <h3 class="category-title">Pistols</h3>
+                <div class="weapon-slots">
                     <div class="weapon-slot">
                         <div class="weapon-name">Glock-18</div>
                         <select class="skin-selector" data-weapon="glock">
@@ -430,9 +599,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="weapon-category">
-                    <h3 class="category-title">🔫 SMGs</h3>
+            <div class="weapon-category">
+                <h3 class="category-title">SMGs</h3>
+                <div class="weapon-slots">
                     <div class="weapon-slot">
                         <div class="weapon-name">P90</div>
                         <select class="skin-selector" data-weapon="p90">
@@ -452,9 +623,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="weapon-category">
-                    <h3 class="category-title">🔪 Knives</h3>
+            <div class="weapon-category">
+                <h3 class="category-title">Knives</h3>
+                <div class="weapon-slots">
                     <div class="weapon-slot">
                         <div class="weapon-name">Knife</div>
                         <select class="skin-selector" data-weapon="knife">
@@ -467,9 +640,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="weapon-category">
-                    <h3 class="category-title">🧤 Gloves</h3>
+            <div class="weapon-category">
+                <h3 class="category-title">Gloves</h3>
+                <div class="weapon-slots">
                     <div class="weapon-slot">
                         <div class="weapon-name">Gloves</div>
                         <select class="skin-selector" data-weapon="gloves">
@@ -489,17 +664,67 @@
             </div>
         </div>
 
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <h4>Recommended</h4>
+            <div class="ad-placeholder">
+                Advertisement Space
+                <br>
+                300x600
+            </div>
+            <a href="#" class="affiliate-link">Pro Gaming Mouse</a>
+            <a href="#" class="affiliate-link">Gaming Headset</a>
+            <a href="#" class="affiliate-link">Mechanical Keyboard</a>
+        </div>
+
         <div class="loadout-actions">
-            <button class="action-btn save-btn" onclick="saveCurrentLoadout()">💾 Save Loadout</button>
-            <button class="action-btn share-btn" onclick="shareLoadout()">📤 Share Loadout</button>
-            <button class="action-btn delete-btn" onclick="deleteCurrentLoadout()">🗑️ Delete Loadout</button>
+            <button class="action-btn save-btn" onclick="saveCurrentLoadout()">Save Loadout</button>
+            <button class="action-btn share-btn" onclick="shareLoadout()">Share Loadout</button>
+            <button class="action-btn delete-btn" onclick="deleteCurrentLoadout()">Delete Loadout</button>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ff6600; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+        </div>
+    </footer>
 
     <!-- Modal for creating new loadout -->
     <div class="modal" id="newLoadoutModal">
         <div class="modal-content">
-            <h3 style="color: #ff6b35; margin-bottom: 20px;">Create New Loadout</h3>
+            <h3 style="color: #ff6600; margin-bottom: 20px;">Create New Loadout</h3>
             <input type="text" id="loadoutName" placeholder="Enter loadout name..." maxlength="30">
             <div style="margin-top: 20px;">
                 <button class="action-btn save-btn" onclick="confirmNewLoadout()">Create</button>
@@ -529,7 +754,7 @@
                 currentLoadout.weapons[weapon] = skin;
             });
 
-            showNotification('💾 Loadout saved successfully!', 'success');
+            showNotification('Loadout saved successfully!', 'success');
         }
 
         function loadLoadout(loadoutId) {
@@ -565,7 +790,7 @@
         function confirmNewLoadout() {
             const name = document.getElementById('loadoutName').value.trim();
             if (!name) {
-                showNotification('⚠️ Please enter a loadout name', 'error');
+                showNotification('Please enter a loadout name', 'error');
                 return;
             }
 
@@ -579,12 +804,12 @@
             updateLoadoutList();
             loadLoadout(newLoadout.id);
             closeModal();
-            showNotification('✅ New loadout created!', 'success');
+            showNotification('New loadout created!', 'success');
         }
 
         function deleteCurrentLoadout() {
             if (loadouts.length <= 1) {
-                showNotification('⚠️ Cannot delete the last loadout', 'error');
+                showNotification('Cannot delete the last loadout', 'error');
                 return;
             }
 
@@ -592,7 +817,7 @@
                 loadouts = loadouts.filter(l => l.id !== currentLoadoutId);
                 updateLoadoutList();
                 loadLoadout(loadouts[0].id);
-                showNotification('🗑️ Loadout deleted', 'success');
+                showNotification('Loadout deleted', 'success');
             }
         }
 
@@ -602,7 +827,7 @@
             
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(loadoutData).then(() => {
-                    showNotification('📤 Loadout copied to clipboard!', 'success');
+                    showNotification('Loadout copied to clipboard!', 'success');
                 });
             } else {
                 // Fallback for older browsers
