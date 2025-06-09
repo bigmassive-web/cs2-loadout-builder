@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f0f23);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122);
             color: #ffffff;
             min-height: 100vh;
             padding-top: 80px;
@@ -24,16 +24,16 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
-            border-bottom: 2px solid rgba(255, 107, 53, 0.3);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
             z-index: 1000;
             padding: 15px 0;
-            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
         }
 
         .nav-content {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -44,7 +44,7 @@
         .nav-logo {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ff6b35;
+            color: #ff6600;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
@@ -68,29 +68,82 @@
         }
 
         .nav-btn:hover {
-            background: rgba(255, 107, 53, 0.2);
-            border-color: rgba(255, 107, 53, 0.5);
+            background: rgba(0, 191, 255, 0.2);
+            border-color: rgba(0, 191, 255, 0.5);
             transform: translateY(-2px);
         }
 
         .nav-btn.active {
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(45deg, #9500ff, #00bfff);
             border-color: transparent;
         }
 
-        .container {
-            max-width: 1000px;
+        .main-container {
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 30px;
+        }
+
+        .ad-space {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .ad-space h4 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .ad-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .affiliate-link {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #9500ff, #00bfff);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .affiliate-link:hover {
+            transform: scale(1.05);
+        }
+
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 0;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            background: linear-gradient(90deg, #9500ff, #00bfff);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3);
         }
 
         .header h1 {
@@ -124,7 +177,7 @@
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
-            color: #ff6b35;
+            color: #ff6600;
             margin-bottom: 5px;
         }
 
@@ -156,11 +209,11 @@
         }
 
         .skin-card.left {
-            border: 2px solid #28a745;
+            border: 2px solid #00bfff;
         }
 
         .skin-card.right {
-            border: 2px solid #ffc107;
+            border: 2px solid #ff6600;
         }
 
         .skin-image {
@@ -192,16 +245,16 @@
             margin-bottom: 15px;
         }
 
-        .rarity-legendary { background: #eb4b4b; }
-        .rarity-covert { background: #d32ce6; }
+        .rarity-legendary { background: #ff6600; }
+        .rarity-covert { background: #00bfff; }
         .rarity-classified { background: #8847ff; }
         .rarity-restricted { background: #4b69ff; }
-        .rarity-milspec { background: #8650ac; }
+        .rarity-milspec { background: #6a4c93; }
 
         .skin-price {
             font-size: 2rem;
             font-weight: bold;
-            color: #28a745;
+            color: #00bfff;
             margin-top: 10px;
         }
 
@@ -218,7 +271,7 @@
         .vs-text {
             font-size: 3rem;
             font-weight: bold;
-            color: #ff6b35;
+            color: #ff6600;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             margin-bottom: 20px;
         }
@@ -241,11 +294,11 @@
         }
 
         .higher-btn {
-            background: linear-gradient(45deg, #28a745, #20c997);
+            background: linear-gradient(45deg, #00bfff, #0080cc);
         }
 
         .lower-btn {
-            background: linear-gradient(45deg, #dc3545, #e74c3c);
+            background: linear-gradient(45deg, #ff3333, #cc0000);
         }
 
         .choice-btn:hover {
@@ -269,15 +322,15 @@
         }
 
         .result-correct {
-            background: rgba(40, 167, 69, 0.2);
-            color: #28a745;
-            border: 2px solid #28a745;
+            background: rgba(0, 191, 255, 0.2);
+            color: #00bfff;
+            border: 2px solid #00bfff;
         }
 
         .result-wrong {
-            background: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-            border: 2px solid #dc3545;
+            background: rgba(255, 51, 51, 0.2);
+            color: #ff3333;
+            border: 2px solid #ff3333;
         }
 
         .game-controls {
@@ -293,13 +346,13 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(45deg, #9500ff, #00bfff);
             color: white;
         }
 
         .control-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 5px 15px rgba(149, 0, 255, 0.4);
         }
 
         .leaderboard {
@@ -312,7 +365,7 @@
         }
 
         .leaderboard h3 {
-            color: #ff6b35;
+            color: #ff6600;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -324,6 +377,71 @@
             margin-bottom: 10px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0a0a0a, #001122);
+            border-top: 2px solid rgba(0, 191, 255, 0.3);
+            margin-top: 60px;
+            padding: 40px 0 20px;
+            color: #ffffff;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #00bfff;
+        }
+
+        .footer-section p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #888888;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .ad-space {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
@@ -348,6 +466,10 @@
                 flex-direction: row;
                 justify-content: center;
             }
+
+            .main-container {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -370,84 +492,149 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>💰 CS2 Skin Price Game</h1>
-            <p>Guess which CS2 skin costs more! Test your market knowledge</p>
+    <div class="main-container">
+        <!-- Left Ad Space -->
+        <div class="ad-space">
+            <h4>Gaming Deals</h4>
+            <div class="ad-placeholder">
+                Advertisement Space
+                <br>
+                300x250
+            </div>
+            <a href="#" class="affiliate-link">Steam Store</a>
+            <a href="#" class="affiliate-link">CS2 Skins</a>
+            <a href="#" class="affiliate-link">Gaming Gear</a>
         </div>
 
-        <div class="game-stats">
-            <div class="stat-card">
-                <div class="stat-value" id="currentStreak">0</div>
-                <div class="stat-label">Current Streak</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="bestStreak">0</div>
-                <div class="stat-label">Best Streak</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalGames">0</div>
-                <div class="stat-label">Games Played</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="accuracy">0%</div>
-                <div class="stat-label">Accuracy</div>
-            </div>
-        </div>
-
-        <div class="game-area">
-            <div class="skin-card left" id="leftSkin">
-                <div class="skin-image">🔫</div>
-                <div class="skin-name">AK-47 Redline</div>
-                <div class="skin-rarity rarity-classified">Classified</div>
-                <div class="skin-price">$85</div>
+        <div class="content-container">
+            <div class="header">
+                <h1>CS2 Skin Price Game</h1>
+                <p>Guess which CS2 skin costs more! Test your market knowledge</p>
             </div>
 
-            <div class="vs-section">
-                <div class="vs-text">VS</div>
-                <div class="choice-buttons">
-                    <button class="choice-btn higher-btn" onclick="makeGuess('higher')">
-                        📈 HIGHER
-                    </button>
-                    <button class="choice-btn lower-btn" onclick="makeGuess('lower')">
-                        📉 LOWER
-                    </button>
+            <div class="game-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="currentStreak">0</div>
+                    <div class="stat-label">Current Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="bestStreak">0</div>
+                    <div class="stat-label">Best Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalGames">0</div>
+                    <div class="stat-label">Games Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
                 </div>
             </div>
 
-            <div class="skin-card right" id="rightSkin">
-                <div class="skin-image">🔫</div>
-                <div class="skin-name">M4A4 Asiimov</div>
-                <div class="skin-rarity rarity-covert">Covert</div>
-                <div class="skin-price hidden">???</div>
+            <div class="game-area">
+                <div class="skin-card left" id="leftSkin">
+                    <div class="skin-image">🔫</div>
+                    <div class="skin-name">AK-47 Redline</div>
+                    <div class="skin-rarity rarity-classified">Classified</div>
+                    <div class="skin-price">$85</div>
+                </div>
+
+                <div class="vs-section">
+                    <div class="vs-text">VS</div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn higher-btn" onclick="makeGuess('higher')">
+                            HIGHER
+                        </button>
+                        <button class="choice-btn lower-btn" onclick="makeGuess('lower')">
+                            LOWER
+                        </button>
+                    </div>
+                </div>
+
+                <div class="skin-card right" id="rightSkin">
+                    <div class="skin-image">🔫</div>
+                    <div class="skin-name">M4A4 Asiimov</div>
+                    <div class="skin-rarity rarity-covert">Covert</div>
+                    <div class="skin-price hidden">???</div>
+                </div>
+            </div>
+
+            <div id="resultMessage"></div>
+
+            <div class="game-controls">
+                <button class="control-btn" onclick="newGame()">New Game</button>
+                <button class="control-btn" onclick="nextRound()">Next Round</button>
+            </div>
+
+            <div class="leaderboard">
+                <h3>High Scores</h3>
+                <div id="leaderboardList">
+                    <div class="leaderboard-item">
+                        <span>1. Anonymous</span>
+                        <span>12 streak</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span>2. Anonymous</span>
+                        <span>8 streak</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span>3. Anonymous</span>
+                        <span>5 streak</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="resultMessage"></div>
-
-        <div class="game-controls">
-            <button class="control-btn" onclick="newGame()">🎮 New Game</button>
-            <button class="control-btn" onclick="nextRound()">➡️ Next Round</button>
-        </div>
-
-        <div class="leaderboard">
-            <h3>🏆 High Scores</h3>
-            <div id="leaderboardList">
-                <div class="leaderboard-item">
-                    <span>1. Anonymous</span>
-                    <span>12 streak</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span>2. Anonymous</span>
-                    <span>8 streak</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span>3. Anonymous</span>
-                    <span>5 streak</span>
-                </div>
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <h4>Recommended</h4>
+            <div class="ad-placeholder">
+                Advertisement Space
+                <br>
+                300x600
             </div>
+            <a href="#" class="affiliate-link">Pro Gaming Mouse</a>
+            <a href="#" class="affiliate-link">Gaming Headset</a>
+            <a href="#" class="affiliate-link">Mechanical Keyboard</a>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ff6600; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+        </div>
+    </footer>
 
     <script>
         // CS2 Skin database with prices (in USD)
@@ -572,7 +759,7 @@
                 
                 resultDiv.innerHTML = `
                     <div class="result-correct">
-                        🎉 Correct! ${gameState.rightSkin.name} costs $${rightPrice} vs $${leftPrice}
+                        Correct! ${gameState.rightSkin.name} costs $${rightPrice} vs $${leftPrice}
                         <br>Streak: ${gameState.currentStreak}
                     </div>
                 `;
@@ -581,7 +768,7 @@
                 
                 resultDiv.innerHTML = `
                     <div class="result-wrong">
-                        ❌ Wrong! ${gameState.rightSkin.name} costs $${rightPrice} vs $${leftPrice}
+                        Wrong! ${gameState.rightSkin.name} costs $${rightPrice} vs $${leftPrice}
                         <br>Streak broken!
                     </div>
                 `;
@@ -630,7 +817,7 @@
                 const newEntry = document.createElement('div');
                 newEntry.className = 'leaderboard-item';
                 newEntry.innerHTML = `
-                    <span>🎯 You</span>
+                    <span>You</span>
                     <span>${gameState.bestStreak} streak</span>
                 `;
                 leaderboardDiv.prepend(newEntry);
