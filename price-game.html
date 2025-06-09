@@ -16,6 +16,66 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f0f23);
             color: #ffffff;
             min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(255, 107, 53, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b35;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-color: transparent;
         }
 
         .container {
@@ -292,6 +352,21 @@
     </style>
 </head>
 <body>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="nav-content">
+            <div class="nav-logo">🔫 CS2 Tools</div>
+            <div class="nav-menu">
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/" class="nav-btn">
+                    🔫 Loadout Builder
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html" class="nav-btn active">
+                    💰 Price Game
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>💰 CS2 Skin Price Game</h1>
