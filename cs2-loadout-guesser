@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔫 CS2 Loadout Price Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #ff6b35;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .menu-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #666, #888);
+            box-shadow: 0 8px 25px rgba(102, 102, 102, 0.3);
+        }
+
+        .room-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .mode-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            max-width: 300px;
+        }
+
+        .mode-card:hover {
+            border-color: #ff6b35;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .mode-card h3 {
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+
+        .game-screen {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            min-height: 80vh;
+        }
+
+        .loadout-builder {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .weapon-category {
+            margin-bottom: 2rem;
+        }
+
+        .category-title {
+            color: #ff6b35;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .weapon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .weapon-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .weapon-card:hover {
+            border-color: #ff6b35;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .weapon-card.selected {
+            border-color: #ff6b35;
+            background: rgba(255, 107, 53, 0.2);
+        }
+
+        .weapon-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .skin-name {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .game-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .target-value {
+            font-size: 1.5rem;
+            color: #ff6b35;
+            text-align: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .loadout-summary {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .selected-items {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .selected-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-screen {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .winner-announcement {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .results-table {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            border: 2px solid #ff6b35;
+            z-index: 1000;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .game-screen {
+                grid-template-columns: 1fr;
+            }
+
+            .weapon-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .mode-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔫 CS2 Loadout Price Challenge</h1>
+        <p>Guess the most valuable loadout without seeing prices!</p>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="game-container">
+        <!-- Menu Screen -->
+        <div class="screen active" id="menu-screen">
+            <div class="menu-screen">
+                <h2>Welcome to the Price Challenge!</h2>
+                <p>Test your knowledge of CS2 skin values. Build the most valuable loadout without seeing any prices!</p>
+                
+                <div class="mode-selector">
+                    <div class="mode-card" onclick="goToSolo()">
+                        <h3>🎯 Solo Challenge</h3>
+                        <p>Practice mode - try to hit different target values and improve your skin knowledge!</p>
+                    </div>
+                    <div class="mode-card" onclick="goToMultiplayer()">
+                        <h3>👥 Share & Compare</h3>
+                        <p>Create a challenge link to share with friends. Compare results when both complete!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solo Setup -->
+        <div class="screen" id="solo-setup">
+            <div class="menu-screen">
+                <h2>Solo Challenge Setup</h2>
+                <div class="room-section">
+                    <h3>Choose Your Challenge</h3>
+                    <div class="input-group">
+                        <input type="text" id="player-name-solo" placeholder="Your Name" maxlength="20">
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <button class="btn" onclick="startSoloGame('easy')">Easy ($5,000 - $10,000)</button>
+                        <button class="btn" onclick="startSoloGame('medium')">Medium ($10,000 - $20,000)</button>
+                        <button class="btn" onclick="startSoloGame('hard')">Hard ($20,000 - $35,000)</button>
+                        <br><br>
+                        <button class="btn secondary" onclick="showScreen('menu-screen')">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen" id="game-screen">
+            <div class="game-screen">
+                <div class="loadout-builder">
+                    <h2>Build Your Loadout</h2>
+
+                    <div class="weapon-category">
+                        <div class="category-title">🔫 Rifles</div>
+                        <div class="weapon-grid" id="rifles-grid"></div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <div class="category-title">🔫 Pistols</div>
+                        <div class="weapon-grid" id="pistols-grid"></div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <div class="category-title">🔫 SMGs</div>
+                        <div class="weapon-grid" id="smgs-grid"></div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <div class="category-title">🔪 Knives</div>
+                        <div class="weapon-grid" id="knives-grid"></div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <div class="category-title">🧤 Gloves</div>
+                        <div class="weapon-grid" id="gloves-grid"></div>
+                    </div>
+                </div>
+
+                <div class="game-sidebar">
+                    <div class="target-value">
+                        Target: $<span id="target-amount">15,000</span>
+                    </div>
+
+                    <div class="loadout-summary">
+                        <h4>Your Loadout</h4>
+                        <div class="selected-items" id="selected-items"></div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                            <strong>Items Selected: <span id="items-count">0</span>/5</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="submitLoadout()">Submit Loadout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results-screen">
+            <div class="results-screen">
+                <div class="winner-announcement" id="winner-text">🎯 Challenge Complete!</div>
+                
+                <div class="results-table">
+                    <h3>Your Results</h3>
+                    <div class="result-row">
+                        <span>Target Value:</span>
+                        <span>$<span id="final-target">15,000</span></span>
+                    </div>
+                    <div class="result-row">
+                        <span>Your Loadout:</span>
+                        <span>$<span id="your-total">12,500</span></span>
+                    </div>
+                    <div class="result-row">
+                        <span>Difference:</span>
+                        <span id="difference-display">$2,500 (16.7%)</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Grade:</span>
+                        <span id="grade-display">B+</span>
+                    </div>
+                </div>
+
+                <div id="loadout-breakdown" class="results-table">
+                    <h3>Loadout Breakdown</h3>
+                    <div id="breakdown-items"></div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button class="btn" onclick="playAgain()">Play Again</button>
+                    <button class="btn secondary" onclick="showScreen('menu-screen')">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state - defined first
+        let gameState = {
+            selectedItems: {},
+            targetValue: 0,
+            playerName: '',
+            difficulty: 'medium'
+        };
+
+        // Weapon data
+        const weaponData = {
+            rifles: [
+                { name: 'AK-47', skin: 'Redline (FT)', price: 85 },
+                { name: 'AK-47', skin: 'Vulcan (MW)', price: 650 },
+                { name: 'AK-47', skin: 'Fire Serpent (FT)', price: 1200 },
+                { name: 'M4A4', skin: 'Asiimov (FT)', price: 120 },
+                { name: 'M4A4', skin: 'Howl (FT)', price: 4500 },
+                { name: 'M4A1-S', skin: 'Hot Rod (FN)', price: 280 },
+                { name: 'AWP', skin: 'Dragon Lore (FT)', price: 8500 },
+                { name: 'AWP', skin: 'Lightning Strike (FN)', price: 450 },
+                { name: 'AWP', skin: 'Asiimov (FT)', price: 85 }
+            ],
+            pistols: [
+                { name: 'Glock-18', skin: 'Fade (FN)', price: 320 },
+                { name: 'USP-S', skin: 'Kill Confirmed (MW)', price: 85 },
+                { name: 'USP-S', skin: 'Orion (FN)', price: 95 },
+                { name: 'Desert Eagle', skin: 'Blaze (FN)', price: 380 },
+                { name: 'Desert Eagle', skin: 'Printstream (MW)', price: 95 }
+            ],
+            smgs: [
+                { name: 'P90', skin: 'Asiimov (FT)', price: 65 },
+                { name: 'P90', skin: 'Death by Kitty (MW)', price: 180 },
+                { name: 'MP7', skin: 'Fade (FN)', price: 75 }
+            ],
+            knives: [
+                { name: 'Karambit', skin: 'Fade (FN)', price: 2800 },
+                { name: 'M9 Bayonet', skin: 'Doppler (FN)', price: 1200 },
+                { name: 'Butterfly Knife', skin: 'Tiger Tooth (FN)', price: 1800 },
+                { name: 'Bayonet', skin: 'Marble Fade (FN)', price: 950 }
+            ],
+            gloves: [
+                { name: 'Sport Gloves', skin: 'Pandoras Box (FT)', price: 1500 },
+                { name: 'Driver Gloves', skin: 'Crimson Weave (MW)', price: 890 },
+                { name: 'Specialist Gloves', skin: 'Emerald Web (MW)', price: 2200 },
+                { name: 'Hand Wraps', skin: 'Cobalt Skulls (MW)', price: 280 }
+            ]
+        };
+
+        // Core functions - defined immediately
+        function goToSolo() {
+            showScreen('solo-setup');
+        }
+
+        function goToMultiplayer() {
+            alert('Multiplayer mode coming soon! Try Solo mode for now.');
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        function generateTargetValue(difficulty) {
+            const ranges = {
+                easy: { min: 5000, max: 10000 },
+                medium: { min: 10000, max: 20000 },
+                hard: { min: 20000, max: 35000 }
+            };
+            const range = ranges[difficulty];
+            return Math.floor(Math.random() * (range.max - range.min)) + range.min;
+        }
+
+        function startSoloGame(difficulty) {
+            const playerName = document.getElementById('player-name-solo').value.trim() || 'Player';
+            gameState.playerName = playerName;
+            gameState.difficulty = difficulty;
+            gameState.targetValue = generateTargetValue(difficulty);
+            gameState.selectedItems = {};
+            
+            initializeGameScreen();
+            showScreen('game-screen');
+        }
+
+        function initializeGameScreen() {
+            document.getElementById('target-amount').textContent = gameState.targetValue.toLocaleString();
+            
+            Object.keys(weaponData).forEach(category => {
+                createWeaponGrid(category);
+            });
+
+            updateLoadoutSummary();
+        }
+
+        function createWeaponGrid(category) {
+            const grid = document.getElementById(category + '-grid');
+            grid.innerHTML = '';
+            
+            weaponData[category].forEach((weapon, index) => {
+                const card = document.createElement('div');
+                card.className = 'weapon-card';
+                card.dataset.category = category;
+                card.dataset.index = index;
+                card.onclick = () => selectWeapon(category, index);
+                
+                card.innerHTML = `
+                    <div class="weapon-name">${weapon.name}</div>
+                    <div class="skin-name">${weapon.skin}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function selectWeapon(category, index) {
+            if (Object.keys(gameState.selectedItems).length >= 5 && !gameState.selectedItems[category]) {
+                showNotification('Maximum 5 items allowed!');
+                return;
+            }
+
+            // Remove previous selection in this category
+            if (gameState.selectedItems[category] !== undefined) {
+                const prevCard = document.querySelector(`[data-category="${category}"].selected`);
+                if (prevCard) prevCard.classList.remove('selected');
+            }
+            
+            // Add new selection
+            gameState.selectedItems[category] = index;
+            const card = document.querySelector(`[data-category="${category}"][data-index="${index}"]`);
+            card.classList.add('selected');
+            
+            updateLoadoutSummary();
+        }
+
+        function updateLoadoutSummary() {
+            const container = document.getElementById('selected-items');
+            container.innerHTML = '';
+            
+            let itemCount = 0;
+            Object.keys(gameState.selectedItems).forEach(category => {
+                const index = gameState.selectedItems[category];
+                const weapon = weaponData[category][index];
+                
+                const item = document.createElement('div');
+                item.className = 'selected-item';
+                item.innerHTML = `
+                    <span>${weapon.name} | ${weapon.skin}</span>
+                    <button onclick="removeItem('${category}')" style="background: #ff4444; border: none; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer;">×</button>
+                `;
+                container.appendChild(item);
+                itemCount++;
+            });
+            
+            document.getElementById('items-count').textContent = itemCount;
+        }
+
+        function removeItem(category) {
+            delete gameState.selectedItems[category];
+            const card = document.querySelector(`[data-category="${category}"].selected`);
+            if (card) card.classList.remove('selected');
+            updateLoadoutSummary();
+        }
+
+        function submitLoadout() {
+            if (Object.keys(gameState.selectedItems).length === 0) {
+                showNotification('Please select at least one item!');
+                return;
+            }
+
+            let totalValue = 0;
+            const loadoutItems = [];
+            
+            Object.keys(gameState.selectedItems).forEach(category => {
+                const index = gameState.selectedItems[category];
+                const weapon = weaponData[category][index];
+                totalValue += weapon.price;
+                loadoutItems.push({
+                    name: `${weapon.name} | ${weapon.skin}`,
+                    price: weapon.price
+                });
+            });
+
+            showResults(totalValue, loadoutItems);
+        }
+
+        function showResults(totalValue, loadoutItems) {
+            const difference = Math.abs(gameState.targetValue - totalValue);
+            const percentDiff = ((difference / gameState.targetValue) * 100).toFixed(1);
+            
+            let grade = 'F';
+            if (percentDiff <= 5) grade = 'A+';
+            else if (percentDiff <= 10) grade = 'A';
+            else if (percentDiff <= 15) grade = 'B+';
+            else if (percentDiff <= 20) grade = 'B';
+            else if (percentDiff <= 30) grade = 'C';
+            else if (percentDiff <= 50) grade = 'D';
+
+            document.getElementById('final-target').textContent = gameState.targetValue.toLocaleString();
+            document.getElementById('your-total').textContent = totalValue.toLocaleString();
+            document.getElementById('difference-display').textContent = `$${difference.toLocaleString()} (${percentDiff}%)`;
+            document.getElementById('grade-display').textContent = grade;
+
+            let winnerText = '🎯 Challenge Complete!';
+            if (percentDiff <= 5) winnerText = '🏆 Perfect! Amazing!';
+            else if (percentDiff <= 10) winnerText = '🎉 Excellent Work!';
+            else if (percentDiff <= 20) winnerText = '👍 Good Job!';
+            else if (percentDiff <= 50) winnerText = '📈 Keep Practicing!';
+            
+            document.getElementById('winner-text').textContent = winnerText;
+
+            const breakdown = document.getElementById('breakdown-items');
+            breakdown.innerHTML = '';
+            loadoutItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'result-row';
+                itemDiv.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>$${item.price.toLocaleString()}</span>
+                `;
+                breakdown.appendChild(itemDiv);
+            });
+
+            showScreen('results-screen');
+        }
+
+        function playAgain() {
+            gameState.selectedItems = {};
+            gameState.targetValue = generateTargetValue(gameState.difficulty);
+            initializeGameScreen();
+            showScreen('game-screen');
+        }
+    </script>
+</body>
+</html>
