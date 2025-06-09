@@ -105,12 +105,6 @@
             opacity: 0.9;
         }
 
-        .game-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
         .screen {
             display: none;
         }
@@ -365,14 +359,34 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🔫 CS2 Loadout Price Challenge</h1>
-        <p>Guess the most valuable loadout without seeing prices!</p>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="nav-content">
+            <div class="nav-logo">🔫 CS2 Tools</div>
+            <div class="nav-menu">
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/" class="nav-btn">
+                    🔫 Loadout Builder
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html" class="nav-btn">
+                    💰 Price Game
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html" class="nav-btn active">
+                    🎯 Price Guessing
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎯 CS2 Price Guessing</h1>
+            <p>Test your knowledge of CS2 skin values without seeing prices!</p>
+        </div>
     </div>
 
     <div class="notification" id="notification"></div>
 
-    <div class="game-container">
+    <div class="container">
         <!-- Menu Screen -->
         <div class="screen active" id="menu-screen">
             <div class="menu-screen">
@@ -565,26 +579,26 @@
         }
 
         function showNotification(message) {
-            const notification = document.getElementById('notification');
+            var notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
-            setTimeout(() => {
+            setTimeout(function() {
                 notification.style.display = 'none';
             }, 2000);
         }
 
         function generateTargetValue(difficulty) {
-            const ranges = {
+            var ranges = {
                 easy: { min: 5000, max: 10000 },
                 medium: { min: 10000, max: 20000 },
                 hard: { min: 20000, max: 35000 }
             };
-            const range = ranges[difficulty];
+            var range = ranges[difficulty];
             return Math.floor(Math.random() * (range.max - range.min)) + range.min;
         }
 
         function startSoloGame(difficulty) {
-            const playerName = document.getElementById('player-name-solo').value.trim() || 'Player';
+            var playerName = document.getElementById('player-name-solo').value.trim() || 'Player';
             gameState.playerName = playerName;
             gameState.difficulty = difficulty;
             gameState.targetValue = generateTargetValue(difficulty);
@@ -597,7 +611,7 @@
         function initializeGameScreen() {
             document.getElementById('target-amount').textContent = gameState.targetValue.toLocaleString();
             
-            Object.keys(weaponData).forEach(category => {
+            Object.keys(weaponData).forEach(function(category) {
                 createWeaponGrid(category);
             });
 
@@ -605,20 +619,17 @@
         }
 
         function createWeaponGrid(category) {
-            const grid = document.getElementById(category + '-grid');
+            var grid = document.getElementById(category + '-grid');
             grid.innerHTML = '';
             
-            weaponData[category].forEach((weapon, index) => {
-                const card = document.createElement('div');
+            weaponData[category].forEach(function(weapon, index) {
+                var card = document.createElement('div');
                 card.className = 'weapon-card';
                 card.dataset.category = category;
                 card.dataset.index = index;
-                card.onclick = () => selectWeapon(category, index);
+                card.onclick = function() { selectWeapon(category, index); };
                 
-                card.innerHTML = `
-                    <div class="weapon-name">${weapon.name}</div>
-                    <div class="skin-name">${weapon.skin}</div>
-                `;
+                card.innerHTML = '<div class="weapon-name">' + weapon.name + '</div><div class="skin-name">' + weapon.skin + '</div>';
                 
                 grid.appendChild(card);
             });
@@ -632,33 +643,30 @@
 
             // Remove previous selection in this category
             if (gameState.selectedItems[category] !== undefined) {
-                const prevCard = document.querySelector(`[data-category="${category}"].selected`);
+                var prevCard = document.querySelector('[data-category="' + category + '"].selected');
                 if (prevCard) prevCard.classList.remove('selected');
             }
             
             // Add new selection
             gameState.selectedItems[category] = index;
-            const card = document.querySelector(`[data-category="${category}"][data-index="${index}"]`);
+            var card = document.querySelector('[data-category="' + category + '"][data-index="' + index + '"]');
             card.classList.add('selected');
             
             updateLoadoutSummary();
         }
 
         function updateLoadoutSummary() {
-            const container = document.getElementById('selected-items');
+            var container = document.getElementById('selected-items');
             container.innerHTML = '';
             
-            let itemCount = 0;
-            Object.keys(gameState.selectedItems).forEach(category => {
-                const index = gameState.selectedItems[category];
-                const weapon = weaponData[category][index];
+            var itemCount = 0;
+            Object.keys(gameState.selectedItems).forEach(function(category) {
+                var index = gameState.selectedItems[category];
+                var weapon = weaponData[category][index];
                 
-                const item = document.createElement('div');
+                var item = document.createElement('div');
                 item.className = 'selected-item';
-                item.innerHTML = `
-                    <span>${weapon.name} | ${weapon.skin}</span>
-                    <button onclick="removeItem('${category}')" style="background: #ff4444; border: none; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer;">×</button>
-                `;
+                item.innerHTML = '<span>' + weapon.name + ' | ' + weapon.skin + '</span><button onclick="removeItem(\'' + category + '\')" style="background: #ff4444; border: none; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer;">×</button>';
                 container.appendChild(item);
                 itemCount++;
             });
@@ -668,7 +676,7 @@
 
         function removeItem(category) {
             delete gameState.selectedItems[category];
-            const card = document.querySelector(`[data-category="${category}"].selected`);
+            var card = document.querySelector('[data-category="' + category + '"].selected');
             if (card) card.classList.remove('selected');
             updateLoadoutSummary();
         }
@@ -679,15 +687,15 @@
                 return;
             }
 
-            let totalValue = 0;
-            const loadoutItems = [];
+            var totalValue = 0;
+            var loadoutItems = [];
             
-            Object.keys(gameState.selectedItems).forEach(category => {
-                const index = gameState.selectedItems[category];
-                const weapon = weaponData[category][index];
+            Object.keys(gameState.selectedItems).forEach(function(category) {
+                var index = gameState.selectedItems[category];
+                var weapon = weaponData[category][index];
                 totalValue += weapon.price;
                 loadoutItems.push({
-                    name: `${weapon.name} | ${weapon.skin}`,
+                    name: weapon.name + ' | ' + weapon.skin,
                     price: weapon.price
                 });
             });
@@ -696,10 +704,10 @@
         }
 
         function showResults(totalValue, loadoutItems) {
-            const difference = Math.abs(gameState.targetValue - totalValue);
-            const percentDiff = ((difference / gameState.targetValue) * 100).toFixed(1);
+            var difference = Math.abs(gameState.targetValue - totalValue);
+            var percentDiff = ((difference / gameState.targetValue) * 100).toFixed(1);
             
-            let grade = 'F';
+            var grade = 'F';
             if (percentDiff <= 5) grade = 'A+';
             else if (percentDiff <= 10) grade = 'A';
             else if (percentDiff <= 15) grade = 'B+';
@@ -709,10 +717,10 @@
 
             document.getElementById('final-target').textContent = gameState.targetValue.toLocaleString();
             document.getElementById('your-total').textContent = totalValue.toLocaleString();
-            document.getElementById('difference-display').textContent = `$${difference.toLocaleString()} (${percentDiff}%)`;
+            document.getElementById('difference-display').textContent = '$' + difference.toLocaleString() + ' (' + percentDiff + '%)';
             document.getElementById('grade-display').textContent = grade;
 
-            let winnerText = '🎯 Challenge Complete!';
+            var winnerText = '🎯 Challenge Complete!';
             if (percentDiff <= 5) winnerText = '🏆 Perfect! Amazing!';
             else if (percentDiff <= 10) winnerText = '🎉 Excellent Work!';
             else if (percentDiff <= 20) winnerText = '👍 Good Job!';
@@ -720,15 +728,12 @@
             
             document.getElementById('winner-text').textContent = winnerText;
 
-            const breakdown = document.getElementById('breakdown-items');
+            var breakdown = document.getElementById('breakdown-items');
             breakdown.innerHTML = '';
-            loadoutItems.forEach(item => {
-                const itemDiv = document.createElement('div');
+            loadoutItems.forEach(function(item) {
+                var itemDiv = document.createElement('div');
                 itemDiv.className = 'result-row';
-                itemDiv.innerHTML = `
-                    <span>${item.name}</span>
-                    <span>$${item.price.toLocaleString()}</span>
-                `;
+                itemDiv.innerHTML = '<span>' + item.name + '</span><span>$' + item.price.toLocaleString() + '</span>';
                 breakdown.appendChild(itemDiv);
             });
 
