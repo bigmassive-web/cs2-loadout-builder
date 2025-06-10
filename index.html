@@ -1418,33 +1418,10 @@
         function updatePreviewItem(elementId, item1, item2) {
             const element = document.getElementById(elementId);
             
-            if (item1 && item2) {
-                const item1Name = `${item1.weapon} | ${item1.skin}`;
-                const item2Name = `${item2.weapon} | ${item2.skin}`;
-                element.innerHTML = `
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                        <img src="${item1.image}" alt="${item1Name}" class="preview-image" />
-                        <img src="${item2.image}" alt="${item2Name}" class="preview-image" />
-                    </div>
-                `;
-                element.style.background = 'rgba(0, 191, 255, 0.1)';
-                element.style.borderColor = 'rgba(0, 191, 255, 0.3)';
-            } else if (item1 || item2) {
-                const item = item1 || item2;
-                const itemName = `${item.weapon} | ${item.skin}`;
-                element.innerHTML = `
-                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                        <img src="${item.image}" alt="${itemName}" class="preview-image" />
-                        <div style="font-size: 0.6rem; text-align: center;">+ Missing item</div>
-                    </div>
-                `;
-                element.style.background = 'rgba(255, 255, 255, 0.1)';
-                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            } else {
-                element.innerHTML = '<div style="font-size: 0.7rem;">No items</div>';
-                element.style.background = 'rgba(255, 255, 255, 0.1)';
-                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            }
+            // Show "Coming Soon" for all preview combinations
+            element.innerHTML = `<div class="preview-coming-soon">Coming Soon</div>`;
+            element.style.background = 'rgba(0, 0, 0, 0.3)';
+            element.style.borderColor = 'rgba(255, 255, 255, 0.1)';
         }
 
         // Show error message
