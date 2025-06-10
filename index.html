@@ -831,15 +831,28 @@
         // Initialize the application
         async function initializeApp() {
             try {
-                await loadAPIData();
+                // Always create the weapon categories first, regardless of API status
                 createWeaponCategories();
-                populateWeaponSelectors();
-                populateRarityFilters();
                 updateLoadoutList();
-                showNotification('Successfully loaded all CS2 skins!', 'success');
+                
+                // Try to load API data
+                try {
+                    await loadAPIData();
+                    populateWeaponSelectors();
+                    populateRarityFilters();
+                    showNotification('Successfully loaded all CS2 skins!', 'success');
+                } catch (apiError) {
+                    console.log('API failed, creating basic weapon selectors...');
+                    populateBasicWeaponSelectors();
+                    showNotification('CS2 API unavailable. Deploy to your website for full functionality.', 'warning');
+                }
             } catch (error) {
                 console.error('Error initializing app:', error);
-                showErrorMessage();
+                // Even if everything fails, still show the interface
+                createWeaponCategories();
+                populateBasicWeaponSelectors();
+                updateLoadoutList();
+                showNotification('Interface loaded. Deploy to your website for CS2 data.', 'warning');
             }
         }
 
@@ -933,29 +946,68 @@
         // Create weapon category sections
         function createWeaponCategories() {
             const container = document.getElementById('weaponsContainer');
+            if (!container) {
+                console.error('Weapons container not found!');
+                return;
+            }
+            
             const errorMessage = document.getElementById('errorMessage');
-            errorMessage.style.display = 'none';
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+            
+            // Clear any existing content
+            container.innerHTML = '';
             
             Object.keys(WEAPON_CATEGORIES).forEach(category => {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'weapon-category';
+                
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                let selectPrompt = '';
+                if (category === 'gloves') {
+                    selectPrompt = 'Select gloves...';
+                } else if (category === 'knives') {
+                    selectPrompt = 'Select a knife...';
+                } else {
+                    selectPrompt = `Select a ${category.slice(0, -1)}...`;
+                }
+                
+                let selectedPrompt = '';
+                if (category === 'gloves') {
+                    selectedPrompt = 'No gloves selected';
+                } else if (category === 'knives') {
+                    selectedPrompt = 'No knife selected';
+                } else {
+                    selectedPrompt = `No ${category.slice(0, -1)} selected`;
+                }
+                
+                let choosePrompt = '';
+                if (category === 'gloves') {
+                    choosePrompt = 'Choose gloves and skin from the options above';
+                } else if (category === 'knives') {
+                    choosePrompt = 'Choose a knife and skin from the options above';
+                } else {
+                    choosePrompt = `Choose a ${category.slice(0, -1)} and skin from the options above`;
+                }
+                
                 categoryDiv.innerHTML = `
-                    <h3 class="category-title">${category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+                    <h3 class="category-title">${categoryName}</h3>
                     <div class="weapon-selection-container">
-                        <select class="weapon-selector" data-category="${category}" onchange="showSkinCustomization(this)">
-                            <option value="">Select ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'a knife' : `a ${category.slice(0, -1)}`}...</option>
+                        <select class="weapon-selector" data-category="${category}">
+                            <option value="">${selectPrompt}</option>
                         </select>
                     </div>
                     <div class="skin-customization" id="${category}-customization">
                         <div class="skin-search-container">
-                            <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                            <select class="rarity-filter" onchange="filterByRarity(this)">
+                            <input type="text" class="skin-search" placeholder="Search skins...">
+                            <select class="rarity-filter">
                                 <option value="">All Rarities</option>
                             </select>
                         </div>
                         <div class="selected-skin" id="${category}-selected">
-                            <h4>No ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'knife' : category.slice(0, -1)} selected</h4>
-                            <p>Choose ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'a knife' : `a ${category.slice(0, -1)}`} and skin from the options above</p>
+                            <h4>${selectedPrompt}</h4>
+                            <p>${choosePrompt}</p>
                         </div>
                         <div class="weapon-image" id="${category}-image">
                             <div class="weapon-image-placeholder">
@@ -966,10 +1018,51 @@
                     </div>
                 `;
                 container.appendChild(categoryDiv);
+                
+                // Add event listeners
+                const selector = categoryDiv.querySelector('.weapon-selector');
+                const searchInput = categoryDiv.querySelector('.skin-search');
+                const rarityFilter = categoryDiv.querySelector('.rarity-filter');
+                
+                if (selector) {
+                    selector.addEventListener('change', function() {
+                        showSkinCustomization(this);
+                    });
+                }
+                
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        filterSkins(this);
+                    });
+                }
+                
+                if (rarityFilter) {
+                    rarityFilter.addEventListener('change', function() {
+                        filterByRarity(this);
+                    });
+                }
+            });
+            
+            console.log('Weapon categories created successfully');
+        }
+
+        // Populate weapon selector dropdowns with basic weapon names when API fails
+        function populateBasicWeaponSelectors() {
+            Object.keys(WEAPON_CATEGORIES).forEach(category => {
+                const selector = document.querySelector(`[data-category="${category}"]`);
+                if (!selector) return;
+                
+                // Use predefined weapon lists for all categories
+                WEAPON_CATEGORIES[category].forEach(weaponName => {
+                    const option = document.createElement('option');
+                    option.value = weaponName;
+                    option.textContent = weaponName;
+                    selector.appendChild(option);
+                });
             });
         }
 
-        // Populate weapon selector dropdowns
+        // Populate weapon selector dropdowns with API data
         function populateWeaponSelectors() {
             Object.keys(WEAPON_CATEGORIES).forEach(category => {
                 const selector = document.querySelector(`[data-category="${category}"]`);
@@ -1019,19 +1112,40 @@
             
             if (weapon) {
                 customization.classList.add('active');
-                updateSkinOptions(category, weapon);
+                
+                // If we have API data, use it. Otherwise show placeholder message
+                if (apiData.skins.length > 0 || apiData.gloves.length > 0) {
+                    updateSkinOptions(category, weapon);
+                } else {
+                    showPlaceholderSkins(category, weapon);
+                }
             } else {
                 customization.classList.remove('active');
             }
+        }
+
+        // Show placeholder when API data is not available
+        function showPlaceholderSkins(category, weapon) {
+            const selectedDiv = document.getElementById(`${category}-selected`);
+            selectedDiv.innerHTML = `
+                <h4>CS2 API Unavailable</h4>
+                <p>Selected: ${weapon}</p>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 10px;">
+                    Deploy this site to your website to load real CS2 skins and images from the ByMykel API.
+                </p>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(0, 191, 255, 0.1); border-radius: 5px; border-left: 3px solid #00bfff;">
+                    <strong>Demo Mode:</strong> All features work, but real CS2 data requires deployment.
+                </div>
+            `;
         }
 
         // Update skin options based on selected weapon
         function updateSkinOptions(category, weapon) {
             let skins = [];
             
-            if (category === 'gloves') {
+            if (category === 'gloves' && apiData.gloves.length > 0) {
                 skins = apiData.gloves.filter(glove => glove.weapon.name === weapon);
-            } else {
+            } else if (apiData.skins.length > 0) {
                 skins = apiData.skins.filter(skin => skin.weapon.name === weapon);
             }
             
@@ -1051,10 +1165,23 @@
             const selectedDiv = document.getElementById(`${category}-selected`);
             
             if (skins.length === 0) {
-                selectedDiv.innerHTML = `
-                    <h4>No skins available</h4>
-                    <p>No skins found for this weapon</p>
-                `;
+                // Check if this is because API failed or genuinely no skins
+                if (apiData.skins.length === 0 && apiData.gloves.length === 0) {
+                    const weaponSelector = document.querySelector(`[data-category="${category}"]`);
+                    const selectedWeapon = weaponSelector ? weaponSelector.value : 'Unknown';
+                    selectedDiv.innerHTML = `
+                        <h4>API Demo Mode</h4>
+                        <p>Weapon: ${selectedWeapon}</p>
+                        <p style="color: rgba(255, 255, 255, 0.7);">
+                            Real CS2 skins will load when deployed to your website.
+                        </p>
+                    `;
+                } else {
+                    selectedDiv.innerHTML = `
+                        <h4>No skins available</h4>
+                        <p>No skins found for this weapon</p>
+                    `;
+                }
                 return;
             }
 
@@ -1070,11 +1197,12 @@
                 const rarityClass = skin.rarity ? skin.rarity.id.replace('rarity_', '').replace('_weapon', '').replace('_character', '') : 'consumer';
                 const rarityName = skin.rarity ? skin.rarity.name : 'Consumer Grade';
                 const rarityColor = skin.rarity ? skin.rarity.color : '#b0c3d9';
+                const safeName = skin.name.replace(/'/g, "\\'").replace(/"/g, '\\"');
                 
                 skinsHtml += `
                     <div class="skin-option rarity-${rarityClass}" 
                          style="border-left-color: ${rarityColor};"
-                         onclick="selectSkin('${category}', '${skin.id}', '${skin.name.replace(/'/g, "\\'")}', '${rarityName}', '${skin.image}', '${skin.weapon.name}')">
+                         onclick="selectSkin('${category}', '${skin.id}', '${safeName}', '${rarityName}', '${skin.image}', '${skin.weapon.name}')">
                         <img src="${skin.image}" alt="${skin.name}" 
                              onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCA2MCAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjM1IiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjMwIiB5PSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4='" />
                         <div class="skin-option-info">
