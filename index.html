@@ -44,7 +44,7 @@
         .nav-logo {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ff6600;
+            color: #ffffff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
@@ -104,7 +104,7 @@
         }
 
         .ad-space h4 {
-            color: #ff6600;
+            color: #ffffff;
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
@@ -159,7 +159,7 @@
         }
 
         .loadout-sidebar h3 {
-            color: #ff6600;
+            color: #ffffff;
             margin-bottom: 20px;
             font-size: 1.4rem;
         }
@@ -177,6 +177,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            color: #ffffff;
         }
 
         .loadout-item:hover {
@@ -216,7 +217,7 @@
         }
 
         .preview-section h3 {
-            color: #ff6600;
+            color: #ffffff;
             margin-bottom: 15px;
             font-size: 1.2rem;
         }
@@ -310,7 +311,7 @@
         }
 
         .category-title {
-            color: #ff6600;
+            color: #ffffff;
             font-size: 1.3rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
@@ -405,7 +406,7 @@
             font-size: 0.9rem;
         }
 
-        .rarity-legendary { border-left-color: #ff6600; }
+        .rarity-legendary { border-left-color: #ffffff; }
         .rarity-covert { border-left-color: #00bfff; }
         .rarity-classified { border-left-color: #8847ff; }
         .rarity-restricted { border-left-color: #4b69ff; }
@@ -438,8 +439,8 @@
         }
 
         .share-btn {
-            background: linear-gradient(45deg, #ff6600, #cc5200);
-            color: white;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            color: black;
         }
 
         .action-btn:hover {
@@ -537,7 +538,7 @@
         }
 
         .footer-section h4 {
-            color: #ff6600;
+            color: #ffffff;
             margin-bottom: 15px;
             font-size: 1.2rem;
         }
@@ -579,7 +580,7 @@
         }
 
         .footer-bottom a:hover {
-            color: #ff6600;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -916,7 +917,7 @@
                     <li>Pro Player Loadouts</li>
                     <li>Skin Database</li>
                 </ul>
-                <p style="color: #ff6600; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
             </div>
         </div>
         
@@ -928,7 +929,7 @@
     <!-- Modal for creating new loadout -->
     <div class="modal" id="newLoadoutModal">
         <div class="modal-content">
-            <h3 style="color: #ff6600; margin-bottom: 20px;">Create New Loadout</h3>
+            <h3 style="color: #ffffff; margin-bottom: 20px;">Create New Loadout</h3>
             <input type="text" id="loadoutName" placeholder="Enter loadout name..." maxlength="30">
             <div style="margin-top: 20px;">
                 <button class="action-btn save-btn" onclick="confirmNewLoadout()">Create</button>
@@ -1235,8 +1236,8 @@
                         <div>+ Missing item</div>
                     </div>
                 `;
-                element.style.background = 'rgba(255, 165, 0, 0.1)';
-                element.style.borderColor = 'rgba(255, 165, 0, 0.3)';
+                element.style.background = 'rgba(255, 255, 255, 0.1)';
+                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             } else {
                 element.textContent = 'No items';
                 element.style.background = 'rgba(255, 255, 255, 0.1)';
