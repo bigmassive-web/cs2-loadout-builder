@@ -807,16 +807,12 @@
         let currentWeaponSkins = {};
         let allRarities = new Set();
 
-        // API Configuration
+        // API Configuration with working endpoints
         const API_ENDPOINTS = {
             primary: 'https://bymykel.github.io/CSGO-API/api/en/',
             github_raw: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/',
-            cors_proxies: [
-                'https://api.allorigins.win/raw?url=',
-                'https://corsproxy.io/?',
-                'https://cors-anywhere.herokuapp.com/',
-                'https://api.codetabs.com/v1/proxy?quest='
-            ]
+            working_proxy: 'https://corsproxy.io/?',
+            backup_proxy: 'https://api.codetabs.com/v1/proxy?quest='
         };
         
         // Weapon category mappings
@@ -887,151 +883,95 @@
             console.log('⚠️ No API endpoints are accessible');
         }
 
-        // Load data from ByMykel API
+        // Load data from ByMykel API - Simplified and more reliable
         async function loadAPIData() {
-            console.log('Loading CS2 data from ByMykel API...');
+            console.log('🔄 Loading CS2 data from ByMykel API...');
             
-            let skinsData = null;
-            let glovesData = null;
-            
-            // Try direct API access first
-            try {
-                console.log('Attempting direct API access...');
-                const [skinsResponse, glovesResponse] = await Promise.all([
-                    fetch(`${API_ENDPOINTS.primary}skins_not_grouped.json`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                        },
-                        mode: 'cors'
-                    }),
-                    fetch(`${API_ENDPOINTS.primary}gloves.json`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                        },
-                        mode: 'cors'
-                    })
-                ]);
-                
-                console.log('Skins response status:', skinsResponse.status);
-                console.log('Gloves response status:', glovesResponse.status);
-                
-                if (skinsResponse.ok && glovesResponse.ok) {
-                    skinsData = await skinsResponse.json();
-                    glovesData = await glovesResponse.json();
-                    console.log('✅ Direct API access successful');
-                    console.log('Loaded skins:', skinsData.length);
-                    console.log('Loaded gloves:', glovesData.length);
+            const endpoints = [
+                {
+                    name: 'GitHub Raw Direct',
+                    skins: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json',
+                    gloves: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json'
+                },
+                {
+                    name: 'ByMykel Direct',
+                    skins: 'https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json',
+                    gloves: 'https://bymykel.github.io/CSGO-API/api/en/gloves.json'
+                },
+                {
+                    name: 'Alternative Skins Format',
+                    skins: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json',
+                    gloves: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json'
+                },
+                {
+                    name: 'CORS Proxy',
+                    skins: 'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json'),
+                    gloves: 'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/gloves.json')
                 }
-            } catch (error) {
-                console.log('❌ Direct API access failed:', error.message);
-            }
+            ];
             
-            // Try GitHub raw if direct failed
-            if (!skinsData || !glovesData) {
+            for (let i = 0; i < endpoints.length; i++) {
+                const endpoint = endpoints[i];
                 try {
-                    console.log('Attempting GitHub raw access...');
+                    console.log(`📡 Trying ${endpoint.name}...`);
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                    
                     const [skinsResponse, glovesResponse] = await Promise.all([
-                        fetch(`${API_ENDPOINTS.github_raw}skins_not_grouped.json`, {
-                            method: 'GET',
+                        fetch(endpoint.skins, {
+                            signal: controller.signal,
                             headers: {
                                 'Accept': 'application/json',
+                                'Cache-Control': 'no-cache'
                             }
                         }),
-                        fetch(`${API_ENDPOINTS.github_raw}gloves.json`, {
-                            method: 'GET',
+                        fetch(endpoint.gloves, {
+                            signal: controller.signal,
                             headers: {
                                 'Accept': 'application/json',
+                                'Cache-Control': 'no-cache'
                             }
                         })
                     ]);
                     
-                    console.log('GitHub Skins response status:', skinsResponse.status);
-                    console.log('GitHub Gloves response status:', glovesResponse.status);
+                    clearTimeout(timeoutId);
+                    
+                    console.log(`📊 ${endpoint.name} - Skins: ${skinsResponse.status}, Gloves: ${glovesResponse.status}`);
                     
                     if (skinsResponse.ok && glovesResponse.ok) {
-                        skinsData = await skinsResponse.json();
-                        glovesData = await glovesResponse.json();
-                        console.log('✅ GitHub raw access successful');
-                        console.log('Loaded skins:', skinsData.length);
-                        console.log('Loaded gloves:', glovesData.length);
-                    }
-                } catch (error) {
-                    console.log('❌ GitHub raw access failed:', error.message);
-                }
-            }
-            
-            // Try simplified CORS proxy
-            if (!skinsData || !glovesData) {
-                try {
-                    console.log('Attempting simple CORS proxy...');
-                    const proxy = 'https://api.allorigins.win/get?url=';
-                    
-                    const [skinsResponse, glovesResponse] = await Promise.all([
-                        fetch(`${proxy}${encodeURIComponent(API_ENDPOINTS.primary + 'skins_not_grouped.json')}`),
-                        fetch(`${proxy}${encodeURIComponent(API_ENDPOINTS.primary + 'gloves.json')}`)
-                    ]);
-                    
-                    if (skinsResponse.ok && glovesResponse.ok) {
-                        const skinsData_raw = await skinsResponse.json();
-                        const glovesData_raw = await glovesResponse.json();
+                        const skinsData = await skinsResponse.json();
+                        const glovesData = await glovesResponse.json();
                         
-                        // Parse the contents from AllOrigins format
-                        skinsData = JSON.parse(skinsData_raw.contents);
-                        glovesData = JSON.parse(glovesData_raw.contents);
-                        
-                        console.log('✅ CORS proxy access successful');
-                        console.log('Loaded skins:', skinsData.length);
-                        console.log('Loaded gloves:', glovesData.length);
+                        // Validate data
+                        if (Array.isArray(skinsData) && Array.isArray(glovesData) && 
+                            skinsData.length > 0 && glovesData.length > 0) {
+                            
+                            apiData.skins = skinsData;
+                            apiData.gloves = glovesData;
+                            
+                            console.log(`✅ SUCCESS! Loaded ${skinsData.length} skins and ${glovesData.length} gloves from ${endpoint.name}`);
+                            
+                            // Extract all rarities for filters
+                            [...apiData.skins, ...apiData.gloves].forEach(item => {
+                                if (item.rarity && item.rarity.name) {
+                                    allRarities.add(item.rarity.name);
+                                }
+                            });
+                            
+                            return; // Success! Exit the function
+                        } else {
+                            console.log(`❌ ${endpoint.name} returned invalid data format`);
+                        }
                     }
                 } catch (error) {
-                    console.log('❌ CORS proxy failed:', error.message);
+                    console.log(`❌ ${endpoint.name} failed:`, error.message);
                 }
             }
             
-            // Try alternative endpoint structure
-            if (!skinsData || !glovesData) {
-                try {
-                    console.log('Attempting alternative endpoint...');
-                    const altBase = 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/';
-                    
-                    const [skinsResponse, glovesResponse] = await Promise.all([
-                        fetch(`${altBase}skins.json`), // Try regular skins instead of not_grouped
-                        fetch(`${altBase}gloves.json`)
-                    ]);
-                    
-                    console.log('Alt Skins response status:', skinsResponse.status);
-                    console.log('Alt Gloves response status:', glovesResponse.status);
-                    
-                    if (skinsResponse.ok && glovesResponse.ok) {
-                        skinsData = await skinsResponse.json();
-                        glovesData = await glovesResponse.json();
-                        console.log('✅ Alternative endpoint successful');
-                        console.log('Loaded skins:', skinsData.length);
-                        console.log('Loaded gloves:', glovesData.length);
-                    }
-                } catch (error) {
-                    console.log('❌ Alternative endpoint failed:', error.message);
-                }
-            }
-            
-            if (!skinsData || !glovesData) {
-                console.log('❌ All API methods failed');
-                throw new Error('Unable to load CS2 data from any source');
-            }
-            
-            apiData.skins = skinsData;
-            apiData.gloves = glovesData;
-            
-            console.log(`📊 Successfully loaded ${apiData.skins.length} skins and ${apiData.gloves.length} gloves`);
-            
-            // Extract all rarities for filters
-            [...apiData.skins, ...apiData.gloves].forEach(item => {
-                if (item.rarity && item.rarity.name) {
-                    allRarities.add(item.rarity.name);
-                }
-            });
+            // If we get here, all methods failed
+            console.log('💥 All API endpoints failed');
+            throw new Error('Unable to load CS2 data from any source');
         }
 
         // Create weapon category sections
