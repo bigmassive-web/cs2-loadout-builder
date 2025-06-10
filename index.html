@@ -147,6 +147,16 @@
             color: white;
         }
 
+        .loading-indicator {
+            background: rgba(0, 191, 255, 0.1);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: #00bfff;
+            margin: 20px 0;
+        }
+
         .loadout-sidebar {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
@@ -260,10 +270,18 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .preview-image {
+            width: 120px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
         .weapon-image {
             width: 100%;
             max-width: 250px;
-            height: 80px;
+            height: 120px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -273,10 +291,18 @@
             justify-content: center;
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.8rem;
+            overflow: hidden;
         }
 
         .weapon-image.active {
             display: flex;
+        }
+
+        .weapon-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
         }
 
         .weapon-image-placeholder {
@@ -406,11 +432,61 @@
             font-size: 0.9rem;
         }
 
-        .rarity-legendary { border-left-color: #ffffff; }
-        .rarity-covert { border-left-color: #00bfff; }
-        .rarity-classified { border-left-color: #8847ff; }
-        .rarity-restricted { border-left-color: #4b69ff; }
-        .rarity-milspec { border-left-color: #6a4c93; }
+        .skin-option {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .skin-option:hover {
+            background: rgba(0, 191, 255, 0.1);
+            border-left-color: #00bfff;
+            transform: translateX(5px);
+        }
+
+        .skin-option img {
+            width: 60px;
+            height: 35px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .skin-option-info {
+            flex: 1;
+        }
+
+        .skin-option-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .skin-option-rarity {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .rarity-legendary { border-left-color: #eb4b4b !important; }
+        .rarity-covert { border-left-color: #eb4b4b !important; }
+        .rarity-classified { border-left-color: #d32ce6 !important; }
+        .rarity-restricted { border-left-color: #8847ff !important; }
+        .rarity-milspec { border-left-color: #4b69ff !important; }
+        .rarity-industrial { border-left-color: #5e98d9 !important; }
+        .rarity-consumer { border-left-color: #b0c3d9 !important; }
+
+        .skins-grid {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
 
         .loadout-actions {
             grid-column: 2 / 4;
@@ -649,37 +725,24 @@
         </div>
 
         <div class="weapons-container">
-            <!-- Knives Section (moved to top) -->
+            <!-- Loading indicator -->
+            <div class="loading-indicator" id="loadingIndicator">
+                🔄 Loading CS2 data from ByMykel API...
+            </div>
+
+            <!-- Knives Section -->
             <div class="weapon-category">
                 <h3 class="category-title">Knives</h3>
                 <div class="weapon-selection-container">
                     <select class="weapon-selector" data-category="knives" onchange="showSkinCustomization(this)">
                         <option value="">Select a knife...</option>
-                        <option value="karambit">Karambit</option>
-                        <option value="m9-bayonet">M9 Bayonet</option>
-                        <option value="butterfly">Butterfly Knife</option>
-                        <option value="bayonet">Bayonet</option>
-                        <option value="huntsman">Huntsman Knife</option>
-                        <option value="flip">Flip Knife</option>
-                        <option value="gut">Gut Knife</option>
-                        <option value="falchion">Falchion Knife</option>
-                        <option value="bowie">Bowie Knife</option>
-                        <option value="shadow-daggers">Shadow Daggers</option>
                     </select>
                 </div>
                 <div class="skin-customization" id="knives-customization">
                     <div class="skin-search-container">
                         <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
+                        <select class="color-filter" onchange="filterByRarity(this)">
+                            <option value="">All Rarities</option>
                         </select>
                     </div>
                     <div class="selected-skin" id="knives-selected">
@@ -701,27 +764,13 @@
                 <div class="weapon-selection-container">
                     <select class="weapon-selector" data-category="gloves" onchange="showSkinCustomization(this)">
                         <option value="">Select gloves...</option>
-                        <option value="sport">Sport Gloves</option>
-                        <option value="driver">Driver Gloves</option>
-                        <option value="hand-wraps">Hand Wraps</option>
-                        <option value="moto">Moto Gloves</option>
-                        <option value="specialist">Specialist Gloves</option>
-                        <option value="bloodhound">Bloodhound Gloves</option>
                     </select>
                 </div>
                 <div class="skin-customization" id="gloves-customization">
                     <div class="skin-search-container">
                         <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
+                        <select class="color-filter" onchange="filterByRarity(this)">
+                            <option value="">All Rarities</option>
                         </select>
                     </div>
                     <div class="selected-skin" id="gloves-selected">
@@ -743,31 +792,13 @@
                 <div class="weapon-selection-container">
                     <select class="weapon-selector" data-category="rifles" onchange="showSkinCustomization(this)">
                         <option value="">Select a rifle...</option>
-                        <option value="ak47">AK-47</option>
-                        <option value="m4a4">M4A4</option>
-                        <option value="m4a1s">M4A1-S</option>
-                        <option value="awp">AWP</option>
-                        <option value="famas">FAMAS</option>
-                        <option value="galil">Galil AR</option>
-                        <option value="aug">AUG</option>
-                        <option value="sg553">SG 553</option>
-                        <option value="scar20">SCAR-20</option>
-                        <option value="g3sg1">G3SG1</option>
                     </select>
                 </div>
                 <div class="skin-customization" id="rifles-customization">
                     <div class="skin-search-container">
                         <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
+                        <select class="color-filter" onchange="filterByRarity(this)">
+                            <option value="">All Rarities</option>
                         </select>
                     </div>
                     <div class="selected-skin" id="rifles-selected">
@@ -789,31 +820,13 @@
                 <div class="weapon-selection-container">
                     <select class="weapon-selector" data-category="pistols" onchange="showSkinCustomization(this)">
                         <option value="">Select a pistol...</option>
-                        <option value="glock">Glock-18</option>
-                        <option value="usps">USP-S</option>
-                        <option value="p2000">P2000</option>
-                        <option value="deagle">Desert Eagle</option>
-                        <option value="p250">P250</option>
-                        <option value="tec9">Tec-9</option>
-                        <option value="fiveseven">Five-SeveN</option>
-                        <option value="cz75">CZ75-Auto</option>
-                        <option value="r8">R8 Revolver</option>
-                        <option value="dualies">Dual Berettas</option>
                     </select>
                 </div>
                 <div class="skin-customization" id="pistols-customization">
                     <div class="skin-search-container">
                         <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
+                        <select class="color-filter" onchange="filterByRarity(this)">
+                            <option value="">All Rarities</option>
                         </select>
                     </div>
                     <div class="selected-skin" id="pistols-selected">
@@ -835,28 +848,13 @@
                 <div class="weapon-selection-container">
                     <select class="weapon-selector" data-category="smgs" onchange="showSkinCustomization(this)">
                         <option value="">Select an SMG...</option>
-                        <option value="p90">P90</option>
-                        <option value="mp7">MP7</option>
-                        <option value="mp9">MP9</option>
-                        <option value="mac10">MAC-10</option>
-                        <option value="ump45">UMP-45</option>
-                        <option value="bizon">PP-Bizon</option>
-                        <option value="mp5sd">MP5-SD</option>
                     </select>
                 </div>
                 <div class="skin-customization" id="smgs-customization">
                     <div class="skin-search-container">
                         <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
+                        <select class="color-filter" onchange="filterByRarity(this)">
+                            <option value="">All Rarities</option>
                         </select>
                     </div>
                     <div class="selected-skin" id="smgs-selected">
@@ -939,6 +937,7 @@
     </div>
 
     <script>
+        // Global variables
         let loadouts = [
             {
                 id: 0,
@@ -948,96 +947,131 @@
         ];
         let currentLoadoutId = 0;
         let nextLoadoutId = 1;
+        let apiData = {
+            skins: [],
+            gloves: [],
+            stickers: [],
+            all: []
+        };
+        let currentWeaponSkins = {};
+        let allRarities = new Set();
 
-        // Sample skin data for demonstration
-        const skinDatabase = {
-            knives: {
-                karambit: [
-                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Crimson Web", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "Tiger Tooth", rarity: "covert", colors: ["yellow", "orange"] },
-                    { name: "Marble Fade", rarity: "covert", colors: ["red", "blue", "yellow"] },
-                    { name: "Slaughter", rarity: "legendary", colors: ["red", "white"] }
-                ],
-                "m9-bayonet": [
-                    { name: "Crimson Web", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Marble Fade", rarity: "covert", colors: ["red", "blue", "yellow"] },
-                    { name: "Tiger Tooth", rarity: "covert", colors: ["yellow", "orange"] }
-                ],
-                butterfly: [
-                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Slaughter", rarity: "legendary", colors: ["red", "white"] }
-                ]
-            },
-            gloves: {
-                sport: [
-                    { name: "Pandora Box", rarity: "legendary", colors: ["green", "black"] },
-                    { name: "Vice", rarity: "covert", colors: ["purple", "black"] },
-                    { name: "Superconductor", rarity: "covert", colors: ["blue", "black"] },
-                    { name: "Hedge Maze", rarity: "classified", colors: ["green", "brown"] }
-                ],
-                driver: [
-                    { name: "Crimson Weave", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "King Snake", rarity: "covert", colors: ["black", "yellow"] },
-                    { name: "Imperial Plaid", rarity: "classified", colors: ["red", "blue"] }
-                ]
-            },
-            rifles: {
-                ak47: [
-                    { name: "Redline", rarity: "classified", colors: ["red", "black"] },
-                    { name: "Vulcan", rarity: "covert", colors: ["blue", "orange"] },
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Bloodsport", rarity: "covert", colors: ["red", "black"] },
-                    { name: "Neon Rider", rarity: "classified", colors: ["purple", "green"] },
-                    { name: "Fire Serpent", rarity: "covert", colors: ["red", "orange"] }
-                ],
-                m4a4: [
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Howl", rarity: "legendary", colors: ["red", "orange"] },
-                    { name: "Desolate Space", rarity: "classified", colors: ["purple", "black"] },
-                    { name: "Neo-Noir", rarity: "covert", colors: ["black", "white", "red"] },
-                    { name: "The Emperor", rarity: "covert", colors: ["red", "gold"] }
-                ],
-                awp: [
-                    { name: "Dragon Lore", rarity: "legendary", colors: ["green", "gold"] },
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Lightning Strike", rarity: "classified", colors: ["blue", "white"] },
-                    { name: "Hyper Beast", rarity: "covert", colors: ["purple", "orange"] },
-                    { name: "Wildfire", rarity: "covert", colors: ["red", "orange"] }
-                ]
-            },
-            pistols: {
-                glock: [
-                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"] },
-                    { name: "Water Elemental", rarity: "classified", colors: ["blue", "white"] },
-                    { name: "Twilight Galaxy", rarity: "milspec", colors: ["purple", "blue"] },
-                    { name: "Moonrise", rarity: "restricted", colors: ["orange", "purple"] }
-                ],
-                deagle: [
-                    { name: "Blaze", rarity: "restricted", colors: ["orange", "red"] },
-                    { name: "Code Red", rarity: "classified", colors: ["red", "black"] },
-                    { name: "Printstream", rarity: "covert", colors: ["white", "blue"] },
-                    { name: "Conspiracy", rarity: "classified", colors: ["black", "red"] }
-                ]
-            },
-            smgs: {
-                p90: [
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Death by Kitty", rarity: "classified", colors: ["purple", "white"] },
-                    { name: "Trigon", rarity: "restricted", colors: ["blue", "orange"] },
-                    { name: "Run and Hide", rarity: "restricted", colors: ["green", "brown"] }
-                ],
-                mp7: [
-                    { name: "Nemesis", rarity: "restricted", colors: ["red", "black"] },
-                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"] },
-                    { name: "Bloodsport", rarity: "classified", colors: ["red", "black"] }
-                ]
-            }
+        // API Configuration
+        const API_BASE_URL = 'https://bymykel.github.io/CSGO-API/api/en/';
+        
+        // Weapon category mappings
+        const WEAPON_CATEGORIES = {
+            knives: ['Karambit', 'M9 Bayonet', 'Bayonet', 'Flip Knife', 'Gut Knife', 'Falchion Knife', 'Bowie Knife', 'Butterfly Knife', 'Huntsman Knife', 'Shadow Daggers', 'Ursus Knife', 'Navaja Knife', 'Stiletto Knife', 'Talon Knife', 'Classic Knife', 'Paracord Knife', 'Survival Knife', 'Nomad Knife', 'Skeleton Knife', 'Kukri Knife'],
+            rifles: ['AK-47', 'M4A4', 'M4A1-S', 'AWP', 'SSG 08', 'AUG', 'SG 553', 'FAMAS', 'Galil AR', 'SCAR-20', 'G3SG1'],
+            pistols: ['Glock-18', 'USP-S', 'P2000', 'Desert Eagle', 'P250', 'Tec-9', 'Five-SeveN', 'CZ75-Auto', 'R8 Revolver', 'Dual Berettas'],
+            smgs: ['MP7', 'MP9', 'MP5-SD', 'UMP-45', 'P90', 'PP-Bizon', 'MAC-10'],
+            gloves: ['Sport Gloves', 'Driver Gloves', 'Hand Wraps', 'Moto Gloves', 'Specialist Gloves', 'Bloodhound Gloves', 'Broken Fang Gloves', 'Hydra Gloves']
         };
 
+        // Initialize the application
+        async function initializeApp() {
+            try {
+                showLoadingIndicator(true);
+                await loadAPIData();
+                populateWeaponSelectors();
+                populateRarityFilters();
+                updateLoadoutList();
+                showLoadingIndicator(false);
+                showNotification('CS2 data loaded successfully!', 'success');
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showLoadingIndicator(false);
+                showNotification('Failed to load CS2 data. Please refresh the page.', 'error');
+            }
+        }
+
+        // Load data from ByMykel API
+        async function loadAPIData() {
+            try {
+                console.log('Loading API data...');
+                
+                // Load skins data
+                const skinsResponse = await fetch(`${API_BASE_URL}skins_not_grouped.json`);
+                if (!skinsResponse.ok) throw new Error('Failed to fetch skins');
+                apiData.skins = await skinsResponse.json();
+                
+                // Load gloves data
+                const glovesResponse = await fetch(`${API_BASE_URL}gloves.json`);
+                if (!glovesResponse.ok) throw new Error('Failed to fetch gloves');
+                apiData.gloves = await glovesResponse.json();
+                
+                console.log(`Loaded ${apiData.skins.length} skins and ${apiData.gloves.length} gloves`);
+                
+                // Extract all rarities for filters
+                [...apiData.skins, ...apiData.gloves].forEach(item => {
+                    if (item.rarity && item.rarity.name) {
+                        allRarities.add(item.rarity.name);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error loading API data:', error);
+                throw error;
+            }
+        }
+
+        // Populate weapon selector dropdowns
+        function populateWeaponSelectors() {
+            Object.keys(WEAPON_CATEGORIES).forEach(category => {
+                const selector = document.querySelector(`[data-category="${category}"]`);
+                if (!selector) return;
+                
+                // Clear existing options except the first one
+                selector.innerHTML = '<option value="">Select...</option>';
+                
+                if (category === 'gloves') {
+                    // For gloves, get unique glove types from API data
+                    const gloveTypes = [...new Set(apiData.gloves.map(glove => glove.weapon.name))].sort();
+                    gloveTypes.forEach(gloveType => {
+                        const option = document.createElement('option');
+                        option.value = gloveType;
+                        option.textContent = gloveType;
+                        selector.appendChild(option);
+                    });
+                } else {
+                    // For other categories, use predefined weapon lists
+                    WEAPON_CATEGORIES[category].forEach(weaponName => {
+                        const option = document.createElement('option');
+                        option.value = weaponName;
+                        option.textContent = weaponName;
+                        selector.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Populate rarity filter dropdowns
+        function populateRarityFilters() {
+            const rarityFilters = document.querySelectorAll('.color-filter');
+            const sortedRarities = Array.from(allRarities).sort();
+            
+            rarityFilters.forEach(filter => {
+                // Clear existing options except the first one
+                filter.innerHTML = '<option value="">All Rarities</option>';
+                
+                sortedRarities.forEach(rarity => {
+                    const option = document.createElement('option');
+                    option.value = rarity;
+                    option.textContent = rarity;
+                    filter.appendChild(option);
+                });
+            });
+        }
+
+        // Show/hide loading indicator
+        function showLoadingIndicator(show) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (indicator) {
+                indicator.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        // Show skin customization panel
         function showSkinCustomization(selector) {
             const category = selector.dataset.category;
             const weapon = selector.value;
@@ -1051,48 +1085,62 @@
             }
         }
 
+        // Update skin options based on selected weapon
         function updateSkinOptions(category, weapon) {
-            const skins = skinDatabase[category]?.[weapon] || [];
-            const searchInput = document.querySelector(`#${category}-customization .skin-search`);
-            const colorFilter = document.querySelector(`#${category}-customization .color-filter`);
+            let skins = [];
             
-            // Store current weapon for filtering
-            searchInput.dataset.weapon = weapon;
-            searchInput.dataset.category = category;
-            colorFilter.dataset.weapon = weapon;
-            colorFilter.dataset.category = category;
+            if (category === 'gloves') {
+                skins = apiData.gloves.filter(glove => glove.weapon.name === weapon);
+            } else {
+                skins = apiData.skins.filter(skin => skin.weapon.name === weapon);
+            }
+            
+            currentWeaponSkins[category] = skins;
             
             // Reset filters
-            searchInput.value = '';
-            colorFilter.value = '';
+            const searchInput = document.querySelector(`#${category}-customization .skin-search`);
+            const rarityFilter = document.querySelector(`#${category}-customization .color-filter`);
+            if (searchInput) searchInput.value = '';
+            if (rarityFilter) rarityFilter.value = '';
             
-            displaySkins(category, weapon, skins);
+            displaySkins(category, skins);
         }
 
-        function displaySkins(category, weapon, skins) {
+        // Display skins in the customization panel
+        function displaySkins(category, skins) {
             const selectedDiv = document.getElementById(`${category}-selected`);
             
             if (skins.length === 0) {
                 selectedDiv.innerHTML = `
                     <h4>No skins available</h4>
-                    <p>No skins found for ${weapon}</p>
+                    <p>No skins found for this weapon</p>
                 `;
                 return;
             }
 
-            // Create skin selection interface
+            // Limit to first 20 skins for performance
+            const skinsToShow = skins.slice(0, 20);
+            
             let skinsHtml = `
-                <h4>Available Skins for ${weapon}</h4>
-                <div style="max-height: 200px; overflow-y: auto; margin-top: 10px;">
+                <h4>Available Skins (${skins.length} total, showing ${skinsToShow.length})</h4>
+                <div class="skins-grid">
             `;
             
-            skins.forEach((skin, index) => {
+            skinsToShow.forEach(skin => {
+                const rarityClass = skin.rarity ? skin.rarity.id.replace('rarity_', '').replace('_weapon', '').replace('_character', '') : 'consumer';
+                const rarityName = skin.rarity ? skin.rarity.name : 'Consumer Grade';
+                const rarityColor = skin.rarity ? skin.rarity.color : '#b0c3d9';
+                
                 skinsHtml += `
-                    <div class="skin-option rarity-${skin.rarity}" 
-                         style="padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 5px; cursor: pointer; border-left: 3px solid;"
-                         onclick="selectSkin('${category}', '${weapon}', '${skin.name.replace(/'/g, "\\'")}', '${skin.rarity}')">
-                        <strong>${skin.name}</strong>
-                        <span style="float: right; font-size: 0.8em; opacity: 0.8;">${skin.rarity}</span>
+                    <div class="skin-option rarity-${rarityClass}" 
+                         style="border-left-color: ${rarityColor};"
+                         onclick="selectSkin('${category}', '${skin.id}', '${skin.name.replace(/'/g, "\\'")}', '${rarityName}', '${skin.image}', '${skin.weapon.name}')">
+                        <img src="${skin.image}" alt="${skin.name}" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCA2MCAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjM1IiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjMwIiB5PSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4='" />
+                        <div class="skin-option-info">
+                            <div class="skin-option-name">${skin.name}</div>
+                            <div class="skin-option-rarity" style="color: ${rarityColor};">${rarityName}</div>
+                        </div>
                     </div>
                 `;
             });
@@ -1101,100 +1149,100 @@
             selectedDiv.innerHTML = skinsHtml;
         }
 
-        function selectSkin(category, weapon, skinName, rarity) {
+        // Select a specific skin
+        function selectSkin(category, skinId, skinName, rarity, imageUrl, weaponName) {
             const selectedDiv = document.getElementById(`${category}-selected`);
             const imageDiv = document.getElementById(`${category}-image`);
             
+            // Update selected skin display
             selectedDiv.innerHTML = `
-                <h4>${weapon} | ${skinName}</h4>
-                <p>Rarity: ${rarity}</p>
+                <h4>${skinName}</h4>
+                <p>Weapon: ${weaponName} | Rarity: ${rarity}</p>
             `;
-            selectedDiv.className = `selected-skin rarity-${rarity}`;
             
-            // Show weapon image placeholder
+            // Show weapon image
             imageDiv.classList.add('active');
-            imageDiv.innerHTML = `
-                <div class="weapon-image-placeholder">
-                    <div>${weapon} | ${skinName}</div>
-                    <div style="font-size: 0.6rem;">Image placeholder</div>
-                </div>
-            `;
+            imageDiv.innerHTML = `<img src="${imageUrl}" alt="${skinName}" />`;
             
             // Save to current loadout
-            saveWeaponSelection(category, weapon, skinName, rarity);
+            saveWeaponSelection(category, skinId, skinName, rarity, imageUrl, weaponName);
             
             // Update preview combinations
             updatePreviewCombinations();
         }
 
+        // Filter skins based on search input
         function filterSkins(searchInput) {
-            const category = searchInput.dataset.category;
-            const weapon = searchInput.dataset.weapon;
+            const category = searchInput.closest('.skin-customization').id.replace('-customization', '');
             const searchTerm = searchInput.value.toLowerCase();
-            const colorFilter = document.querySelector(`#${category}-customization .color-filter`);
-            const selectedColor = colorFilter.value;
+            const rarityFilter = searchInput.closest('.skin-customization').querySelector('.color-filter');
+            const selectedRarity = rarityFilter.value;
             
-            if (!weapon || !skinDatabase[category]?.[weapon]) return;
+            if (!currentWeaponSkins[category]) return;
             
-            let skins = skinDatabase[category][weapon];
+            let filteredSkins = currentWeaponSkins[category];
             
             // Filter by search term
             if (searchTerm) {
-                skins = skins.filter(skin => 
+                filteredSkins = filteredSkins.filter(skin => 
                     skin.name.toLowerCase().includes(searchTerm)
                 );
             }
             
-            // Filter by color
-            if (selectedColor) {
-                skins = skins.filter(skin => 
-                    skin.colors.includes(selectedColor)
+            // Filter by rarity
+            if (selectedRarity) {
+                filteredSkins = filteredSkins.filter(skin => 
+                    skin.rarity && skin.rarity.name === selectedRarity
                 );
             }
             
-            displaySkins(category, weapon, skins);
+            displaySkins(category, filteredSkins);
         }
 
-        function filterByColor(colorFilter) {
-            const category = colorFilter.dataset.category;
-            const weapon = colorFilter.dataset.weapon;
-            const selectedColor = colorFilter.value;
-            const searchInput = document.querySelector(`#${category}-customization .skin-search`);
+        // Filter skins by rarity
+        function filterByRarity(rarityFilter) {
+            const category = rarityFilter.closest('.skin-customization').id.replace('-customization', '');
+            const selectedRarity = rarityFilter.value;
+            const searchInput = rarityFilter.closest('.skin-customization').querySelector('.skin-search');
             const searchTerm = searchInput.value.toLowerCase();
             
-            if (!weapon || !skinDatabase[category]?.[weapon]) return;
+            if (!currentWeaponSkins[category]) return;
             
-            let skins = skinDatabase[category][weapon];
+            let filteredSkins = currentWeaponSkins[category];
             
-            // Filter by color
-            if (selectedColor) {
-                skins = skins.filter(skin => 
-                    skin.colors.includes(selectedColor)
+            // Filter by rarity
+            if (selectedRarity) {
+                filteredSkins = filteredSkins.filter(skin => 
+                    skin.rarity && skin.rarity.name === selectedRarity
                 );
             }
             
             // Filter by search term
             if (searchTerm) {
-                skins = skins.filter(skin => 
+                filteredSkins = filteredSkins.filter(skin => 
                     skin.name.toLowerCase().includes(searchTerm)
                 );
             }
             
-            displaySkins(category, weapon, skins);
+            displaySkins(category, filteredSkins);
         }
 
-        function saveWeaponSelection(category, weapon, skinName, rarity) {
+        // Save weapon selection to current loadout
+        function saveWeaponSelection(category, skinId, skinName, rarity, imageUrl, weaponName) {
             const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
             if (!currentLoadout.weapons[category]) {
                 currentLoadout.weapons[category] = {};
             }
             currentLoadout.weapons[category] = {
-                weapon: weapon,
+                skinId: skinId,
+                weapon: weaponName,
                 skin: skinName,
-                rarity: rarity
+                rarity: rarity,
+                image: imageUrl
             };
         }
 
+        // Update preview combinations
         function updatePreviewCombinations() {
             const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
             const weapons = currentLoadout.weapons;
@@ -1213,38 +1261,40 @@
             updatePreviewItem('preview-smg-glove', smg, glove);
         }
 
+        // Update individual preview item
         function updatePreviewItem(elementId, item1, item2) {
             const element = document.getElementById(elementId);
             
             if (item1 && item2) {
-                const item1Name = item1.weapon ? `${item1.weapon} | ${item1.skin}` : 'Default';
-                const item2Name = item2.weapon ? `${item2.weapon} | ${item2.skin}` : 'Default';
+                const item1Name = `${item1.weapon} | ${item1.skin}`;
+                const item2Name = `${item2.weapon} | ${item2.skin}`;
                 element.innerHTML = `
-                    <div style="font-size: 0.6rem; text-align: center;">
-                        <div>${item1Name}</div>
-                        <div>+</div>
-                        <div>${item2Name}</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="${item1.image}" alt="${item1Name}" class="preview-image" />
+                        <img src="${item2.image}" alt="${item2Name}" class="preview-image" />
                     </div>
                 `;
                 element.style.background = 'rgba(0, 191, 255, 0.1)';
                 element.style.borderColor = 'rgba(0, 191, 255, 0.3)';
             } else if (item1 || item2) {
-                const itemName = (item1 || item2).weapon ? `${(item1 || item2).weapon} | ${(item1 || item2).skin}` : 'Default';
+                const item = item1 || item2;
+                const itemName = `${item.weapon} | ${item.skin}`;
                 element.innerHTML = `
-                    <div style="font-size: 0.6rem; text-align: center;">
-                        <div>${itemName}</div>
-                        <div>+ Missing item</div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="${item.image}" alt="${itemName}" class="preview-image" />
+                        <div style="font-size: 0.6rem; text-align: center;">+ Missing item</div>
                     </div>
                 `;
                 element.style.background = 'rgba(255, 255, 255, 0.1)';
                 element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             } else {
-                element.textContent = 'No items';
+                element.innerHTML = '<div style="font-size: 0.7rem;">No items</div>';
                 element.style.background = 'rgba(255, 255, 255, 0.1)';
                 element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             }
         }
 
+        // Loadout management functions
         function saveCurrentLoadout() {
             showNotification('Loadout saved successfully!', 'success');
         }
@@ -1274,7 +1324,7 @@
                         
                         // Wait a bit for the skin options to load, then select the skin
                         setTimeout(() => {
-                            selectSkin(category, weaponData.weapon, weaponData.skin, weaponData.rarity);
+                            selectSkin(category, weaponData.skinId, weaponData.skin, weaponData.rarity, weaponData.image, weaponData.weapon);
                         }, 100);
                     }
                 }
@@ -1388,9 +1438,6 @@
             }
         });
 
-        // Initialize
-        updateLoadoutList();
-
         // Add animations
         const style = document.createElement('style');
         style.textContent = `
@@ -1404,6 +1451,9 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
