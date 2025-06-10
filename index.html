@@ -883,7 +883,7 @@
             console.log('⚠️ No API endpoints are accessible');
         }
 
-        // Load data from ByMykel API - Simplified and more reliable
+        // Load data from ByMykel API - Fixed gloves endpoint
         async function loadAPIData() {
             console.log('🔄 Loading CS2 data from ByMykel API...');
             
@@ -894,44 +894,61 @@
                     gloves: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json'
                 },
                 {
-                    name: 'ByMykel Direct',
-                    skins: 'https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json',
-                    gloves: 'https://bymykel.github.io/CSGO-API/api/en/gloves.json'
-                },
-                {
-                    name: 'Alternative Skins Format',
+                    name: 'GitHub Raw Alternative',
                     skins: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json',
                     gloves: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json'
                 },
                 {
-                    name: 'CORS Proxy',
-                    skins: 'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json'),
-                    gloves: 'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/gloves.json')
+                    name: 'ByMykel Direct with working GitHub gloves',
+                    skins: 'https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json',
+                    gloves: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json'
                 }
             ];
             
+            // First, let's find working gloves endpoint
+            const possibleGlovesUrls = [
+                'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/gloves.json',
+                'https://bymykel.github.io/CSGO-API/api/en/gloves.json',
+                'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json' // Sometimes gloves are in skins
+            ];
+            
+            console.log('🧤 Testing gloves endpoints...');
+            let workingGlovesUrl = null;
+            
+            for (const url of possibleGlovesUrls) {
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    console.log(`Gloves test ${url}: ${response.status}`);
+                    if (response.ok) {
+                        workingGlovesUrl = url;
+                        console.log(`✅ Found working gloves endpoint: ${url}`);
+                        break;
+                    }
+                } catch (error) {
+                    console.log(`❌ Gloves test failed for ${url}`);
+                }
+            }
+            
+            // Now try to load data with working endpoints
             for (let i = 0; i < endpoints.length; i++) {
                 const endpoint = endpoints[i];
                 try {
                     console.log(`📡 Trying ${endpoint.name}...`);
                     
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    
+                    // Use working gloves URL if we found one
+                    const glovesUrl = workingGlovesUrl || endpoint.gloves;
                     
                     const [skinsResponse, glovesResponse] = await Promise.all([
                         fetch(endpoint.skins, {
                             signal: controller.signal,
-                            headers: {
-                                'Accept': 'application/json',
-                                'Cache-Control': 'no-cache'
-                            }
+                            headers: { 'Accept': 'application/json' }
                         }),
-                        fetch(endpoint.gloves, {
+                        fetch(glovesUrl, {
                             signal: controller.signal,
-                            headers: {
-                                'Accept': 'application/json',
-                                'Cache-Control': 'no-cache'
-                            }
+                            headers: { 'Accept': 'application/json' }
                         })
                     ]);
                     
@@ -939,16 +956,47 @@
                     
                     console.log(`📊 ${endpoint.name} - Skins: ${skinsResponse.status}, Gloves: ${glovesResponse.status}`);
                     
-                    if (skinsResponse.ok && glovesResponse.ok) {
+                    if (skinsResponse.ok) {
                         const skinsData = await skinsResponse.json();
-                        const glovesData = await glovesResponse.json();
+                        let glovesData = [];
+                        
+                        // Handle gloves data
+                        if (glovesResponse.ok) {
+                            const glovesJson = await glovesResponse.json();
+                            
+                            // Check if this is the skins.json file that might contain gloves
+                            if (Array.isArray(glovesJson)) {
+                                glovesData = glovesJson.filter(item => 
+                                    item.category && item.category.name && 
+                                    item.category.name.toLowerCase().includes('glove')
+                                );
+                                
+                                // If no gloves found in skins, use all data as potential gloves source
+                                if (glovesData.length === 0) {
+                                    console.log('🔍 No gloves found, checking weapon types...');
+                                    glovesData = glovesJson.filter(item => 
+                                        item.weapon && item.weapon.name && 
+                                        (item.weapon.name.includes('Gloves') || 
+                                         item.weapon.name.includes('Hand Wraps'))
+                                    );
+                                }
+                            } else {
+                                glovesData = glovesJson;
+                            }
+                        } else {
+                            console.log('⚠️ No gloves data available, extracting from skins...');
+                            // Extract gloves from skins data as fallback
+                            glovesData = skinsData.filter(item => 
+                                item.weapon && item.weapon.name && 
+                                (item.weapon.name.includes('Gloves') || 
+                                 item.weapon.name.includes('Hand Wraps'))
+                            );
+                        }
                         
                         // Validate data
-                        if (Array.isArray(skinsData) && Array.isArray(glovesData) && 
-                            skinsData.length > 0 && glovesData.length > 0) {
-                            
+                        if (Array.isArray(skinsData) && skinsData.length > 0) {
                             apiData.skins = skinsData;
-                            apiData.gloves = glovesData;
+                            apiData.gloves = Array.isArray(glovesData) ? glovesData : [];
                             
                             console.log(`✅ SUCCESS! Loaded ${skinsData.length} skins and ${glovesData.length} gloves from ${endpoint.name}`);
                             
@@ -960,8 +1008,6 @@
                             });
                             
                             return; // Success! Exit the function
-                        } else {
-                            console.log(`❌ ${endpoint.name} returned invalid data format`);
                         }
                     }
                 } catch (error) {
