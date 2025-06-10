@@ -147,16 +147,6 @@
             color: white;
         }
 
-        .loading-indicator {
-            background: rgba(0, 191, 255, 0.1);
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: #00bfff;
-            margin: 20px 0;
-        }
-
         .loadout-sidebar {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
@@ -278,45 +268,6 @@
             background: rgba(0, 0, 0, 0.2);
         }
 
-        .weapon-image {
-            width: 100%;
-            max-width: 250px;
-            height: 120px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 15px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.8rem;
-            overflow: hidden;
-        }
-
-        .weapon-image.active {
-            display: flex;
-        }
-
-        .weapon-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 6px;
-        }
-
-        .weapon-image-placeholder {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
         .weapons-container {
             display: flex;
             flex-direction: column;
@@ -399,7 +350,7 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        .color-filter {
+        .rarity-filter {
             min-width: 150px;
             padding: 10px;
             background: rgba(255, 255, 255, 0.1);
@@ -409,7 +360,7 @@
             font-size: 14px;
         }
 
-        .color-filter option {
+        .rarity-filter option {
             background: #0a0a0a;
             color: white;
         }
@@ -474,18 +425,49 @@
             opacity: 0.8;
         }
 
-        .rarity-legendary { border-left-color: #eb4b4b !important; }
-        .rarity-covert { border-left-color: #eb4b4b !important; }
-        .rarity-classified { border-left-color: #d32ce6 !important; }
-        .rarity-restricted { border-left-color: #8847ff !important; }
-        .rarity-milspec { border-left-color: #4b69ff !important; }
-        .rarity-industrial { border-left-color: #5e98d9 !important; }
-        .rarity-consumer { border-left-color: #b0c3d9 !important; }
-
         .skins-grid {
             max-height: 300px;
             overflow-y: auto;
             margin-top: 10px;
+        }
+
+        .weapon-image {
+            width: 100%;
+            max-width: 250px;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            overflow: hidden;
+        }
+
+        .weapon-image.active {
+            display: flex;
+        }
+
+        .weapon-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .weapon-image-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
         .loadout-actions {
@@ -555,6 +537,17 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             color: white;
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: #ff6b6b;
+            display: none;
         }
 
         @media (max-width: 1200px) {
@@ -724,150 +717,10 @@
             </div>
         </div>
 
-        <div class="weapons-container">
-            <!-- Loading indicator -->
-            <div class="loading-indicator" id="loadingIndicator">
-                🔄 Loading CS2 data from ByMykel API...
-            </div>
-
-            <!-- Knives Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">Knives</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="knives" onchange="showSkinCustomization(this)">
-                        <option value="">Select a knife...</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="knives-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByRarity(this)">
-                            <option value="">All Rarities</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="knives-selected">
-                        <h4>No knife selected</h4>
-                        <p>Choose a knife and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="knives-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gloves Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">Gloves</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="gloves" onchange="showSkinCustomization(this)">
-                        <option value="">Select gloves...</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="gloves-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByRarity(this)">
-                            <option value="">All Rarities</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="gloves-selected">
-                        <h4>No gloves selected</h4>
-                        <p>Choose gloves and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="gloves-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rifles Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">Rifles</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="rifles" onchange="showSkinCustomization(this)">
-                        <option value="">Select a rifle...</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="rifles-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByRarity(this)">
-                            <option value="">All Rarities</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="rifles-selected">
-                        <h4>No rifle selected</h4>
-                        <p>Choose a rifle and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="rifles-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pistols Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">Pistols</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="pistols" onchange="showSkinCustomization(this)">
-                        <option value="">Select a pistol...</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="pistols-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByRarity(this)">
-                            <option value="">All Rarities</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="pistols-selected">
-                        <h4>No pistol selected</h4>
-                        <p>Choose a pistol and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="pistols-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SMGs Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">SMGs</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="smgs" onchange="showSkinCustomization(this)">
-                        <option value="">Select an SMG...</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="smgs-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByRarity(this)">
-                            <option value="">All Rarities</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="smgs-selected">
-                        <h4>No SMG selected</h4>
-                        <p>Choose an SMG and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="smgs-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="weapons-container" id="weaponsContainer">
+            <div class="error-message" id="errorMessage">
+                <h3>Unable to load CS2 data</h3>
+                <p>Please check your internet connection and refresh the page.</p>
             </div>
         </div>
 
@@ -949,18 +802,21 @@
         let nextLoadoutId = 1;
         let apiData = {
             skins: [],
-            gloves: [],
-            stickers: [],
-            all: []
+            gloves: []
         };
         let currentWeaponSkins = {};
         let allRarities = new Set();
 
-        // API Configuration with fallback URLs
+        // API Configuration
         const API_ENDPOINTS = {
             primary: 'https://bymykel.github.io/CSGO-API/api/en/',
-            cors_proxy: 'https://api.allorigins.win/raw?url=',
-            github_raw: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/'
+            github_raw: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/',
+            cors_proxies: [
+                'https://api.allorigins.win/raw?url=',
+                'https://corsproxy.io/?',
+                'https://cors-anywhere.herokuapp.com/',
+                'https://api.codetabs.com/v1/proxy?quest='
+            ]
         };
         
         // Weapon category mappings
@@ -975,182 +831,142 @@
         // Initialize the application
         async function initializeApp() {
             try {
-                showLoadingIndicator(true);
                 await loadAPIData();
+                createWeaponCategories();
                 populateWeaponSelectors();
                 populateRarityFilters();
                 updateLoadoutList();
-                showLoadingIndicator(false);
-                showNotification('CS2 data loaded successfully!', 'success');
+                showNotification('Successfully loaded all CS2 skins!', 'success');
             } catch (error) {
                 console.error('Error initializing app:', error);
-                showLoadingIndicator(false);
-                showNotification('Failed to load CS2 data. Please refresh the page.', 'error');
+                showErrorMessage();
             }
         }
 
-        // Load data from ByMykel API with multiple fallback methods
+        // Load data from ByMykel API
         async function loadAPIData() {
+            console.log('Loading CS2 data from ByMykel API...');
+            
+            let skinsData = null;
+            let glovesData = null;
+            
+            // Try direct API access first
             try {
-                console.log('Loading API data...');
+                console.log('Attempting direct API access...');
+                const [skinsResponse, glovesResponse] = await Promise.all([
+                    fetch(`${API_ENDPOINTS.primary}skins_not_grouped.json`),
+                    fetch(`${API_ENDPOINTS.primary}gloves.json`)
+                ]);
                 
-                // Try multiple methods to fetch the data
-                let skinsData = null;
-                let glovesData = null;
-                
-                // Method 1: Direct fetch (works if CORS is allowed)
+                if (skinsResponse.ok && glovesResponse.ok) {
+                    skinsData = await skinsResponse.json();
+                    glovesData = await glovesResponse.json();
+                    console.log('✅ Direct API access successful');
+                }
+            } catch (error) {
+                console.log('❌ Direct API access failed:', error.message);
+            }
+            
+            // Try GitHub raw if direct failed
+            if (!skinsData || !glovesData) {
                 try {
-                    console.log('Trying direct API access...');
-                    const skinsResponse = await fetch(`${API_ENDPOINTS.primary}skins_not_grouped.json`);
-                    const glovesResponse = await fetch(`${API_ENDPOINTS.primary}gloves.json`);
+                    console.log('Attempting GitHub raw access...');
+                    const [skinsResponse, glovesResponse] = await Promise.all([
+                        fetch(`${API_ENDPOINTS.github_raw}skins_not_grouped.json`),
+                        fetch(`${API_ENDPOINTS.github_raw}gloves.json`)
+                    ]);
                     
                     if (skinsResponse.ok && glovesResponse.ok) {
                         skinsData = await skinsResponse.json();
                         glovesData = await glovesResponse.json();
-                        console.log('Direct API access successful');
+                        console.log('✅ GitHub raw access successful');
                     }
                 } catch (error) {
-                    console.log('Direct API access failed:', error.message);
+                    console.log('❌ GitHub raw access failed:', error.message);
                 }
-                
-                // Method 2: Try GitHub raw if direct failed
-                if (!skinsData || !glovesData) {
+            }
+            
+            // Try CORS proxies if still no data
+            if (!skinsData || !glovesData) {
+                for (let i = 0; i < API_ENDPOINTS.cors_proxies.length; i++) {
+                    const proxy = API_ENDPOINTS.cors_proxies[i];
                     try {
-                        console.log('Trying GitHub raw access...');
-                        const skinsResponse = await fetch(`${API_ENDPOINTS.github_raw}skins_not_grouped.json`);
-                        const glovesResponse = await fetch(`${API_ENDPOINTS.github_raw}gloves.json`);
+                        console.log(`Attempting CORS proxy ${i + 1}/${API_ENDPOINTS.cors_proxies.length}...`);
                         
-                        if (skinsResponse.ok && glovesResponse.ok) {
-                            skinsData = await skinsResponse.json();
-                            glovesData = await glovesResponse.json();
-                            console.log('GitHub raw access successful');
-                        }
-                    } catch (error) {
-                        console.log('GitHub raw access failed:', error.message);
-                    }
-                }
-                
-                // Method 3: Use CORS proxy as last resort
-                if (!skinsData || !glovesData) {
-                    try {
-                        console.log('Trying CORS proxy...');
                         const skinsUrl = encodeURIComponent(`${API_ENDPOINTS.primary}skins_not_grouped.json`);
                         const glovesUrl = encodeURIComponent(`${API_ENDPOINTS.primary}gloves.json`);
                         
-                        const skinsResponse = await fetch(`${API_ENDPOINTS.cors_proxy}${skinsUrl}`);
-                        const glovesResponse = await fetch(`${API_ENDPOINTS.cors_proxy}${glovesUrl}`);
+                        const [skinsResponse, glovesResponse] = await Promise.all([
+                            fetch(`${proxy}${skinsUrl}`),
+                            fetch(`${proxy}${glovesUrl}`)
+                        ]);
                         
                         if (skinsResponse.ok && glovesResponse.ok) {
                             skinsData = await skinsResponse.json();
                             glovesData = await glovesResponse.json();
-                            console.log('CORS proxy access successful');
+                            console.log(`✅ CORS proxy ${i + 1} successful`);
+                            break;
                         }
                     } catch (error) {
-                        console.log('CORS proxy access failed:', error.message);
+                        console.log(`❌ CORS proxy ${i + 1} failed:`, error.message);
                     }
                 }
-                
-                // Method 4: Use fallback sample data if all else fails
-                if (!skinsData || !glovesData) {
-                    console.log('All API methods failed, using sample data...');
-                    skinsData = getSampleSkins();
-                    glovesData = getSampleGloves();
-                }
-                
-                apiData.skins = skinsData;
-                apiData.gloves = glovesData;
-                
-                console.log(`Loaded ${apiData.skins.length} skins and ${apiData.gloves.length} gloves`);
-                
-                // Extract all rarities for filters
-                [...apiData.skins, ...apiData.gloves].forEach(item => {
-                    if (item.rarity && item.rarity.name) {
-                        allRarities.add(item.rarity.name);
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error loading API data:', error);
-                // Use sample data as final fallback
-                apiData.skins = getSampleSkins();
-                apiData.gloves = getSampleGloves();
-                
-                // Extract rarities from sample data
-                [...apiData.skins, ...apiData.gloves].forEach(item => {
-                    if (item.rarity && item.rarity.name) {
-                        allRarities.add(item.rarity.name);
-                    }
-                });
-                
-                showNotification('Using sample data - API temporarily unavailable', 'warning');
             }
+            
+            if (!skinsData || !glovesData) {
+                throw new Error('Unable to load CS2 data from any source');
+            }
+            
+            apiData.skins = skinsData;
+            apiData.gloves = glovesData;
+            
+            console.log(`📊 Successfully loaded ${apiData.skins.length} skins and ${apiData.gloves.length} gloves`);
+            
+            // Extract all rarities for filters
+            [...apiData.skins, ...apiData.gloves].forEach(item => {
+                if (item.rarity && item.rarity.name) {
+                    allRarities.add(item.rarity.name);
+                }
+            });
         }
 
-        // Sample data fallback for when API is unavailable
-        function getSampleSkins() {
-            return [
-                {
-                    id: "skin-ak47-redline",
-                    name: "AK-47 | Redline",
-                    weapon: { name: "AK-47" },
-                    rarity: { name: "Classified", color: "#d32ce6", id: "rarity_classified" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZDMyY2U2Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFLLTQ3IHwgUmVkbGluZTwvdGV4dD4KPHN2Zz4="
-                },
-                {
-                    id: "skin-m4a4-asiimov",
-                    name: "M4A4 | Asiimov",
-                    weapon: { name: "M4A4" },
-                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk00QTQgfCBBc2lpbW92PC90ZXh0Pgo8L3N2Zz4="
-                },
-                {
-                    id: "skin-awp-dragon",
-                    name: "AWP | Dragon Lore",
-                    weapon: { name: "AWP" },
-                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFXUCB8IERyYWdvbiBMb3JlPC90ZXh0Pgo8L3N2Zz4="
-                },
-                {
-                    id: "skin-glock-fade",
-                    name: "Glock-18 | Fade",
-                    weapon: { name: "Glock-18" },
-                    rarity: { name: "Restricted", color: "#8847ff", id: "rarity_restricted" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjODg0N2ZmIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkdsb2NrLTE4IHwgRmFkZTwvdGV4dD4KPHN2Zz4="
-                },
-                {
-                    id: "skin-karambit-fade",
-                    name: "★ Karambit | Fade",
-                    weapon: { name: "Karambit" },
-                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBLYXJhbWJpdCB8IEZhZGU8L3RleHQ+Cjwvc3ZnPg=="
-                },
-                {
-                    id: "skin-p90-asiimov",
-                    name: "P90 | Asiimov",
-                    weapon: { name: "P90" },
-                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlA5MCB8IEFzaWltb3Y8L3RleHQ+Cjwvc3ZnPg=="
-                }
-            ];
-        }
-
-        function getSampleGloves() {
-            return [
-                {
-                    id: "glove-sport-pandora",
-                    name: "★ Sport Gloves | Pandora's Box",
-                    weapon: { name: "Sport Gloves" },
-                    rarity: { name: "Extraordinary", color: "#eb4b4b", id: "rarity_extraordinary" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBTcG9ydCBHbG92ZXMgfCBQYW5kb3JhJ3MgQm94PC90ZXh0Pgo8L3N2Zz4="
-                },
-                {
-                    id: "glove-driver-crimson",
-                    name: "★ Driver Gloves | Crimson Weave",
-                    weapon: { name: "Driver Gloves" },
-                    rarity: { name: "Extraordinary", color: "#eb4b4b", id: "rarity_extraordinary" },
-                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBEcml2ZXIgR2xvdmVzIHwgQ3JpbXNvbiBXZWF2ZTwvdGV4dD4KPHN2Zz4="
-                }
-            ];
+        // Create weapon category sections
+        function createWeaponCategories() {
+            const container = document.getElementById('weaponsContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+            
+            Object.keys(WEAPON_CATEGORIES).forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'weapon-category';
+                categoryDiv.innerHTML = `
+                    <h3 class="category-title">${category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+                    <div class="weapon-selection-container">
+                        <select class="weapon-selector" data-category="${category}" onchange="showSkinCustomization(this)">
+                            <option value="">Select ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'a knife' : `a ${category.slice(0, -1)}`}...</option>
+                        </select>
+                    </div>
+                    <div class="skin-customization" id="${category}-customization">
+                        <div class="skin-search-container">
+                            <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
+                            <select class="rarity-filter" onchange="filterByRarity(this)">
+                                <option value="">All Rarities</option>
+                            </select>
+                        </div>
+                        <div class="selected-skin" id="${category}-selected">
+                            <h4>No ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'knife' : category.slice(0, -1)} selected</h4>
+                            <p>Choose ${category === 'gloves' ? 'gloves' : category === 'knives' ? 'a knife' : `a ${category.slice(0, -1)}`} and skin from the options above</p>
+                        </div>
+                        <div class="weapon-image" id="${category}-image">
+                            <div class="weapon-image-placeholder">
+                                <div>Weapon Image</div>
+                                <div style="font-size: 0.6rem;">Will appear when selected</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(categoryDiv);
+            });
         }
 
         // Populate weapon selector dropdowns
@@ -1158,9 +974,6 @@
             Object.keys(WEAPON_CATEGORIES).forEach(category => {
                 const selector = document.querySelector(`[data-category="${category}"]`);
                 if (!selector) return;
-                
-                // Clear existing options except the first one
-                selector.innerHTML = '<option value="">Select...</option>';
                 
                 if (category === 'gloves') {
                     // For gloves, get unique glove types from API data
@@ -1185,13 +998,10 @@
 
         // Populate rarity filter dropdowns
         function populateRarityFilters() {
-            const rarityFilters = document.querySelectorAll('.color-filter');
+            const rarityFilters = document.querySelectorAll('.rarity-filter');
             const sortedRarities = Array.from(allRarities).sort();
             
             rarityFilters.forEach(filter => {
-                // Clear existing options except the first one
-                filter.innerHTML = '<option value="">All Rarities</option>';
-                
                 sortedRarities.forEach(rarity => {
                     const option = document.createElement('option');
                     option.value = rarity;
@@ -1199,14 +1009,6 @@
                     filter.appendChild(option);
                 });
             });
-        }
-
-        // Show/hide loading indicator
-        function showLoadingIndicator(show) {
-            const indicator = document.getElementById('loadingIndicator');
-            if (indicator) {
-                indicator.style.display = show ? 'block' : 'none';
-            }
         }
 
         // Show skin customization panel
@@ -1237,7 +1039,7 @@
             
             // Reset filters
             const searchInput = document.querySelector(`#${category}-customization .skin-search`);
-            const rarityFilter = document.querySelector(`#${category}-customization .color-filter`);
+            const rarityFilter = document.querySelector(`#${category}-customization .rarity-filter`);
             if (searchInput) searchInput.value = '';
             if (rarityFilter) rarityFilter.value = '';
             
@@ -1256,11 +1058,11 @@
                 return;
             }
 
-            // Limit to first 20 skins for performance
-            const skinsToShow = skins.slice(0, 20);
+            // Show up to 100 skins for better browsing
+            const skinsToShow = skins.slice(0, 100);
             
             let skinsHtml = `
-                <h4>Available Skins (${skins.length} total, showing ${skinsToShow.length})</h4>
+                <h4>Available Skins (${skins.length} total${skins.length > 100 ? ', showing first 100' : ''})</h4>
                 <div class="skins-grid">
             `;
             
@@ -1282,6 +1084,14 @@
                     </div>
                 `;
             });
+            
+            if (skins.length > 100) {
+                skinsHtml += `
+                    <div style="text-align: center; padding: 15px; color: rgba(255, 255, 255, 0.7); font-style: italic;">
+                        Showing first 100 of ${skins.length} skins. Use search/filter to narrow results.
+                    </div>
+                `;
+            }
             
             skinsHtml += '</div>';
             selectedDiv.innerHTML = skinsHtml;
@@ -1313,7 +1123,7 @@
         function filterSkins(searchInput) {
             const category = searchInput.closest('.skin-customization').id.replace('-customization', '');
             const searchTerm = searchInput.value.toLowerCase();
-            const rarityFilter = searchInput.closest('.skin-customization').querySelector('.color-filter');
+            const rarityFilter = searchInput.closest('.skin-customization').querySelector('.rarity-filter');
             const selectedRarity = rarityFilter.value;
             
             if (!currentWeaponSkins[category]) return;
@@ -1430,6 +1240,12 @@
                 element.style.background = 'rgba(255, 255, 255, 0.1)';
                 element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
             }
+        }
+
+        // Show error message
+        function showErrorMessage() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'block';
         }
 
         // Loadout management functions
