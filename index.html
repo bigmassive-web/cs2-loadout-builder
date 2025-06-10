@@ -14,7 +14,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122);
-            color: #ff6600;
+            color: #ffffff;
             min-height: 100vh;
             padding-top: 80px;
         }
@@ -260,37 +260,6 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
-        .weapon-image {
-            width: 100%;
-            max-width: 250px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 15px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.8rem;
-        }
-
-        .weapon-image.active {
-            display: flex;
-        }
-
-        .weapon-image-placeholder {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
         .weapons-container {
             display: flex;
             flex-direction: column;
@@ -404,6 +373,37 @@
         .selected-skin p {
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
+        }
+
+        .weapon-image {
+            width: 100%;
+            max-width: 250px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .weapon-image.active {
+            display: flex;
+        }
+
+        .weapon-image-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
         .rarity-legendary { border-left-color: #ffffff; }
@@ -695,6 +695,532 @@
                 </div>
             </div>
 
+            <!-- SMGs Section -->
+            <div class="weapon-category">
+                <h3 class="category-title">SMGs</h3>
+                <div class="weapon-selection-container">
+                    <select class="weapon-selector" data-category="smgs" onchange="showSkinCustomization(this)">
+                        <option value="">Select an SMG...</option>
+                        <option value="p90">P90</option>
+                        <option value="mp7">MP7</option>
+                        <option value="mp9">MP9</option>
+                        <option value="mac10">MAC-10</option>
+                        <option value="ump45">UMP-45</option>
+                        <option value="bizon">PP-Bizon</option>
+                        <option value="mp5sd">MP5-SD</option>
+                    </select>
+                </div>
+                <div class="skin-customization" id="smgs-customization">
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
+                        <select class="color-filter" onchange="filterByColor(this)">
+                            <option value="">All Colors</option>
+                            <option value="red">Red</option>
+                            <option value="blue">Blue</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="green">Green</option>
+                            <option value="purple">Purple</option>
+                            <option value="orange">Orange</option>
+                            <option value="black">Black</option>
+                            <option value="white">White</option>
+                        </select>
+                    </div>
+                    <div class="selected-skin" id="smgs-selected">
+                        <h4>No SMG selected</h4>
+                        <p>Choose an SMG and skin from the options above</p>
+                    </div>
+                    <div class="weapon-image" id="smgs-image">
+                        <div class="weapon-image-placeholder">
+                            <div>Weapon Image</div>
+                            <div style="font-size: 0.6rem;">Will appear when selected</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <h4>Advertisement</h4>
+            <div class="ad-placeholder">
+                <div>Advertisement Space</div>
+                <div>300x800</div>
+            </div>
+        </div>
+
+        <div class="loadout-actions">
+            <button class="action-btn save-btn" onclick="saveCurrentLoadout()">Save Loadout</button>
+            <button class="action-btn share-btn" onclick="shareLoadout()">Share Loadout</button>
+            <button class="action-btn delete-btn" onclick="deleteCurrentLoadout()">Delete Loadout</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for creating new loadout -->
+    <div class="modal" id="newLoadoutModal">
+        <div class="modal-content">
+            <h3 style="color: #ffffff; margin-bottom: 20px;">Create New Loadout</h3>
+            <input type="text" id="loadoutName" placeholder="Enter loadout name..." maxlength="30">
+            <div style="margin-top: 20px;">
+                <button class="action-btn save-btn" onclick="confirmNewLoadout()">Create</button>
+                <button class="action-btn delete-btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let loadouts = [
+            {
+                id: 0,
+                name: "Default Loadout",
+                weapons: {}
+            }
+        ];
+        let currentLoadoutId = 0;
+        let nextLoadoutId = 1;
+
+        // Simple skin database for demonstration
+        let skinDatabase = {
+            knives: {
+                karambit: [
+                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"], image: null, fullName: "★ Karambit | Fade" },
+                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"], image: null, fullName: "★ Karambit | Doppler" },
+                    { name: "Tiger Tooth", rarity: "covert", colors: ["yellow", "orange"], image: null, fullName: "★ Karambit | Tiger Tooth" }
+                ],
+                "m9-bayonet": [
+                    { name: "Crimson Web", rarity: "legendary", colors: ["red", "black"], image: null, fullName: "★ M9 Bayonet | Crimson Web" },
+                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"], image: null, fullName: "★ M9 Bayonet | Doppler" }
+                ],
+                butterfly: [
+                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"], image: null, fullName: "★ Butterfly Knife | Fade" },
+                    { name: "Slaughter", rarity: "legendary", colors: ["red", "white"], image: null, fullName: "★ Butterfly Knife | Slaughter" }
+                ]
+            },
+            gloves: {
+                sport: [
+                    { name: "Pandora Box", rarity: "legendary", colors: ["green", "black"], image: null, fullName: "★ Sport Gloves | Pandora's Box" },
+                    { name: "Vice", rarity: "covert", colors: ["purple", "black"], image: null, fullName: "★ Sport Gloves | Vice" },
+                    { name: "Superconductor", rarity: "covert", colors: ["blue", "black"], image: null, fullName: "★ Sport Gloves | Superconductor" }
+                ],
+                driver: [
+                    { name: "Crimson Weave", rarity: "legendary", colors: ["red", "black"], image: null, fullName: "★ Driver Gloves | Crimson Weave" },
+                    { name: "King Snake", rarity: "covert", colors: ["black", "yellow"], image: null, fullName: "★ Driver Gloves | King Snake" }
+                ]
+            },
+            rifles: {
+                ak47: [
+                    { name: "Redline", rarity: "classified", colors: ["red", "black"], image: null, fullName: "AK-47 | Redline" },
+                    { name: "Vulcan", rarity: "covert", colors: ["blue", "orange"], image: null, fullName: "AK-47 | Vulcan" },
+                    { name: "Fire Serpent", rarity: "covert", colors: ["red", "orange"], image: null, fullName: "AK-47 | Fire Serpent" }
+                ],
+                m4a4: [
+                    { name: "Howl", rarity: "legendary", colors: ["red", "orange"], image: null, fullName: "M4A4 | Howl" },
+                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"], image: null, fullName: "M4A4 | Asiimov" }
+                ],
+                awp: [
+                    { name: "Dragon Lore", rarity: "legendary", colors: ["green", "gold"], image: null, fullName: "AWP | Dragon Lore" },
+                    { name: "Lightning Strike", rarity: "classified", colors: ["blue", "white"], image: null, fullName: "AWP | Lightning Strike" }
+                ]
+            },
+            pistols: {
+                glock: [
+                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"], image: null, fullName: "Glock-18 | Fade" },
+                    { name: "Water Elemental", rarity: "classified", colors: ["blue", "white"], image: null, fullName: "Glock-18 | Water Elemental" }
+                ],
+                deagle: [
+                    { name: "Blaze", rarity: "restricted", colors: ["orange", "red"], image: null, fullName: "Desert Eagle | Blaze" },
+                    { name: "Code Red", rarity: "classified", colors: ["red", "black"], image: null, fullName: "Desert Eagle | Code Red" }
+                ]
+            },
+            smgs: {
+                p90: [
+                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"], image: null, fullName: "P90 | Asiimov" },
+                    { name: "Death by Kitty", rarity: "classified", colors: ["purple", "white"], image: null, fullName: "P90 | Death by Kitty" }
+                ],
+                mp7: [
+                    { name: "Nemesis", rarity: "restricted", colors: ["red", "black"], image: null, fullName: "MP7 | Nemesis" },
+                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"], image: null, fullName: "MP7 | Fade" }
+                ]
+            }
+        };
+
+        // Core functions
+        function showSkinCustomization(selector) {
+            const category = selector.dataset.category;
+            const weapon = selector.value;
+            const customization = document.getElementById(category + '-customization');
+            
+            if (weapon) {
+                customization.classList.add('active');
+                updateSkinOptions(category, weapon);
+            } else {
+                customization.classList.remove('active');
+            }
+        }
+
+        function updateSkinOptions(category, weapon) {
+            const skins = skinDatabase[category] && skinDatabase[category][weapon] ? skinDatabase[category][weapon] : [];
+            const searchInput = document.querySelector('#' + category + '-customization .skin-search');
+            const colorFilter = document.querySelector('#' + category + '-customization .color-filter');
+            
+            if (searchInput) {
+                searchInput.dataset.weapon = weapon;
+                searchInput.dataset.category = category;
+                searchInput.value = '';
+            }
+            if (colorFilter) {
+                colorFilter.dataset.weapon = weapon;
+                colorFilter.dataset.category = category;
+                colorFilter.value = '';
+            }
+            
+            displaySkins(category, weapon, skins);
+        }
+
+        function displaySkins(category, weapon, skins) {
+            const selectedDiv = document.getElementById(category + '-selected');
+            
+            if (skins.length === 0) {
+                selectedDiv.innerHTML = '<h4>No skins available</h4><p>No skins found for ' + weapon + '</p>';
+                return;
+            }
+
+            let skinsHtml = '<h4>Available Skins for ' + weapon + '</h4><div style="max-height: 200px; overflow-y: auto; margin-top: 10px;">';
+            
+            for (let i = 0; i < skins.length; i++) {
+                const skin = skins[i];
+                const safeSkinName = skin.name.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                const safeFullName = (skin.fullName || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                
+                skinsHtml += '<div class="skin-option rarity-' + skin.rarity + '" ';
+                skinsHtml += 'style="padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 5px; cursor: pointer; border-left: 3px solid;" ';
+                skinsHtml += 'onclick="selectSkin(\'' + category + '\', \'' + weapon + '\', \'' + safeSkinName + '\', \'' + skin.rarity + '\', \'\', \'' + safeFullName + '\')">';
+                skinsHtml += '<strong>' + skin.name + '</strong>';
+                skinsHtml += '<span style="float: right; font-size: 0.8em; opacity: 0.8;">' + skin.rarity + '</span>';
+                skinsHtml += '</div>';
+            }
+            
+            skinsHtml += '</div>';
+            selectedDiv.innerHTML = skinsHtml;
+        }
+
+        function selectSkin(category, weapon, skinName, rarity, imageUrl, fullName) {
+            const selectedDiv = document.getElementById(category + '-selected');
+            const imageDiv = document.getElementById(category + '-image');
+            
+            selectedDiv.innerHTML = '<h4>' + (fullName || weapon + ' | ' + skinName) + '</h4><p>Rarity: ' + rarity + '</p>';
+            selectedDiv.className = 'selected-skin rarity-' + rarity;
+            
+            // Show weapon image
+            imageDiv.classList.add('active');
+            imageDiv.innerHTML = '<div class="weapon-image-placeholder"><div>' + weapon + ' | ' + skinName + '</div><div style="font-size: 0.6rem;">Image placeholder</div></div>';
+            
+            // Save to current loadout
+            saveWeaponSelection(category, weapon, skinName, rarity, imageUrl, fullName);
+            
+            // Update preview combinations
+            updatePreviewCombinations();
+        }
+
+        function filterSkins(searchInput) {
+            const category = searchInput.dataset.category;
+            const weapon = searchInput.dataset.weapon;
+            const searchTerm = searchInput.value.toLowerCase();
+            const colorFilter = document.querySelector('#' + category + '-customization .color-filter');
+            const selectedColor = colorFilter ? colorFilter.value : '';
+            
+            if (!weapon || !skinDatabase[category] || !skinDatabase[category][weapon]) return;
+            
+            let skins = skinDatabase[category][weapon];
+            
+            // Filter by search term
+            if (searchTerm) {
+                skins = skins.filter(function(skin) {
+                    return skin.name.toLowerCase().includes(searchTerm);
+                });
+            }
+            
+            // Filter by color
+            if (selectedColor) {
+                skins = skins.filter(function(skin) {
+                    return skin.colors && skin.colors.includes(selectedColor);
+                });
+            }
+            
+            displaySkins(category, weapon, skins);
+        }
+
+        function filterByColor(colorFilter) {
+            const category = colorFilter.dataset.category;
+            const weapon = colorFilter.dataset.weapon;
+            const selectedColor = colorFilter.value;
+            const searchInput = document.querySelector('#' + category + '-customization .skin-search');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            
+            if (!weapon || !skinDatabase[category] || !skinDatabase[category][weapon]) return;
+            
+            let skins = skinDatabase[category][weapon];
+            
+            // Filter by color
+            if (selectedColor) {
+                skins = skins.filter(function(skin) {
+                    return skin.colors && skin.colors.includes(selectedColor);
+                });
+            }
+            
+            // Filter by search term
+            if (searchTerm) {
+                skins = skins.filter(function(skin) {
+                    return skin.name.toLowerCase().includes(searchTerm);
+                });
+            }
+            
+            displaySkins(category, weapon, skins);
+        }
+
+        function saveWeaponSelection(category, weapon, skinName, rarity, imageUrl, fullName) {
+            const currentLoadout = loadouts.find(function(l) { return l.id === currentLoadoutId; });
+            if (!currentLoadout.weapons[category]) {
+                currentLoadout.weapons[category] = {};
+            }
+            currentLoadout.weapons[category] = {
+                weapon: weapon,
+                skin: skinName,
+                rarity: rarity,
+                image: imageUrl,
+                fullName: fullName
+            };
+        }
+
+        function updatePreviewCombinations() {
+            const currentLoadout = loadouts.find(function(l) { return l.id === currentLoadoutId; });
+            const weapons = currentLoadout.weapons;
+            
+            // Get selected items
+            const glove = weapons.gloves;
+            const knife = weapons.knives;
+            const rifle = weapons.rifles;
+            const pistol = weapons.pistols;
+            const smg = weapons.smgs;
+            
+            // Update preview combinations
+            updatePreviewItem('preview-glove-knife', glove, knife);
+            updatePreviewItem('preview-rifle-glove', rifle, glove);
+            updatePreviewItem('preview-pistol-glove', pistol, glove);
+            updatePreviewItem('preview-smg-glove', smg, glove);
+        }
+
+        function updatePreviewItem(elementId, item1, item2) {
+            const element = document.getElementById(elementId);
+            
+            if (item1 && item2) {
+                const item1Name = item1.weapon ? item1.weapon + ' | ' + item1.skin : 'Default';
+                const item2Name = item2.weapon ? item2.weapon + ' | ' + item2.skin : 'Default';
+                element.innerHTML = '<div style="font-size: 0.6rem; text-align: center;"><div>' + item1Name + '</div><div>+</div><div>' + item2Name + '</div></div>';
+                element.style.background = 'rgba(0, 191, 255, 0.1)';
+                element.style.borderColor = 'rgba(0, 191, 255, 0.3)';
+            } else if (item1 || item2) {
+                const itemName = (item1 || item2).weapon ? (item1 || item2).weapon + ' | ' + (item1 || item2).skin : 'Default';
+                element.innerHTML = '<div style="font-size: 0.6rem; text-align: center;"><div>' + itemName + '</div><div>+ Missing item</div></div>';
+                element.style.background = 'rgba(255, 255, 255, 0.1)';
+                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            } else {
+                element.textContent = 'No items';
+                element.style.background = 'rgba(255, 255, 255, 0.1)';
+                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }
+        }
+
+        function saveCurrentLoadout() {
+            showNotification('Loadout saved successfully!', 'success');
+        }
+
+        function loadLoadout(loadoutId) {
+            const loadout = loadouts.find(function(l) { return l.id === loadoutId; });
+            if (!loadout) return;
+
+            currentLoadoutId = loadoutId;
+            
+            // Update UI to show active loadout
+            const loadoutItems = document.querySelectorAll('.loadout-item');
+            for (let i = 0; i < loadoutItems.length; i++) {
+                loadoutItems[i].classList.remove('active');
+                if (parseInt(loadoutItems[i].dataset.loadout) === loadoutId) {
+                    loadoutItems[i].classList.add('active');
+                }
+            }
+
+            // Load weapon selections
+            const categories = Object.keys(loadout.weapons);
+            for (let i = 0; i < categories.length; i++) {
+                const category = categories[i];
+                const weaponData = loadout.weapons[category];
+                if (weaponData) {
+                    const selector = document.querySelector('[data-category="' + category + '"]');
+                    if (selector) {
+                        selector.value = weaponData.weapon;
+                        showSkinCustomization(selector);
+                        
+                        // Wait a bit for the skin options to load, then select the skin
+                        setTimeout(function() {
+                            selectSkin(category, weaponData.weapon, weaponData.skin, weaponData.rarity, weaponData.image, weaponData.fullName);
+                        }, 100);
+                    }
+                }
+            }
+            
+            // Update preview after loading
+            setTimeout(function() {
+                updatePreviewCombinations();
+            }, 200);
+        }
+
+        function createNewLoadout() {
+            document.getElementById('newLoadoutModal').style.display = 'block';
+            document.getElementById('loadoutName').focus();
+        }
+
+        function confirmNewLoadout() {
+            const name = document.getElementById('loadoutName').value.trim();
+            if (!name) {
+                showNotification('Please enter a loadout name', 'error');
+                return;
+            }
+
+            const newLoadout = {
+                id: nextLoadoutId++,
+                name: name,
+                weapons: {}
+            };
+
+            loadouts.push(newLoadout);
+            updateLoadoutList();
+            loadLoadout(newLoadout.id);
+            closeModal();
+            showNotification('New loadout created!', 'success');
+        }
+
+        function deleteCurrentLoadout() {
+            if (loadouts.length <= 1) {
+                showNotification('Cannot delete the last loadout', 'error');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this loadout?')) {
+                loadouts = loadouts.filter(function(l) { return l.id !== currentLoadoutId; });
+                updateLoadoutList();
+                loadLoadout(loadouts[0].id);
+                showNotification('Loadout deleted', 'success');
+            }
+        }
+
+        function shareLoadout() {
+            const currentLoadout = loadouts.find(function(l) { return l.id === currentLoadoutId; });
+            const loadoutData = JSON.stringify(currentLoadout, null, 2);
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(loadoutData).then(function() {
+                    showNotification('Loadout copied to clipboard!', 'success');
+                });
+            } else {
+                // Fallback for older browsers
+                prompt('Copy this loadout data:', loadoutData);
+            }
+        }
+
+        function updateLoadoutList() {
+            const list = document.getElementById('loadoutList');
+            list.innerHTML = '';
+            
+            for (let i = 0; i < loadouts.length; i++) {
+                const loadout = loadouts[i];
+                const item = document.createElement('li');
+                item.className = 'loadout-item' + (loadout.id === currentLoadoutId ? ' active' : '');
+                item.dataset.loadout = loadout.id;
+                item.textContent = loadout.name;
+                item.onclick = function() { loadLoadout(loadout.id); };
+                list.appendChild(item);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('newLoadoutModal').style.display = 'none';
+            document.getElementById('loadoutName').value = '';
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: bold; z-index: 10000; animation: slideIn 0.3s ease;' + (type === 'success' ? 'background: linear-gradient(45deg, #28a745, #20c997);' : 'background: linear-gradient(45deg, #dc3545, #e74c3c);');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(function() {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(function() { 
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Event listeners
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLoadoutList();
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }';
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
+
             <!-- Gloves Section -->
             <div class="weapon-category">
                 <h3 class="category-title">Gloves</h3>
@@ -823,587 +1349,3 @@
                     <div class="weapon-image" id="pistols-image">
                         <div class="weapon-image-placeholder">
                             <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SMGs Section -->
-            <div class="weapon-category">
-                <h3 class="category-title">SMGs</h3>
-                <div class="weapon-selection-container">
-                    <select class="weapon-selector" data-category="smgs" onchange="showSkinCustomization(this)">
-                        <option value="">Select an SMG...</option>
-                        <option value="p90">P90</option>
-                        <option value="mp7">MP7</option>
-                        <option value="mp9">MP9</option>
-                        <option value="mac10">MAC-10</option>
-                        <option value="ump45">UMP-45</option>
-                        <option value="bizon">PP-Bizon</option>
-                        <option value="mp5sd">MP5-SD</option>
-                    </select>
-                </div>
-                <div class="skin-customization" id="smgs-customization">
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" placeholder="Search skins..." oninput="filterSkins(this)">
-                        <select class="color-filter" onchange="filterByColor(this)">
-                            <option value="">All Colors</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
-                            <option value="orange">Orange</option>
-                            <option value="black">Black</option>
-                            <option value="white">White</option>
-                        </select>
-                    </div>
-                    <div class="selected-skin" id="smgs-selected">
-                        <h4>No SMG selected</h4>
-                        <p>Choose an SMG and skin from the options above</p>
-                    </div>
-                    <div class="weapon-image" id="smgs-image">
-                        <div class="weapon-image-placeholder">
-                            <div>Weapon Image</div>
-                            <div style="font-size: 0.6rem;">Will appear when selected</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Ad Space -->
-        <div class="ad-space">
-            <h4>Advertisement</h4>
-            <div class="ad-placeholder">
-                <div>Advertisement Space</div>
-                <div>300x800</div>
-            </div>
-        </div>
-
-        <div class="loadout-actions">
-            <button class="action-btn save-btn" onclick="saveCurrentLoadout()">Save Loadout</button>
-            <button class="action-btn share-btn" onclick="shareLoadout()">Share Loadout</button>
-            <button class="action-btn delete-btn" onclick="deleteCurrentLoadout()">Delete Loadout</button>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>CS Loadouts</h4>
-                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Available Tools</h4>
-                <ul>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Coming Soon</h4>
-                <ul>
-                    <li>Skin Calculator</li>
-                    <li>Trade Tracker</li>
-                    <li>CS2 News Feed</li>
-                    <li>Weapon Guides</li>
-                    <li>Market Trends Analysis</li>
-                    <li>Pro Player Loadouts</li>
-                    <li>Skin Database</li>
-                </ul>
-                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
-        </div>
-    </footer>
-
-    <!-- Modal for creating new loadout -->
-    <div class="modal" id="newLoadoutModal">
-        <div class="modal-content">
-            <h3 style="color: #ffffff; margin-bottom: 20px;">Create New Loadout</h3>
-            <input type="text" id="loadoutName" placeholder="Enter loadout name..." maxlength="30">
-            <div style="margin-top: 20px;">
-                <button class="action-btn save-btn" onclick="confirmNewLoadout()">Create</button>
-                <button class="action-btn delete-btn" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let loadouts = [
-            {
-                id: 0,
-                name: "Default Loadout",
-                weapons: {}
-            }
-        ];
-        let currentLoadoutId = 0;
-        let nextLoadoutId = 1;
-
-        // Sample skin data for demonstration
-        const skinDatabase = {
-            knives: {
-                karambit: [
-                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Crimson Web", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "Tiger Tooth", rarity: "covert", colors: ["yellow", "orange"] },
-                    { name: "Marble Fade", rarity: "covert", colors: ["red", "blue", "yellow"] },
-                    { name: "Slaughter", rarity: "legendary", colors: ["red", "white"] }
-                ],
-                "m9-bayonet": [
-                    { name: "Crimson Web", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Marble Fade", rarity: "covert", colors: ["red", "blue", "yellow"] },
-                    { name: "Tiger Tooth", rarity: "covert", colors: ["yellow", "orange"] }
-                ],
-                butterfly: [
-                    { name: "Fade", rarity: "legendary", colors: ["yellow", "purple", "red"] },
-                    { name: "Doppler", rarity: "covert", colors: ["blue", "purple"] },
-                    { name: "Slaughter", rarity: "legendary", colors: ["red", "white"] }
-                ]
-            },
-            gloves: {
-                sport: [
-                    { name: "Pandora Box", rarity: "legendary", colors: ["green", "black"] },
-                    { name: "Vice", rarity: "covert", colors: ["purple", "black"] },
-                    { name: "Superconductor", rarity: "covert", colors: ["blue", "black"] },
-                    { name: "Hedge Maze", rarity: "classified", colors: ["green", "brown"] }
-                ],
-                driver: [
-                    { name: "Crimson Weave", rarity: "legendary", colors: ["red", "black"] },
-                    { name: "King Snake", rarity: "covert", colors: ["black", "yellow"] },
-                    { name: "Imperial Plaid", rarity: "classified", colors: ["red", "blue"] }
-                ]
-            },
-            rifles: {
-                ak47: [
-                    { name: "Redline", rarity: "classified", colors: ["red", "black"] },
-                    { name: "Vulcan", rarity: "covert", colors: ["blue", "orange"] },
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Bloodsport", rarity: "covert", colors: ["red", "black"] },
-                    { name: "Neon Rider", rarity: "classified", colors: ["purple", "green"] },
-                    { name: "Fire Serpent", rarity: "covert", colors: ["red", "orange"] }
-                ],
-                m4a4: [
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Howl", rarity: "legendary", colors: ["red", "orange"] },
-                    { name: "Desolate Space", rarity: "classified", colors: ["purple", "black"] },
-                    { name: "Neo-Noir", rarity: "covert", colors: ["black", "white", "red"] },
-                    { name: "The Emperor", rarity: "covert", colors: ["red", "gold"] }
-                ],
-                awp: [
-                    { name: "Dragon Lore", rarity: "legendary", colors: ["green", "gold"] },
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Lightning Strike", rarity: "classified", colors: ["blue", "white"] },
-                    { name: "Hyper Beast", rarity: "covert", colors: ["purple", "orange"] },
-                    { name: "Wildfire", rarity: "covert", colors: ["red", "orange"] }
-                ]
-            },
-            pistols: {
-                glock: [
-                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"] },
-                    { name: "Water Elemental", rarity: "classified", colors: ["blue", "white"] },
-                    { name: "Twilight Galaxy", rarity: "milspec", colors: ["purple", "blue"] },
-                    { name: "Moonrise", rarity: "restricted", colors: ["orange", "purple"] }
-                ],
-                deagle: [
-                    { name: "Blaze", rarity: "restricted", colors: ["orange", "red"] },
-                    { name: "Code Red", rarity: "classified", colors: ["red", "black"] },
-                    { name: "Printstream", rarity: "covert", colors: ["white", "blue"] },
-                    { name: "Conspiracy", rarity: "classified", colors: ["black", "red"] }
-                ]
-            },
-            smgs: {
-                p90: [
-                    { name: "Asiimov", rarity: "covert", colors: ["orange", "black", "white"] },
-                    { name: "Death by Kitty", rarity: "classified", colors: ["purple", "white"] },
-                    { name: "Trigon", rarity: "restricted", colors: ["blue", "orange"] },
-                    { name: "Run and Hide", rarity: "restricted", colors: ["green", "brown"] }
-                ],
-                mp7: [
-                    { name: "Nemesis", rarity: "restricted", colors: ["red", "black"] },
-                    { name: "Fade", rarity: "restricted", colors: ["purple", "yellow"] },
-                    { name: "Bloodsport", rarity: "classified", colors: ["red", "black"] }
-                ]
-            }
-        };
-
-        function showSkinCustomization(selector) {
-            const category = selector.dataset.category;
-            const weapon = selector.value;
-            const customization = document.getElementById(`${category}-customization`);
-            
-            if (weapon) {
-                customization.classList.add('active');
-                updateSkinOptions(category, weapon);
-            } else {
-                customization.classList.remove('active');
-            }
-        }
-
-        function updateSkinOptions(category, weapon) {
-            const skins = skinDatabase[category]?.[weapon] || [];
-            const searchInput = document.querySelector(`#${category}-customization .skin-search`);
-            const colorFilter = document.querySelector(`#${category}-customization .color-filter`);
-            
-            // Store current weapon for filtering
-            searchInput.dataset.weapon = weapon;
-            searchInput.dataset.category = category;
-            colorFilter.dataset.weapon = weapon;
-            colorFilter.dataset.category = category;
-            
-            // Reset filters
-            searchInput.value = '';
-            colorFilter.value = '';
-            
-            displaySkins(category, weapon, skins);
-        }
-
-        function displaySkins(category, weapon, skins) {
-            const selectedDiv = document.getElementById(`${category}-selected`);
-            
-            if (skins.length === 0) {
-                selectedDiv.innerHTML = `
-                    <h4>No skins available</h4>
-                    <p>No skins found for ${weapon}</p>
-                `;
-                return;
-            }
-
-            // Create skin selection interface
-            let skinsHtml = `
-                <h4>Available Skins for ${weapon}</h4>
-                <div style="max-height: 200px; overflow-y: auto; margin-top: 10px;">
-            `;
-            
-            skins.forEach((skin, index) => {
-                skinsHtml += `
-                    <div class="skin-option rarity-${skin.rarity}" 
-                         style="padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 5px; cursor: pointer; border-left: 3px solid;"
-                         onclick="selectSkin('${category}', '${weapon}', '${skin.name.replace(/'/g, "\\'")}', '${skin.rarity}')">
-                        <strong>${skin.name}</strong>
-                        <span style="float: right; font-size: 0.8em; opacity: 0.8;">${skin.rarity}</span>
-                    </div>
-                `;
-            });
-            
-            skinsHtml += '</div>';
-            selectedDiv.innerHTML = skinsHtml;
-        }
-
-        function selectSkin(category, weapon, skinName, rarity) {
-            const selectedDiv = document.getElementById(`${category}-selected`);
-            const imageDiv = document.getElementById(`${category}-image`);
-            
-            selectedDiv.innerHTML = `
-                <h4>${weapon} | ${skinName}</h4>
-                <p>Rarity: ${rarity}</p>
-            `;
-            selectedDiv.className = `selected-skin rarity-${rarity}`;
-            
-            // Show weapon image placeholder
-            imageDiv.classList.add('active');
-            imageDiv.innerHTML = `
-                <div class="weapon-image-placeholder">
-                    <div>${weapon} | ${skinName}</div>
-                    <div style="font-size: 0.6rem;">Image placeholder</div>
-                </div>
-            `;
-            
-            // Save to current loadout
-            saveWeaponSelection(category, weapon, skinName, rarity);
-            
-            // Update preview combinations
-            updatePreviewCombinations();
-        }
-
-        function filterSkins(searchInput) {
-            const category = searchInput.dataset.category;
-            const weapon = searchInput.dataset.weapon;
-            const searchTerm = searchInput.value.toLowerCase();
-            const colorFilter = document.querySelector(`#${category}-customization .color-filter`);
-            const selectedColor = colorFilter.value;
-            
-            if (!weapon || !skinDatabase[category]?.[weapon]) return;
-            
-            let skins = skinDatabase[category][weapon];
-            
-            // Filter by search term
-            if (searchTerm) {
-                skins = skins.filter(skin => 
-                    skin.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // Filter by color
-            if (selectedColor) {
-                skins = skins.filter(skin => 
-                    skin.colors.includes(selectedColor)
-                );
-            }
-            
-            displaySkins(category, weapon, skins);
-        }
-
-        function filterByColor(colorFilter) {
-            const category = colorFilter.dataset.category;
-            const weapon = colorFilter.dataset.weapon;
-            const selectedColor = colorFilter.value;
-            const searchInput = document.querySelector(`#${category}-customization .skin-search`);
-            const searchTerm = searchInput.value.toLowerCase();
-            
-            if (!weapon || !skinDatabase[category]?.[weapon]) return;
-            
-            let skins = skinDatabase[category][weapon];
-            
-            // Filter by color
-            if (selectedColor) {
-                skins = skins.filter(skin => 
-                    skin.colors.includes(selectedColor)
-                );
-            }
-            
-            // Filter by search term
-            if (searchTerm) {
-                skins = skins.filter(skin => 
-                    skin.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            displaySkins(category, weapon, skins);
-        }
-
-        function saveWeaponSelection(category, weapon, skinName, rarity) {
-            const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
-            if (!currentLoadout.weapons[category]) {
-                currentLoadout.weapons[category] = {};
-            }
-            currentLoadout.weapons[category] = {
-                weapon: weapon,
-                skin: skinName,
-                rarity: rarity
-            };
-        }
-
-        function updatePreviewCombinations() {
-            const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
-            const weapons = currentLoadout.weapons;
-            
-            // Get selected items
-            const glove = weapons.gloves;
-            const knife = weapons.knives;
-            const rifle = weapons.rifles;
-            const pistol = weapons.pistols;
-            const smg = weapons.smgs;
-            
-            // Update preview combinations
-            updatePreviewItem('preview-glove-knife', glove, knife);
-            updatePreviewItem('preview-rifle-glove', rifle, glove);
-            updatePreviewItem('preview-pistol-glove', pistol, glove);
-            updatePreviewItem('preview-smg-glove', smg, glove);
-        }
-
-        function updatePreviewItem(elementId, item1, item2) {
-            const element = document.getElementById(elementId);
-            
-            if (item1 && item2) {
-                const item1Name = item1.weapon ? `${item1.weapon} | ${item1.skin}` : 'Default';
-                const item2Name = item2.weapon ? `${item2.weapon} | ${item2.skin}` : 'Default';
-                element.innerHTML = `
-                    <div style="font-size: 0.6rem; text-align: center;">
-                        <div>${item1Name}</div>
-                        <div>+</div>
-                        <div>${item2Name}</div>
-                    </div>
-                `;
-                element.style.background = 'rgba(0, 191, 255, 0.1)';
-                element.style.borderColor = 'rgba(0, 191, 255, 0.3)';
-            } else if (item1 || item2) {
-                const itemName = (item1 || item2).weapon ? `${(item1 || item2).weapon} | ${(item1 || item2).skin}` : 'Default';
-                element.innerHTML = `
-                    <div style="font-size: 0.6rem; text-align: center;">
-                        <div>${itemName}</div>
-                        <div>+ Missing item</div>
-                    </div>
-                `;
-                element.style.background = 'rgba(255, 255, 255, 0.1)';
-                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            } else {
-                element.textContent = 'No items';
-                element.style.background = 'rgba(255, 255, 255, 0.1)';
-                element.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            }
-        }
-
-        function saveCurrentLoadout() {
-            showNotification('Loadout saved successfully!', 'success');
-        }
-
-        function loadLoadout(loadoutId) {
-            const loadout = loadouts.find(l => l.id === loadoutId);
-            if (!loadout) return;
-
-            currentLoadoutId = loadoutId;
-            
-            // Update UI to show active loadout
-            document.querySelectorAll('.loadout-item').forEach(item => {
-                item.classList.remove('active');
-                if (parseInt(item.dataset.loadout) === loadoutId) {
-                    item.classList.add('active');
-                }
-            });
-
-            // Load weapon selections
-            Object.keys(loadout.weapons).forEach(category => {
-                const weaponData = loadout.weapons[category];
-                if (weaponData) {
-                    const selector = document.querySelector(`[data-category="${category}"]`);
-                    if (selector) {
-                        selector.value = weaponData.weapon;
-                        showSkinCustomization(selector);
-                        
-                        // Wait a bit for the skin options to load, then select the skin
-                        setTimeout(() => {
-                            selectSkin(category, weaponData.weapon, weaponData.skin, weaponData.rarity);
-                        }, 100);
-                    }
-                }
-            });
-            
-            // Update preview after loading
-            setTimeout(() => {
-                updatePreviewCombinations();
-            }, 200);
-        }
-
-        function createNewLoadout() {
-            document.getElementById('newLoadoutModal').style.display = 'block';
-            document.getElementById('loadoutName').focus();
-        }
-
-        function confirmNewLoadout() {
-            const name = document.getElementById('loadoutName').value.trim();
-            if (!name) {
-                showNotification('Please enter a loadout name', 'error');
-                return;
-            }
-
-            const newLoadout = {
-                id: nextLoadoutId++,
-                name: name,
-                weapons: {}
-            };
-
-            loadouts.push(newLoadout);
-            updateLoadoutList();
-            loadLoadout(newLoadout.id);
-            closeModal();
-            showNotification('New loadout created!', 'success');
-        }
-
-        function deleteCurrentLoadout() {
-            if (loadouts.length <= 1) {
-                showNotification('Cannot delete the last loadout', 'error');
-                return;
-            }
-
-            if (confirm('Are you sure you want to delete this loadout?')) {
-                loadouts = loadouts.filter(l => l.id !== currentLoadoutId);
-                updateLoadoutList();
-                loadLoadout(loadouts[0].id);
-                showNotification('Loadout deleted', 'success');
-            }
-        }
-
-        function shareLoadout() {
-            const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
-            const loadoutData = JSON.stringify(currentLoadout, null, 2);
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(loadoutData).then(() => {
-                    showNotification('Loadout copied to clipboard!', 'success');
-                });
-            } else {
-                // Fallback for older browsers
-                prompt('Copy this loadout data:', loadoutData);
-            }
-        }
-
-        function updateLoadoutList() {
-            const list = document.getElementById('loadoutList');
-            list.innerHTML = '';
-            
-            loadouts.forEach(loadout => {
-                const item = document.createElement('li');
-                item.className = `loadout-item ${loadout.id === currentLoadoutId ? 'active' : ''}`;
-                item.dataset.loadout = loadout.id;
-                item.textContent = loadout.name;
-                item.onclick = () => loadLoadout(loadout.id);
-                list.appendChild(item);
-            });
-        }
-
-        function closeModal() {
-            document.getElementById('newLoadoutModal').style.display = 'none';
-            document.getElementById('loadoutName').value = '';
-        }
-
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                border-radius: 8px;
-                color: white;
-                font-weight: bold;
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-                ${type === 'success' ? 'background: linear-gradient(45deg, #28a745, #20c997);' : 'background: linear-gradient(45deg, #dc3545, #e74c3c);'}
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Initialize
-        updateLoadoutList();
-
-        // Add animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-</body>
-</html>
