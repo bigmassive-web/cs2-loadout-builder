@@ -956,8 +956,12 @@
         let currentWeaponSkins = {};
         let allRarities = new Set();
 
-        // API Configuration
-        const API_BASE_URL = 'https://bymykel.github.io/CSGO-API/api/en/';
+        // API Configuration with fallback URLs
+        const API_ENDPOINTS = {
+            primary: 'https://bymykel.github.io/CSGO-API/api/en/',
+            cors_proxy: 'https://api.allorigins.win/raw?url=',
+            github_raw: 'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/'
+        };
         
         // Weapon category mappings
         const WEAPON_CATEGORIES = {
@@ -985,20 +989,76 @@
             }
         }
 
-        // Load data from ByMykel API
+        // Load data from ByMykel API with multiple fallback methods
         async function loadAPIData() {
             try {
                 console.log('Loading API data...');
                 
-                // Load skins data
-                const skinsResponse = await fetch(`${API_BASE_URL}skins_not_grouped.json`);
-                if (!skinsResponse.ok) throw new Error('Failed to fetch skins');
-                apiData.skins = await skinsResponse.json();
+                // Try multiple methods to fetch the data
+                let skinsData = null;
+                let glovesData = null;
                 
-                // Load gloves data
-                const glovesResponse = await fetch(`${API_BASE_URL}gloves.json`);
-                if (!glovesResponse.ok) throw new Error('Failed to fetch gloves');
-                apiData.gloves = await glovesResponse.json();
+                // Method 1: Direct fetch (works if CORS is allowed)
+                try {
+                    console.log('Trying direct API access...');
+                    const skinsResponse = await fetch(`${API_ENDPOINTS.primary}skins_not_grouped.json`);
+                    const glovesResponse = await fetch(`${API_ENDPOINTS.primary}gloves.json`);
+                    
+                    if (skinsResponse.ok && glovesResponse.ok) {
+                        skinsData = await skinsResponse.json();
+                        glovesData = await glovesResponse.json();
+                        console.log('Direct API access successful');
+                    }
+                } catch (error) {
+                    console.log('Direct API access failed:', error.message);
+                }
+                
+                // Method 2: Try GitHub raw if direct failed
+                if (!skinsData || !glovesData) {
+                    try {
+                        console.log('Trying GitHub raw access...');
+                        const skinsResponse = await fetch(`${API_ENDPOINTS.github_raw}skins_not_grouped.json`);
+                        const glovesResponse = await fetch(`${API_ENDPOINTS.github_raw}gloves.json`);
+                        
+                        if (skinsResponse.ok && glovesResponse.ok) {
+                            skinsData = await skinsResponse.json();
+                            glovesData = await glovesResponse.json();
+                            console.log('GitHub raw access successful');
+                        }
+                    } catch (error) {
+                        console.log('GitHub raw access failed:', error.message);
+                    }
+                }
+                
+                // Method 3: Use CORS proxy as last resort
+                if (!skinsData || !glovesData) {
+                    try {
+                        console.log('Trying CORS proxy...');
+                        const skinsUrl = encodeURIComponent(`${API_ENDPOINTS.primary}skins_not_grouped.json`);
+                        const glovesUrl = encodeURIComponent(`${API_ENDPOINTS.primary}gloves.json`);
+                        
+                        const skinsResponse = await fetch(`${API_ENDPOINTS.cors_proxy}${skinsUrl}`);
+                        const glovesResponse = await fetch(`${API_ENDPOINTS.cors_proxy}${glovesUrl}`);
+                        
+                        if (skinsResponse.ok && glovesResponse.ok) {
+                            skinsData = await skinsResponse.json();
+                            glovesData = await glovesResponse.json();
+                            console.log('CORS proxy access successful');
+                        }
+                    } catch (error) {
+                        console.log('CORS proxy access failed:', error.message);
+                    }
+                }
+                
+                // Method 4: Use fallback sample data if all else fails
+                if (!skinsData || !glovesData) {
+                    console.log('All API methods failed, using sample data...');
+                    skinsData = getSampleSkins();
+                    glovesData = getSampleGloves();
+                }
+                
+                apiData.skins = skinsData;
+                apiData.gloves = glovesData;
                 
                 console.log(`Loaded ${apiData.skins.length} skins and ${apiData.gloves.length} gloves`);
                 
@@ -1011,8 +1071,86 @@
                 
             } catch (error) {
                 console.error('Error loading API data:', error);
-                throw error;
+                // Use sample data as final fallback
+                apiData.skins = getSampleSkins();
+                apiData.gloves = getSampleGloves();
+                
+                // Extract rarities from sample data
+                [...apiData.skins, ...apiData.gloves].forEach(item => {
+                    if (item.rarity && item.rarity.name) {
+                        allRarities.add(item.rarity.name);
+                    }
+                });
+                
+                showNotification('Using sample data - API temporarily unavailable', 'warning');
             }
+        }
+
+        // Sample data fallback for when API is unavailable
+        function getSampleSkins() {
+            return [
+                {
+                    id: "skin-ak47-redline",
+                    name: "AK-47 | Redline",
+                    weapon: { name: "AK-47" },
+                    rarity: { name: "Classified", color: "#d32ce6", id: "rarity_classified" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZDMyY2U2Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFLLTQ3IHwgUmVkbGluZTwvdGV4dD4KPHN2Zz4="
+                },
+                {
+                    id: "skin-m4a4-asiimov",
+                    name: "M4A4 | Asiimov",
+                    weapon: { name: "M4A4" },
+                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk00QTQgfCBBc2lpbW92PC90ZXh0Pgo8L3N2Zz4="
+                },
+                {
+                    id: "skin-awp-dragon",
+                    name: "AWP | Dragon Lore",
+                    weapon: { name: "AWP" },
+                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFXUCB8IERyYWdvbiBMb3JlPC90ZXh0Pgo8L3N2Zz4="
+                },
+                {
+                    id: "skin-glock-fade",
+                    name: "Glock-18 | Fade",
+                    weapon: { name: "Glock-18" },
+                    rarity: { name: "Restricted", color: "#8847ff", id: "rarity_restricted" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjODg0N2ZmIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkdsb2NrLTE4IHwgRmFkZTwvdGV4dD4KPHN2Zz4="
+                },
+                {
+                    id: "skin-karambit-fade",
+                    name: "★ Karambit | Fade",
+                    weapon: { name: "Karambit" },
+                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBLYXJhbWJpdCB8IEZhZGU8L3RleHQ+Cjwvc3ZnPg=="
+                },
+                {
+                    id: "skin-p90-asiimov",
+                    name: "P90 | Asiimov",
+                    weapon: { name: "P90" },
+                    rarity: { name: "Covert", color: "#eb4b4b", id: "rarity_covert" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlA5MCB8IEFzaWltb3Y8L3RleHQ+Cjwvc3ZnPg=="
+                }
+            ];
+        }
+
+        function getSampleGloves() {
+            return [
+                {
+                    id: "glove-sport-pandora",
+                    name: "★ Sport Gloves | Pandora's Box",
+                    weapon: { name: "Sport Gloves" },
+                    rarity: { name: "Extraordinary", color: "#eb4b4b", id: "rarity_extraordinary" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBTcG9ydCBHbG92ZXMgfCBQYW5kb3JhJ3MgQm94PC90ZXh0Pgo8L3N2Zz4="
+                },
+                {
+                    id: "glove-driver-crimson",
+                    name: "★ Driver Gloves | Crimson Weave",
+                    weapon: { name: "Driver Gloves" },
+                    rarity: { name: "Extraordinary", color: "#eb4b4b", id: "rarity_extraordinary" },
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWI0YjRiIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKYhSBEcml2ZXIgR2xvdmVzIHwgQ3JpbXNvbiBXZWF2ZTwvdGV4dD4KPHN2Zz4="
+                }
+            ];
         }
 
         // Populate weapon selector dropdowns
@@ -1410,6 +1548,10 @@
 
         function showNotification(message, type) {
             const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'linear-gradient(45deg, #28a745, #20c997)' : 
+                            type === 'warning' ? 'linear-gradient(45deg, #ffc107, #fd7e14)' :
+                            'linear-gradient(45deg, #dc3545, #e74c3c)';
+            
             notification.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -1420,7 +1562,7 @@
                 font-weight: bold;
                 z-index: 10000;
                 animation: slideIn 0.3s ease;
-                ${type === 'success' ? 'background: linear-gradient(45deg, #28a745, #20c997);' : 'background: linear-gradient(45deg, #dc3545, #e74c3c);'}
+                background: ${bgColor};
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
