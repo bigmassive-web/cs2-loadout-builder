@@ -651,6 +651,227 @@
         .footer-bottom a:hover {
             color: #ffffff;
         }
+
+        .affiliate-banner {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9));
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+
+        .tradeit-banner {
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05));
+        }
+
+        .skinswap-banner {
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(147, 0, 211, 0.05));
+        }
+
+        .banner-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .banner-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .bonus-highlights {
+            margin: 20px 0;
+        }
+
+        .bonus-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+
+        .bonus-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        .bonus-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .bonus-text strong {
+            display: block;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .bonus-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffa500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .skinswap-highlights {
+            margin: 20px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .feature-item {
+            padding: 15px 10px;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .banner-cta {
+            display: inline-block;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tradeit-cta {
+            background: linear-gradient(45deg, #ffa500, #ff8c00);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .tradeit-cta:hover {
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.4);
+        }
+
+        .skinswap-cta {
+            background: linear-gradient(45deg, #8a2be2, #9370db);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .skinswap-cta:hover {
+            background: linear-gradient(45deg, #9370db, #8a2be2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+        }
+
+        .banner-features {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .affiliate-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 191, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        .affiliate-links {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        .affiliate-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .affiliate-btn:hover {
+            background: rgba(0, 191, 255, 0.1);
+            border-color: rgba(0, 191, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        .tradeit-btn:hover {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.2);
+        }
+
+        .skinswap-btn:hover {
+            background: rgba(138, 43, 226, 0.1);
+            border-color: rgba(138, 43, 226, 0.3);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+        }
+
+        .affiliate-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .affiliate-info {
+            flex: 1;
+        }
+
+        .affiliate-info strong {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .affiliate-info small {
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -680,10 +901,39 @@
 
         <!-- Left Ad Space -->
         <div class="ad-space">
-            <h4>Advertisement</h4>
-            <div class="ad-placeholder">
-                <div>Advertisement Space</div>
-                <div>300x800</div>
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>🔄 TradeIt.gg</h3>
+                    <p class="banner-subtitle">Trade CS2 Skins Instantly</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🎁</div>
+                        <div class="bonus-text">
+                            <strong>First Trade Bonus</strong>
+                            <span class="bonus-amount">$5.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">💰</div>
+                        <div class="bonus-text">
+                            <strong>Topup Bonus</strong>
+                            <span class="bonus-amount">35%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Start Trading Now
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Instant trades<br>
+                    ✨ 1000+ skins available<br>
+                    ✨ Secure & trusted
+                </p>
             </div>
         </div>
 
@@ -774,6 +1024,9 @@
         
         <div class="footer-bottom">
             <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+            <p class="affiliate-disclosure">
+                As affiliates of TradeIt.gg and SkinSwap, we may earn commissions from qualifying purchases made through our links.
+            </p>
         </div>
     </footer>
 
@@ -1086,6 +1339,28 @@
                             <h4>${selectedPrompt}</h4>
                             <p>${choosePrompt}</p>
                         </div>
+                        
+                        <!-- Affiliate Links Section -->
+                        <div class="affiliate-section">
+                            <h5 style="color: #00bfff; margin-bottom: 10px; font-size: 0.9rem;">Get Real CS2 Skins:</h5>
+                            <div class="affiliate-links">
+                                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="affiliate-btn tradeit-btn">
+                                    <span class="affiliate-icon">🔄</span>
+                                    <div class="affiliate-info">
+                                        <strong>TradeIt.gg</strong>
+                                        <small>Trade & Buy Skins</small>
+                                    </div>
+                                </a>
+                                <a href="https://skinswap.com/r/csloadout" target="_blank" class="affiliate-btn skinswap-btn">
+                                    <span class="affiliate-icon">💎</span>
+                                    <div class="affiliate-info">
+                                        <strong>SkinSwap</strong>
+                                        <small>Premium Marketplace</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
                         <div class="weapon-image" id="${category}-image">
                             <div class="weapon-image-placeholder">
                                 <div>Weapon Image</div>
