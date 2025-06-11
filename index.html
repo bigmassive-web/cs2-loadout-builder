@@ -408,6 +408,14 @@
             object-fit: contain;
             border-radius: 4px;
             background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .skin-option img:hover {
+            transform: scale(1.1);
+            border: 2px solid #ffa500;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
         }
 
         .skin-option-info {
@@ -445,6 +453,7 @@
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.8rem;
             overflow: hidden;
+            position: relative;
         }
 
         .weapon-image.active {
@@ -456,6 +465,34 @@
             height: 100%;
             object-fit: contain;
             border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .weapon-image img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .weapon-image::after {
+            content: '🔗 Click to buy on TradeIt.gg';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, rgba(255, 165, 0, 0.9), rgba(255, 140, 0, 0.9));
+            color: #000;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .weapon-image:hover::after {
+            opacity: 1;
         }
 
         .weapon-image-placeholder {
@@ -468,6 +505,67 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+        }
+
+        .clickable-skin-image {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .clickable-skin-image::after {
+            content: '🛒 Buy on TradeIt.gg';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 165, 0, 0.9);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .clickable-skin-image:hover::after {
+            opacity: 1;
+        }
+
+        .affiliate-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #ffa500, #ff8c00);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        .affiliate-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #ffa500;
+        }
+
+        .skin-option:hover .affiliate-tooltip {
+            opacity: 1;
         }
 
         .loadout-actions {
@@ -1060,6 +1158,15 @@
         let currentWeaponSkins = {};
         let allRarities = new Set();
 
+        // Function to open affiliate link
+        function openAffiliateLink(skinName = '') {
+            const affiliateUrl = 'https://tradeit.gg/?aff=csloadout';
+            window.open(affiliateUrl, '_blank');
+            
+            // Show notification
+            showNotification(`Opening TradeIt.gg to find "${skinName}" - Happy trading! 🎮`, 'success');
+        }
+
         // API Configuration with working endpoints
         const API_ENDPOINTS = {
             primary: 'https://bymykel.github.io/CSGO-API/api/en/',
@@ -1555,8 +1662,12 @@
                     <div class="skin-option rarity-${rarityClass}" 
                          style="border-left-color: ${rarityColor};"
                          onclick="selectSkin('${category}', '${skin.id}', '${safeName}', '${rarityName}', '${skin.image}', '${skin.weapon.name}')">
-                        <img src="${skin.image}" alt="${skin.name}" 
-                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCA2MCAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjM1IiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjMwIiB5PSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4='" />
+                        <div class="clickable-skin-image" style="position: relative;">
+                            <img src="${skin.image}" alt="${skin.name}" 
+                                 onclick="event.stopPropagation(); openAffiliateLink('${safeName}');"
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCA2MCAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjM1IiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjMwIiB5PSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4='" />
+                            <div class="affiliate-tooltip">Click to buy on TradeIt.gg!</div>
+                        </div>
                         <div class="skin-option-info">
                             <div class="skin-option-name">${skin.name}</div>
                             <div class="skin-option-rarity" style="color: ${rarityColor};">${rarityName}</div>
@@ -1588,9 +1699,9 @@
                 <p>Weapon: ${weaponName} | Rarity: ${rarity}</p>
             `;
             
-            // Show weapon image
+            // Show weapon image with affiliate link functionality
             imageDiv.classList.add('active');
-            imageDiv.innerHTML = `<img src="${imageUrl}" alt="${skinName}" />`;
+            imageDiv.innerHTML = `<img src="${imageUrl}" alt="${skinName}" onclick="openAffiliateLink('${skinName}')" />`;
             
             // Save to current loadout
             saveWeaponSelection(category, skinId, skinName, rarity, imageUrl, weaponName);
