@@ -3,327 +3,1350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS2 Price Guessing</title>
+    <title>CS2 Skin Comparison</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122); color: #ffffff; min-height: 100vh; padding-top: 80px; }
-        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(15px); border-bottom: 2px solid rgba(0, 191, 255, 0.3); z-index: 1000; padding: 15px 0; box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2); }
-        .nav-content { max-width: 1600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-        .nav-logo { font-size: 1.5rem; font-weight: bold; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .nav-menu { display: flex; gap: 15px; }
-        .nav-btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; color: white; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .nav-btn:hover { background: rgba(0, 191, 255, 0.2); border-color: rgba(0, 191, 255, 0.5); transform: translateY(-2px); }
-        .nav-btn.active { background: linear-gradient(45deg, #9500ff, #00bfff); border-color: transparent; }
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 40px; padding: 30px 0; background: linear-gradient(90deg, #9500ff, #00bfff); border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3); }
-        .header h1 { font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px; color: white; }
-        .header p { font-size: 1.2rem; opacity: 0.9; color: white; }
-        .content-area { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .screen { display: none; }
-        .screen.active { display: block; }
-        .menu-screen { text-align: center; padding: 4rem 2rem; }
-        .btn { background: linear-gradient(45deg, #9500ff, #00bfff); border: none; padding: 1rem 2rem; border-radius: 12px; color: white; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 25px rgba(0, 191, 255, 0.3); margin: 0.5rem; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0, 191, 255, 0.4); }
-        .btn.secondary { background: linear-gradient(45deg, #666, #888); box-shadow: 0 8px 25px rgba(102, 102, 102, 0.3); }
-        .mode-card { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 2rem; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; max-width: 300px; margin: 1rem auto; }
-        .mode-card:hover { border-color: #00bfff; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3); }
-        .mode-card h3 { color: #00bfff; margin-bottom: 1rem; }
-        .room-section { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 2rem; margin: 2rem 0; backdrop-filter: blur(10px); border: 1px solid rgba(0, 191, 255, 0.3); }
-        .input-group input { width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid rgba(0, 191, 255, 0.3); background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; }
-        .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
-        .game-screen { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; min-height: 80vh; }
-        .loadout-builder { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 2rem; backdrop-filter: blur(10px); }
-        .weapon-category { margin-bottom: 2rem; }
-        .category-title { color: #00bfff; font-size: 1.3rem; margin-bottom: 1rem; }
-        .weapon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-        .weapon-card { background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 1rem; border: 2px solid transparent; cursor: pointer; transition: all 0.3s ease; text-align: center; }
-        .weapon-card:hover { border-color: #00bfff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 191, 255, 0.2); }
-        .weapon-card.selected { border-color: #00bfff; background: rgba(0, 191, 255, 0.2); }
-        .weapon-name { font-weight: bold; margin-bottom: 0.5rem; color: #ffffff; }
-        .skin-name { font-size: 0.9rem; color: #ccc; }
-        .game-sidebar { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 2rem; backdrop-filter: blur(10px); height: fit-content; }
-        .target-value { font-size: 1.5rem; color: #00bfff; text-align: center; margin: 1rem 0; padding: 1rem; background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
-        .loadout-summary { background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
-        .selected-items { max-height: 200px; overflow-y: auto; }
-        .selected-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; }
-        .selected-item button { background: #ff4444; border: none; color: white; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
-        .results-screen { text-align: center; padding: 2rem; }
-        .winner-announcement { font-size: 3rem; color: #00bfff; margin: 2rem 0; text-shadow: 0 0 20px rgba(0, 191, 255, 0.5); }
-        .results-table { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 2rem; margin: 2rem auto; max-width: 600px; }
-        .result-row { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; }
-        @media (max-width: 768px) { .game-screen { grid-template-columns: 1fr; } .weapon-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); } .header h1 { font-size: 2rem; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122);
+            color: #ff6600;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: rgba(0, 191, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #9500ff, #00bfff);
+            border-color: transparent;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 30px;
+        }
+
+        .ad-space {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            height: 800px;
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(90deg, #9500ff, #00bfff);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .comparison-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .skin-selectors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .skin-selector-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .skin-selector-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .skin-selector-card h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+            text-align: center;
+        }
+
+        .skin-search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .skin-search {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .skin-search::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .weapon-filter {
+            min-width: 150px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .weapon-filter option {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .skin-results {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .skin-results::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .skin-results::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .skin-results::-webkit-scrollbar-thumb {
+            background: rgba(0, 191, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .skin-option {
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .skin-option:hover {
+            background: rgba(0, 191, 255, 0.1);
+            border-left-color: #00bfff;
+            transform: translateX(5px);
+        }
+
+        .skin-option.selected {
+            background: rgba(0, 191, 255, 0.2);
+            border-left-color: #00bfff;
+        }
+
+        .skin-option img {
+            width: 80px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .skin-option-info {
+            flex: 1;
+        }
+
+        .skin-option-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .skin-option-weapon {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .skin-option-rarity {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .comparison-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comparison-item h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .comparison-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-image img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .comparison-image::after {
+            content: '🔗 Click to buy on TradeIt.gg';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, rgba(255, 165, 0, 0.9), rgba(255, 140, 0, 0.9));
+            color: #000;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .comparison-image:hover::after {
+            opacity: 1;
+        }
+
+        .comparison-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .comparison-placeholder .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .comparison-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 191, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #00bfff;
+        }
+
+        .comparison-info h5 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .comparison-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .comparison-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .affiliate-banner {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9));
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .tradeit-banner {
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05));
+        }
+
+        .banner-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        .banner-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .bonus-highlights {
+            margin: 20px 0;
+        }
+
+        .bonus-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+
+        .bonus-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        .bonus-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .bonus-text strong {
+            display: block;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .bonus-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffa500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .banner-cta {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tradeit-cta {
+            background: linear-gradient(45deg, #ffa500, #ff8c00);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .tradeit-cta:hover {
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.4);
+        }
+
+        .banner-features {
+            font-size: 0.65rem;
+            line-height: 1.3;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #00bfff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .api-status {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #00bfff;
+        }
+
+        .api-status.loading {
+            border-left-color: #ffa500;
+        }
+
+        .api-status.error {
+            border-left-color: #ff6b6b;
+        }
+
+        .api-status.success {
+            border-left-color: #51cf66;
+        }
+
+        .site-footer {
+            background: linear-gradient(135deg, #0a0a0a, #001122);
+            border-top: 2px solid rgba(0, 191, 255, 0.3);
+            margin-top: 60px;
+            padding: 40px 0 20px;
+            color: #ffffff;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #00bfff;
+        }
+
+        .footer-section p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .footer-disclaimers {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #888888;
+            font-size: 0.9rem;
+        }
+
+        .footer-disclaimers p {
+            margin-bottom: 10px;
+        }
+
+        .footer-disclaimers a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer-disclaimers a:hover {
+            color: #ffffff;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .ad-space {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 15px;
+            }
+            
+            .skin-selectors {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-display {
+                grid-template-columns: 1fr;
+            }
+            
+            .skin-search-container {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .comparison-stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Top Navigation Bar -->
     <div class="top-nav">
         <div class="nav-content">
             <div class="nav-logo">CS Loadouts</div>
             <div class="nav-menu">
-                <a href="#" class="nav-btn">🔫 Loadout Builder</a>
-                <a href="#" class="nav-btn">💰 Price Game</a>
-                <a href="#" class="nav-btn active">🎯 Price Guessing</a>
-                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/skin-comparison" class="nav-btn">⚖️ Skin Compare</a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/" class="nav-btn">
+                    🔫 Loadout Builder
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html" class="nav-btn">
+                    💰 Price Game
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html" class="nav-btn">
+                    🎯 Price Guessing
+                </a>
+                <a href="#" class="nav-btn active">
+                    ⚖️ Skin Comparison
+                </a>
             </div>
         </div>
     </div>
 
     <div class="main-container">
         <div class="header">
-            <h1>🎯 CS2 Price Guessing</h1>
-            <p>Test your knowledge of CS2 skin values without seeing prices!</p>
+            <h1>⚖️ CS2 Skin Comparison</h1>
+            <p>Compare CS2 skins using ByMykel API data</p>
         </div>
 
-        <div class="content-area">
-            <div class="screen active" id="menu-screen">
-                <div class="menu-screen">
-                    <h2 style="margin-bottom: 2rem;">Welcome to the Price Challenge!</h2>
-                    <p style="margin-bottom: 3rem;">Test your knowledge of CS2 skin values. Build the most valuable loadout without seeing any prices!</p>
+        <!-- Left Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>🔄 TradeIt.gg</h3>
+                    <p class="banner-subtitle">Trade CS2 Skins Instantly</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🎁</div>
+                        <div class="bonus-text">
+                            <strong>First Trade Bonus</strong>
+                            <span class="bonus-amount">$5.00</span>
+                        </div>
+                    </div>
                     
-                    <div class="mode-card" onclick="goToSolo()">
-                        <h3>🎯 Solo Challenge</h3>
-                        <p>Practice mode - try to hit different target values and improve your skin knowledge!</p>
+                    <div class="bonus-item">
+                        <div class="bonus-icon">💰</div>
+                        <div class="bonus-text">
+                            <strong>Topup Bonus</strong>
+                            <span class="bonus-amount">35%</span>
+                        </div>
                     </div>
-                    <div class="mode-card" onclick="goToMulti()">
-                        <h3>👥 Share & Compare</h3>
-                        <p>Create a challenge link to share with friends. Compare results when both complete!</p>
+                </div>
+                
+                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Start Trading Now
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Instant trades<br>
+                    ✨ 1000+ skins available<br>
+                    ✨ Secure & trusted
+                </p>
+            </div>
+        </div>
+
+        <div class="comparison-container">
+            <!-- API Status -->
+            <div class="api-status loading" id="apiStatus">
+                <div class="loading-spinner"></div>
+                <strong>Loading CS2 skins from ByMykel API...</strong>
+                <p>Fetching latest skin data from GitHub repository</p>
+            </div>
+
+            <div class="skin-selectors">
+                <div class="skin-selector-card">
+                    <h3>🔍 Select First Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search1" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter1">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults1">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+
+                <div class="skin-selector-card">
+                    <h3>🔍 Select Second Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search2" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter2">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults2">
+                        <div class="loading-spinner"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="screen" id="solo-setup">
-                <div class="menu-screen">
-                    <h2 style="margin-bottom: 2rem;">Solo Challenge Setup</h2>
-                    <div class="room-section">
-                        <h3>Choose Your Challenge</h3>
-                        <div class="input-group">
-                            <input type="text" id="player-name" placeholder="Your Name" maxlength="20">
-                        </div>
-                        <div style="margin-top: 2rem;">
-                            <button class="btn" onclick="startGame('easy')">Easy ($5,000 - $10,000)</button>
-                            <button class="btn" onclick="startGame('medium')">Medium ($10,000 - $20,000)</button>
-                            <button class="btn" onclick="startGame('hard')">Hard ($20,000 - $35,000)</button>
-                            <br><br>
-                            <button class="btn secondary" onclick="showScreen('menu-screen')">Back</button>
+            <div class="comparison-display">
+                <div class="comparison-item">
+                    <h4>First Skin</h4>
+                    <div class="comparison-image" id="comparison1">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="screen" id="game-screen">
-                <div class="game-screen">
-                    <div class="loadout-builder">
-                        <h2>Build Your Loadout</h2>
-                        <div class="weapon-category">
-                            <div class="category-title">🔫 Rifles</div>
-                            <div class="weapon-grid" id="rifles-grid"></div>
-                        </div>
-                        <div class="weapon-category">
-                            <div class="category-title">🔫 Pistols</div>
-                            <div class="weapon-grid" id="pistols-grid"></div>
-                        </div>
-                        <div class="weapon-category">
-                            <div class="category-title">🔫 SMGs</div>
-                            <div class="weapon-grid" id="smgs-grid"></div>
-                        </div>
-                        <div class="weapon-category">
-                            <div class="category-title">🔪 Knives</div>
-                            <div class="weapon-grid" id="knives-grid"></div>
-                        </div>
-                        <div class="weapon-category">
-                            <div class="category-title">🧤 Gloves</div>
-                            <div class="weapon-grid" id="gloves-grid"></div>
-                        </div>
-                    </div>
-                    <div class="game-sidebar">
-                        <div class="target-value">Target: $<span id="target-amount">15,000</span></div>
-                        <div class="loadout-summary">
-                            <h4>Your Loadout</h4>
-                            <div class="selected-items" id="selected-items"></div>
-                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
-                                <strong>Items Selected: <span id="items-count">0</span>/5</strong>
+                    <div class="comparison-info" id="info1" style="display: none;">
+                        <h5 id="skinName1">Skin Name</h5>
+                        <p id="weaponName1">Weapon: -</p>
+                        <p id="rarityName1">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity1">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Collection</div>
+                                <div class="stat-value" id="collection1">-</div>
                             </div>
                         </div>
-                        <button class="btn" onclick="submitLoadout()">Submit Loadout</button>
+                    </div>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Second Skin</h4>
+                    <div class="comparison-image" id="comparison2">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
+                        </div>
+                    </div>
+                    <div class="comparison-info" id="info2" style="display: none;">
+                        <h5 id="skinName2">Skin Name</h5>
+                        <p id="weaponName2">Weapon: -</p>
+                        <p id="rarityName2">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity2">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Collection</div>
+                                <div class="stat-value" id="collection2">-</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="screen" id="results-screen">
-                <div class="results-screen">
-                    <div class="winner-announcement" id="winner-text">🎯 Challenge Complete!</div>
-                    <div class="results-table">
-                        <h3>Your Results</h3>
-                        <div class="result-row"><span>Target Value:</span><span>$<span id="final-target">15,000</span></span></div>
-                        <div class="result-row"><span>Your Loadout:</span><span>$<span id="your-total">12,500</span></span></div>
-                        <div class="result-row"><span>Difference:</span><span id="difference-display">$2,500 (16.7%)</span></div>
-                        <div class="result-row"><span>Grade:</span><span id="grade-display">B+</span></div>
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>💎 SkinSwap</h3>
+                    <p class="banner-subtitle">Premium CS2 Marketplace</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🚀</div>
+                        <div class="bonus-text">
+                            <strong>Premium Skins</strong>
+                            <span class="bonus-amount">Verified</span>
+                        </div>
                     </div>
-                    <div id="loadout-breakdown" class="results-table">
-                        <h3>Loadout Breakdown</h3>
-                        <div id="breakdown-items"></div>
-                    </div>
-                    <div style="margin-top: 2rem;">
-                        <button class="btn" onclick="playAgain()">Play Again</button>
-                        <button class="btn secondary" onclick="showScreen('menu-screen')">Main Menu</button>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🔒</div>
+                        <div class="bonus-text">
+                            <strong>Secure Trading</strong>
+                            <span class="bonus-amount">100%</span>
+                        </div>
                     </div>
                 </div>
+                
+                <a href="https://skinswap.com/r/csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Browse Premium Skins
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Verified sellers<br>
+                    ✨ Rare collections<br>
+                    ✨ Instant delivery
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                    <li><a href="#">Skin Comparison</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
+        
+        <div class="footer-disclaimers">
+            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+            <p>As affiliates of TradeIt.gg and SkinSwap, we may earn commissions from qualifying purchases made through our links.</p>
+        </div>
+    </footer>
+
     <script>
-        var gameState = {selectedItems: {}, targetValue: 0, playerName: '', difficulty: 'medium'};
-        var weaponData = {
-            rifles: [{name: 'AK-47', skin: 'Redline (FT)', price: 85}, {name: 'AK-47', skin: 'Vulcan (MW)', price: 650}, {name: 'AK-47', skin: 'Fire Serpent (FT)', price: 1200}, {name: 'M4A4', skin: 'Asiimov (FT)', price: 120}, {name: 'M4A4', skin: 'Howl (FT)', price: 4500}, {name: 'M4A1-S', skin: 'Hot Rod (FN)', price: 280}, {name: 'AWP', skin: 'Dragon Lore (FT)', price: 8500}, {name: 'AWP', skin: 'Lightning Strike (FN)', price: 450}, {name: 'AWP', skin: 'Asiimov (FT)', price: 85}],
-            pistols: [{name: 'Glock-18', skin: 'Fade (FN)', price: 320}, {name: 'USP-S', skin: 'Kill Confirmed (MW)', price: 85}, {name: 'USP-S', skin: 'Orion (FN)', price: 95}, {name: 'Desert Eagle', skin: 'Blaze (FN)', price: 380}, {name: 'Desert Eagle', skin: 'Printstream (MW)', price: 95}],
-            smgs: [{name: 'P90', skin: 'Asiimov (FT)', price: 65}, {name: 'P90', skin: 'Death by Kitty (MW)', price: 180}, {name: 'MP7', skin: 'Fade (FN)', price: 75}],
-            knives: [{name: 'Karambit', skin: 'Fade (FN)', price: 2800}, {name: 'M9 Bayonet', skin: 'Doppler (FN)', price: 1200}, {name: 'Butterfly Knife', skin: 'Tiger Tooth (FN)', price: 1800}, {name: 'Bayonet', skin: 'Marble Fade (FN)', price: 950}],
-            gloves: [{name: 'Sport Gloves', skin: 'Pandoras Box (FT)', price: 1500}, {name: 'Driver Gloves', skin: 'Crimson Weave (MW)', price: 890}, {name: 'Specialist Gloves', skin: 'Emerald Web (MW)', price: 2200}, {name: 'Hand Wraps', skin: 'Cobalt Skulls (MW)', price: 280}]
-        };
+        // Global variables
+        let allSkins = [];
+        let filteredSkins1 = [];
+        let filteredSkins2 = [];
+        let selectedSkin1 = null;
+        let selectedSkin2 = null;
 
-        function showScreen(screenId) {
-            var screens = document.getElementsByClassName('screen');
-            for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
-            document.getElementById(screenId).classList.add('active');
+        // ByMykel CS2 API endpoints - prioritized with working endpoints first
+        const BYMYKEL_API_ENDPOINTS = [
+            // Working CORS proxies first (fastest)
+            'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins.json'),
+            'https://corsproxy.io/?' + encodeURIComponent('https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json'),
+            
+            // Alternative working proxies
+            'https://api.allorigins.win/get?url=' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins.json'),
+            'https://api.allorigins.win/get?url=' + encodeURIComponent('https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json'),
+            
+            // Backup proxies (if others fail)
+            'https://thingproxy.freeboard.io/fetch/https://bymykel.github.io/CSGO-API/api/en/skins.json',
+            'https://cors-anywhere.herokuapp.com/https://bymykel.github.io/CSGO-API/api/en/skins.json'
+        ];
+
+        // Initialize the application
+        async function initializeApp() {
+            try {
+                updateApiStatus('loading', 'Loading CS2 skins...', 'Using fastest available endpoint');
+                
+                await loadSkinsFromByMykelAPI();
+                
+                if (allSkins.length > 0) {
+                    updateApiStatus('success', 'Successfully loaded CS2 skins!', `⚡ ${allSkins.length} skins loaded quickly`);
+                    populateWeaponFilters();
+                    
+                    // Show first 50 skins immediately for faster initial display
+                    displaySkins('skinResults1', allSkins.slice(0, 50));
+                    displaySkins('skinResults2', allSkins.slice(0, 50));
+                    filteredSkins1 = allSkins;
+                    filteredSkins2 = allSkins;
+                    setupEventListeners();
+                    showNotification(`⚡ Loaded ${allSkins.length} CS2 skins quickly!`, 'success');
+                } else {
+                    throw new Error('No skins loaded from ByMykel API');
+                }
+                
+            } catch (error) {
+                console.error('Failed to load from ByMykel API:', error);
+                updateApiStatus('error', 'ByMykel API temporarily unavailable', 'All endpoints and CORS proxies failed. This is likely due to GitHub Pages CORS restrictions.');
+                
+                // Show helpful error message with retry option
+                showAPIError();
+                showNotification('API temporarily unavailable - CORS restrictions detected', 'warning');
+            }
         }
 
-        function goToSolo() { showScreen('solo-setup'); }
-        function goToMulti() { alert('Multiplayer mode coming soon! Try Solo mode for now.'); }
-
-        function generateTargetValue(difficulty) {
-            var ranges = {easy: {min: 5000, max: 10000}, medium: {min: 10000, max: 20000}, hard: {min: 20000, max: 35000}};
-            var range = ranges[difficulty];
-            return Math.floor(Math.random() * (range.max - range.min)) + range.min;
+        // Load skins from ByMykel CS2 API with optimized endpoints
+        async function loadSkinsFromByMykelAPI() {
+            console.log('🚀 Fast-loading CS2 skins from ByMykel API...');
+            
+            for (let i = 0; i < BYMYKEL_API_ENDPOINTS.length; i++) {
+                const endpoint = BYMYKEL_API_ENDPOINTS[i];
+                console.log(`⚡ Trying endpoint ${i + 1}/${BYMYKEL_API_ENDPOINTS.length}: ${endpoint.includes('corsproxy') ? 'CorsProxy' : endpoint.includes('allorigins') ? 'AllOrigins' : 'Other'}...`);
+                
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 8000); // Reduced to 8 seconds
+                    
+                    const response = await fetch(endpoint, {
+                        signal: controller.signal,
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        let data = await response.json();
+                        
+                        // Handle proxy response formats quickly
+                        if (endpoint.includes('allorigins.win') && data.contents) {
+                            data = JSON.parse(data.contents);
+                        }
+                        
+                        if (Array.isArray(data) && data.length > 0) {
+                            allSkins = processSkinsData(data);
+                            console.log(`🎉 FAST SUCCESS! Loaded ${allSkins.length} skins (endpoint ${i + 1})`);
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`❌ Endpoint ${i + 1} failed: ${error.message.substring(0, 50)}...`);
+                    if (i < BYMYKEL_API_ENDPOINTS.length - 1) {
+                        updateApiStatus('loading', 'Trying next endpoint...', `${i + 1}/${BYMYKEL_API_ENDPOINTS.length} failed`);
+                    }
+                }
+            }
+            
+            throw new Error('All optimized ByMykel API endpoints failed');
         }
 
-        function startGame(difficulty) {
-            gameState.playerName = document.getElementById('player-name').value.trim() || 'Player';
-            gameState.difficulty = difficulty;
-            gameState.targetValue = generateTargetValue(difficulty);
-            gameState.selectedItems = {};
-            initializeGameScreen();
-            showScreen('game-screen');
-        }
-
-        function initializeGameScreen() {
-            document.getElementById('target-amount').textContent = gameState.targetValue.toLocaleString();
-            var categories = ['rifles', 'pistols', 'smgs', 'knives', 'gloves'];
-            for (var i = 0; i < categories.length; i++) createWeaponGrid(categories[i]);
-            updateLoadoutSummary();
-        }
-
-        function createWeaponGrid(category) {
-            var grid = document.getElementById(category + '-grid');
-            grid.innerHTML = '';
-            var weapons = weaponData[category];
-            for (var i = 0; i < weapons.length; i++) {
-                var weapon = weapons[i];
-                var card = document.createElement('div');
-                card.className = 'weapon-card';
-                card.setAttribute('data-category', category);
-                card.setAttribute('data-index', i);
-                card.innerHTML = '<div class="weapon-name">' + weapon.name + '</div><div class="skin-name">' + weapon.skin + '</div>';
-                card.onclick = function() {
-                    var cat = this.getAttribute('data-category');
-                    var idx = parseInt(this.getAttribute('data-index'));
-                    selectWeapon(cat, idx);
+        // Process skins data from ByMykel API (optimized)
+        function processSkinsData(data) {
+            console.log(`⚡ Fast-processing ${data.length} skin entries...`);
+            
+            const processedSkins = data.map((skin, index) => {
+                const skinName = skin.name || `Skin ${index}`;
+                const weaponName = skin.weapon?.name || extractWeaponFromName(skinName);
+                const rarityName = skin.rarity?.name || skin.rarity || 'Consumer Grade';
+                
+                return {
+                    id: skin.id || `skin_${index}`,
+                    name: skinName,
+                    weapon: weaponName,
+                    rarity: rarityName,
+                    rarityColor: skin.rarity?.color || getRarityColorByName(rarityName),
+                    collection: skin.crates?.[0]?.name || 'Unknown Collection',
+                    image: skin.image || generatePlaceholderImage(),
+                    category: determineCategory(weaponName)
                 };
-                grid.appendChild(card);
+            }).filter(skin => skin.weapon !== 'Unknown' && !skin.name.includes('Skin '));
+            
+            console.log(`⚡ Fast-processed ${processedSkins.length} valid skins`);
+            return processedSkins;
+        }
+
+        // Extract weapon name from full skin name
+        function extractWeaponFromName(fullName) {
+            const parts = fullName.split(' | ');
+            const weaponPart = parts[0] || '';
+            
+            // Handle special cases
+            if (weaponPart.includes('★')) {
+                return weaponPart.replace('★ ', '').trim();
             }
+            
+            return weaponPart.trim() || 'Unknown';
         }
 
-        function selectWeapon(category, index) {
-            var selectedCount = Object.keys(gameState.selectedItems).length;
-            var hasItemInCategory = category in gameState.selectedItems;
-            if (selectedCount >= 5 && !hasItemInCategory) { alert('Maximum 5 items allowed!'); return; }
-            if (hasItemInCategory) {
-                var prevCard = document.querySelector('[data-category="' + category + '"].selected');
-                if (prevCard) prevCard.classList.remove('selected');
+        // Get rarity color by name
+        function getRarityColorByName(rarityName) {
+            const colors = {
+                'Consumer Grade': '#b0c3d9',
+                'Industrial Grade': '#5e98d9',
+                'Mil-Spec Grade': '#4b69ff',
+                'Restricted': '#8847ff',
+                'Classified': '#d32ce6',
+                'Covert': '#eb4b4b',
+                'Contraband': '#e4ae39',
+                'Extraordinary': '#ffd700'
+            };
+            
+            // Try exact match first
+            if (colors[rarityName]) return colors[rarityName];
+            
+            // Try partial matches
+            for (const [key, color] of Object.entries(colors)) {
+                if (rarityName.toLowerCase().includes(key.toLowerCase().split(' ')[0])) {
+                    return color;
+                }
             }
-            gameState.selectedItems[category] = index;
-            var card = document.querySelector('[data-category="' + category + '"][data-index="' + index + '"]');
-            if (card) card.classList.add('selected');
-            updateLoadoutSummary();
+            
+            return '#ffffff'; // Default white
         }
 
-        function updateLoadoutSummary() {
-            var container = document.getElementById('selected-items');
-            container.innerHTML = '';
-            var itemCount = 0;
-            var categories = Object.keys(gameState.selectedItems);
-            for (var i = 0; i < categories.length; i++) {
-                var category = categories[i];
-                var index = gameState.selectedItems[category];
-                var weapon = weaponData[category][index];
-                var item = document.createElement('div');
-                item.className = 'selected-item';
-                item.innerHTML = '<span>' + weapon.name + ' | ' + weapon.skin + '</span><button onclick="removeItem(\'' + category + '\')">×</button>';
-                container.appendChild(item);
-                itemCount++;
+        // Determine weapon category
+        function determineCategory(weapon) {
+            const categories = {
+                rifles: ['AK-47', 'M4A4', 'M4A1-S', 'AWP', 'SSG 08', 'AUG', 'SG 553', 'FAMAS', 'Galil AR', 'SCAR-20', 'G3SG1'],
+                pistols: ['Glock-18', 'USP-S', 'P2000', 'Desert Eagle', 'P250', 'Tec-9', 'Five-SeveN', 'CZ75-Auto', 'R8 Revolver', 'Dual Berettas'],
+                smgs: ['MP7', 'MP9', 'MP5-SD', 'UMP-45', 'P90', 'PP-Bizon', 'MAC-10'],
+                knives: ['Karambit', 'M9 Bayonet', 'Bayonet', 'Flip Knife', 'Gut Knife', 'Falchion Knife', 'Bowie Knife', 'Butterfly Knife', 'Huntsman Knife', 'Shadow Daggers', 'Ursus Knife', 'Navaja Knife', 'Stiletto Knife', 'Talon Knife', 'Classic Knife', 'Paracord Knife', 'Survival Knife', 'Nomad Knife', 'Skeleton Knife'],
+                gloves: ['Sport Gloves', 'Driver Gloves', 'Hand Wraps', 'Moto Gloves', 'Specialist Gloves', 'Bloodhound Gloves', 'Broken Fang Gloves', 'Hydra Gloves']
+            };
+            
+            for (const [category, weapons] of Object.entries(categories)) {
+                if (weapons.some(w => weapon.includes(w))) {
+                    return category;
+                }
             }
-            document.getElementById('items-count').textContent = itemCount;
+            
+            return 'other';
         }
 
-        function removeItem(category) {
-            delete gameState.selectedItems[category];
-            var card = document.querySelector('[data-category="' + category + '"].selected');
-            if (card) card.classList.remove('selected');
-            updateLoadoutSummary();
+        // Generate placeholder image
+        function generatePlaceholderImage() {
+            return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA4MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjQwIiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DUzIgU2tpbjwvdGV4dD4KPC9zdmc+';
         }
 
-        function submitLoadout() {
-            if (Object.keys(gameState.selectedItems).length === 0) { alert('Please select at least one item!'); return; }
-            var totalValue = 0;
-            var loadoutItems = [];
-            var categories = Object.keys(gameState.selectedItems);
-            for (var i = 0; i < categories.length; i++) {
-                var category = categories[i];
-                var index = gameState.selectedItems[category];
-                var weapon = weaponData[category][index];
-                totalValue += weapon.price;
-                loadoutItems.push({name: weapon.name + ' | ' + weapon.skin, price: weapon.price});
+        // Update API status display
+        function updateApiStatus(status, title, message) {
+            const statusElement = document.getElementById('apiStatus');
+            statusElement.className = `api-status ${status}`;
+            
+            let icon = '';
+            switch(status) {
+                case 'loading': icon = '<div class="loading-spinner"></div>'; break;
+                case 'success': icon = '✅'; break;
+                case 'error': icon = '⚠️'; break;
             }
-            showResults(totalValue, loadoutItems);
+            
+            statusElement.innerHTML = `
+                ${icon}
+                <strong>${title}</strong>
+                <p>${message}</p>
+            `;
         }
 
-        function showResults(totalValue, loadoutItems) {
-            var difference = Math.abs(gameState.targetValue - totalValue);
-            var percentDiff = ((difference / gameState.targetValue) * 100).toFixed(1);
-            var grade = 'F';
-            if (percentDiff <= 5) grade = 'A+';
-            else if (percentDiff <= 10) grade = 'A';
-            else if (percentDiff <= 15) grade = 'B+';
-            else if (percentDiff <= 20) grade = 'B';
-            else if (percentDiff <= 30) grade = 'C';
-            else if (percentDiff <= 50) grade = 'D';
-            document.getElementById('final-target').textContent = gameState.targetValue.toLocaleString();
-            document.getElementById('your-total').textContent = totalValue.toLocaleString();
-            document.getElementById('difference-display').textContent = '$' + difference.toLocaleString() + ' (' + percentDiff + '%)';
-            document.getElementById('grade-display').textContent = grade;
-            var winnerText = '🎯 Challenge Complete!';
-            if (percentDiff <= 5) winnerText = '🏆 Perfect! Amazing!';
-            else if (percentDiff <= 10) winnerText = '🎉 Excellent Work!';
-            else if (percentDiff <= 20) winnerText = '👍 Good Job!';
-            else if (percentDiff <= 50) winnerText = '📈 Keep Practicing!';
-            document.getElementById('winner-text').textContent = winnerText;
-            var breakdown = document.getElementById('breakdown-items');
-            breakdown.innerHTML = '';
-            for (var i = 0; i < loadoutItems.length; i++) {
-                var item = loadoutItems[i];
-                var itemDiv = document.createElement('div');
-                itemDiv.className = 'result-row';
-                itemDiv.innerHTML = '<span>' + item.name + '</span><span>$' + item.price.toLocaleString() + '</span>';
-                breakdown.appendChild(itemDiv);
+        // Show API error state with more helpful information
+        function showAPIError() {
+            const errorContent = `
+                <div style="text-align: center; color: #ff6b6b; padding: 40px;">
+                    <h4>⚠️ CORS Restriction Detected</h4>
+                    <p style="margin: 15px 0;">GitHub Pages is blocking the ByMykel API due to CORS policy.</p>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left;">
+                        <h5 style="color: #00bfff; margin-bottom: 10px;">Possible Solutions:</h5>
+                        <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
+                            <li>Download and run locally (CORS won't apply)</li>
+                            <li>Deploy to a server that can proxy the API</li>
+                            <li>Use a browser extension to disable CORS temporarily</li>
+                            <li>Wait for ByMykel API to add CORS headers</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: #00bfff; border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            🔄 Retry
+                        </button>
+                        <button onclick="window.open('https://github.com/ByMykel/CSGO-API', '_blank')" style="padding: 10px 20px; background: #9500ff; border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            📖 View ByMykel API
+                        </button>
+                    </div>
+                    
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.6);">
+                        This is a common issue with GitHub Pages and external APIs.<br>
+                        The site structure and comparison features work perfectly - just waiting for API access.
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('skinResults1').innerHTML = errorContent;
+            document.getElementById('skinResults2').innerHTML = errorContent;
+        }
+
+        // Populate weapon filter dropdowns
+        function populateWeaponFilters() {
+            const filter1 = document.getElementById('weaponFilter1');
+            const filter2 = document.getElementById('weaponFilter2');
+            
+            const uniqueWeapons = [...new Set(allSkins.map(skin => skin.weapon))].sort();
+            
+            // Clear existing options except first
+            filter1.innerHTML = '<option value="">All Weapons</option>';
+            filter2.innerHTML = '<option value="">All Weapons</option>';
+            
+            uniqueWeapons.forEach(weapon => {
+                if (weapon && weapon !== 'Unknown') {
+                    const option1 = document.createElement('option');
+                    option1.value = weapon;
+                    option1.textContent = weapon;
+                    filter1.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = weapon;
+                    option2.textContent = weapon;
+                    filter2.appendChild(option2);
+                }
+            });
+            
+            console.log(`🎛️ Populated filters with ${uniqueWeapons.length} unique weapons`);
+        }
+
+        // Display skins in results container
+        function displaySkins(containerId, skins) {
+            const container = document.getElementById(containerId);
+            
+            if (skins.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 40px;">No skins found matching your criteria</div>';
+                return;
             }
-            showScreen('results-screen');
+
+            let html = '';
+            const skinsToShow = skins.slice(0, 100); // Limit for performance
+            
+            skinsToShow.forEach(skin => {
+                const rarityColor = skin.rarityColor || getRarityColorByName(skin.rarity);
+                html += `
+                    <div class="skin-option" onclick="selectSkin('${containerId}', '${skin.id}')">
+                        <img src="${skin.image}" alt="${skin.name}" 
+                             onerror="this.src='${generatePlaceholderImage()}'" />
+                        <div class="skin-option-info">
+                            <div class="skin-option-name">${skin.name}</div>
+                            <div class="skin-option-weapon">${skin.weapon}</div>
+                            <div class="skin-option-rarity" style="color: ${rarityColor};">${skin.rarity}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (skins.length > 100) {
+                html += `<div style="text-align: center; padding: 15px; color: rgba(255, 255, 255, 0.7); font-style: italic;">Showing first 100 of ${skins.length} skins. Use search to narrow results.</div>`;
+            }
+            
+            container.innerHTML = html;
         }
 
-        function playAgain() {
-            gameState.selectedItems = {};
-            gameState.targetValue = generateTargetValue(gameState.difficulty);
-            initializeGameScreen();
-            showScreen('game-screen');
+        // Select a skin for comparison
+        function selectSkin(containerId, skinId) {
+            const skin = allSkins.find(s => s.id === skinId);
+            if (!skin) return;
+
+            const isFirstSelector = containerId === 'skinResults1';
+            const comparisonId = isFirstSelector ? 'comparison1' : 'comparison2';
+            const infoId = isFirstSelector ? 'info1' : 'info2';
+            
+            // Store selected skin
+            if (isFirstSelector) {
+                selectedSkin1 = skin;
+            } else {
+                selectedSkin2 = skin;
+            }
+
+            // Update visual selection
+            document.querySelectorAll(`#${containerId} .skin-option`).forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+
+            // Update comparison display
+            updateComparisonDisplay(comparisonId, infoId, skin);
+            
+            showNotification(`Selected: ${skin.name}`, 'success');
         }
+
+        // Update comparison display
+        function updateComparisonDisplay(comparisonId, infoId, skin) {
+            const comparisonDiv = document.getElementById(comparisonId);
+            const infoDiv = document.getElementById(infoId);
+            
+            // Update image
+            comparisonDiv.innerHTML = `<img src="${skin.image}" alt="${skin.name}" onclick="openAffiliateLink('${skin.name}')" onerror="this.src='${generatePlaceholderImage()}'" />`;
+            
+            // Update info
+            const rarityColor = skin.rarityColor || getRarityColorByName(skin.rarity);
+            const number = infoId.slice(-1);
+            
+            document.getElementById(`skinName${number}`).textContent = skin.name;
+            document.getElementById(`weaponName${number}`).textContent = `Weapon: ${skin.weapon}`;
+            document.getElementById(`rarityName${number}`).textContent = `Rarity: ${skin.rarity}`;
+            document.getElementById(`rarity${number}`).textContent = skin.rarity;
+            document.getElementById(`rarity${number}`).style.color = rarityColor;
+            document.getElementById(`collection${number}`).textContent = skin.collection;
+            
+            infoDiv.style.display = 'block';
+        }
+
+        // Filter skins based on search and weapon filter
+        function filterSkins(selectorNumber) {
+            const searchInput = document.getElementById(`search${selectorNumber}`);
+            const weaponFilter = document.getElementById(`weaponFilter${selectorNumber}`);
+            const resultsContainer = `skinResults${selectorNumber}`;
+            
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedWeapon = weaponFilter.value;
+            
+            let filtered = allSkins.filter(skin => {
+                const matchesSearch = skin.name.toLowerCase().includes(searchTerm) || 
+                                    skin.weapon.toLowerCase().includes(searchTerm) ||
+                                    (skin.collection && skin.collection.toLowerCase().includes(searchTerm));
+                const matchesWeapon = !selectedWeapon || skin.weapon === selectedWeapon;
+                
+                return matchesSearch && matchesWeapon;
+            });
+            
+            if (selectorNumber === 1) {
+                filteredSkins1 = filtered;
+            } else {
+                filteredSkins2 = filtered;
+            }
+            
+            displaySkins(resultsContainer, filtered);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search inputs
+            document.getElementById('search1').addEventListener('input', () => filterSkins(1));
+            document.getElementById('search2').addEventListener('input', () => filterSkins(2));
+            
+            // Weapon filters
+            document.getElementById('weaponFilter1').addEventListener('change', () => filterSkins(1));
+            document.getElementById('weaponFilter2').addEventListener('change', () => filterSkins(2));
+        }
+
+        // Open affiliate link
+        function openAffiliateLink(skinName = '') {
+            const affiliateUrl = 'https://tradeit.gg/?aff=csloadout';
+            window.open(affiliateUrl, '_blank');
+            showNotification(`Opening TradeIt.gg to find "${skinName}" - Happy trading! 🎮`, 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'linear-gradient(45deg, #28a745, #20c997)' : 
+                            type === 'warning' ? 'linear-gradient(45deg, #ffc107, #fd7e14)' :
+                            'linear-gradient(45deg, #dc3545, #e74c3c)';
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                background: ${bgColor};
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
