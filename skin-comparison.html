@@ -199,7 +199,7 @@
         }
 
         .skin-results {
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
             margin-bottom: 20px;
         }
@@ -267,6 +267,12 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        .skin-option-price {
+            font-size: 0.9rem;
+            color: #ffa500;
+            font-weight: bold;
+        }
+
         .comparison-display {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -281,7 +287,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            min-height: 400px;
+            min-height: 500px;
             display: flex;
             flex-direction: column;
         }
@@ -378,6 +384,32 @@
             margin-bottom: 5px;
         }
 
+        .comparison-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
         .affiliate-banner {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9));
             border-radius: 15px;
@@ -394,33 +426,6 @@
         .tradeit-banner {
             border: 2px solid rgba(255, 165, 0, 0.3);
             background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05));
-        }
-
-        .csloadouts-banner {
-            border: 2px solid rgba(0, 191, 255, 0.3);
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(0, 123, 255, 0.05));
-        }
-
-        .csloadouts-content {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 8px;
-            margin-right: -8px;
-        }
-
-        .csloadouts-content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .csloadouts-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-        }
-
-        .csloadouts-content::-webkit-scrollbar-thumb {
-            background: rgba(0, 191, 255, 0.5);
-            border-radius: 2px;
         }
 
         .banner-header h3 {
@@ -504,18 +509,6 @@
             box-shadow: 0 8px 25px rgba(255, 165, 0, 0.4);
         }
 
-        .csloadouts-cta {
-            background: linear-gradient(45deg, #00bfff, #0080ff);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
-        }
-
-        .csloadouts-cta:hover {
-            background: linear-gradient(45deg, #0080ff, #00bfff);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 191, 255, 0.4);
-        }
-
         .banner-features {
             font-size: 0.65rem;
             line-height: 1.3;
@@ -524,196 +517,11 @@
             text-align: center;
         }
 
-        .csloadouts-features {
-            margin: 8px 0;
-            flex-shrink: 0;
-        }
-
-        .feature-section {
-            margin-bottom: 10px;
-            padding: 8px 6px;
-            background: rgba(0, 191, 255, 0.05);
-            border-radius: 6px;
-            border: 1px solid rgba(0, 191, 255, 0.1);
-            flex-shrink: 0;
-        }
-
-        .feature-section.coming-soon {
-            background: rgba(255, 165, 0, 0.05);
-            border-color: rgba(255, 165, 0, 0.1);
-        }
-
-        .feature-category {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        .feature-list {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .feature-item-inline {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 2px 4px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 3px;
-            font-size: 0.65rem;
-        }
-
-        .feature-item-inline .feature-icon {
-            font-size: 0.7rem;
-            width: 12px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .feature-item-inline .feature-text {
-            color: #ffffff;
-            font-weight: 500;
-            line-height: 1.1;
-        }
-
-        .csloadouts-cta-section {
-            margin-top: 10px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        /* Skin Gallery Styles */
-        .skin-gallery {
-            background: linear-gradient(135deg, #0a0a0a, #001122);
-            border-top: 2px solid rgba(0, 191, 255, 0.3);
-            padding: 40px 0;
-            margin-top: 40px;
-        }
-
-        .skin-gallery-content {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .skin-gallery h2 {
-            color: #ffffff;
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .skin-gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 8px;
-            max-height: 600px;
-            overflow-y: auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar-thumb {
-            background: rgba(0, 191, 255, 0.5);
-            border-radius: 4px;
-        }
-
-        .gallery-skin-item {
-            position: relative;
-            aspect-ratio: 1.6;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .gallery-skin-item:hover {
-            transform: scale(1.05);
-            border-color: #ffa500;
-            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-            z-index: 10;
-        }
-
-        .gallery-skin-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-skin-item:hover img {
-            filter: brightness(1.2);
-        }
-
-        .gallery-skin-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            color: white;
-            padding: 8px 6px 4px;
-            font-size: 0.7rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-skin-item:hover .gallery-skin-overlay {
-            opacity: 1;
-        }
-
-        .gallery-skin-name {
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 2px;
-        }
-
-        .gallery-skin-weapon {
-            font-size: 0.6rem;
-            opacity: 0.8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .gallery-loading {
-            grid-column: 1 / -1;
             text-align: center;
             color: rgba(255, 255, 255, 0.7);
             padding: 40px;
             font-size: 1.1rem;
-        }
-
-        .gallery-stats {
-            text-align: center;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-        }
-
-        .gallery-stats span {
-            color: #00bfff;
-            font-weight: bold;
         }
 
         .footer {
@@ -779,6 +587,21 @@
             color: #ffffff;
         }
 
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #00bfff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 1200px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -809,6 +632,10 @@
             
             .header h1 {
                 font-size: 2rem;
+            }
+
+            .comparison-stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -890,7 +717,10 @@
                         </select>
                     </div>
                     <div class="skin-results" id="skinResults1">
-                        <div class="gallery-loading">Loading CS2 skins...</div>
+                        <div class="gallery-loading">
+                            <div class="loading-spinner"></div>
+                            Loading CS2 skins...
+                        </div>
                     </div>
                 </div>
 
@@ -903,7 +733,10 @@
                         </select>
                     </div>
                     <div class="skin-results" id="skinResults2">
-                        <div class="gallery-loading">Loading CS2 skins...</div>
+                        <div class="gallery-loading">
+                            <div class="loading-spinner"></div>
+                            Loading CS2 skins...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -917,3 +750,706 @@
                             <div>Select a skin above to compare</div>
                         </div>
                     </div>
+                    <div class="comparison-info" id="info1" style="display: none;">
+                        <h5 id="skinName1">Skin Name</h5>
+                        <p id="weaponName1">Weapon: -</p>
+                        <p id="rarityName1">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Est. Price</div>
+                                <div class="stat-value" id="price1">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity1">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Second Skin</h4>
+                    <div class="comparison-image" id="comparison2">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
+                        </div>
+                    </div>
+                    <div class="comparison-info" id="info2" style="display: none;">
+                        <h5 id="skinName2">Skin Name</h5>
+                        <p id="weaponName2">Weapon: -</p>
+                        <p id="rarityName2">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Est. Price</div>
+                                <div class="stat-value" id="price2">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity2">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>💎 SkinSwap</h3>
+                    <p class="banner-subtitle">Premium CS2 Marketplace</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🚀</div>
+                        <div class="bonus-text">
+                            <strong>Premium Skins</strong>
+                            <span class="bonus-amount">Verified</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🔒</div>
+                        <div class="bonus-text">
+                            <strong>Secure Trading</strong>
+                            <span class="bonus-amount">100%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://skinswap.com/r/csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Browse Premium Skins
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Verified sellers<br>
+                    ✨ Rare collections<br>
+                    ✨ Instant delivery
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                    <li><a href="#">Skin Comparison</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
+            <p class="affiliate-disclosure">
+                As affiliates of TradeIt.gg and SkinSwap, we may earn commissions from qualifying purchases made through our links.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Mock data for CS2 skins (since API is not working)
+        const mockSkinsData = [
+            // AK-47 Skins
+            {
+                id: 'ak47_redline',
+                name: 'AK-47 | Redline',
+                weapon: 'AK-47',
+                rarity: 'Classified',
+                price: '$45.20',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09-5lpKKqPrxN7LEmyUDsJdz2riZ9I2m2VG3qBZuMWylLdOWIwdqZgrR-FbrkOq605G67pXKy3QwpGB8soi5zzQ/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'ak47_asiimov',
+                name: 'AK-47 | Asiimov',
+                weapon: 'AK-47',
+                rarity: 'Covert',
+                price: '$125.30',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszcdD4b08-jhIWZlP_1IK_um25V4dB8teXA54vwxgTlqhJuMT_xd4PEJgY9aFzQqFK6kuvr15C-vp_Lm3trsiYmtyrawGGpwUYbFHNOgPo/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'ak47_vulcan',
+                name: 'AK-47 | Vulcan',
+                weapon: 'AK-47',
+                rarity: 'Covert',
+                price: '$890.50',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszcdD4b092klYyFg8jjNL3Dkmhf-d_x8JmLNtqL9FHu_ko5NWrxcYOSdQE6Mg3S-we3x-y6hcK16M7IzHVnuyJ3tiiq3UOz0kkaNeSPww/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'ak47_bloodsport',
+                name: 'AK-47 | Bloodsport',
+                weapon: 'AK-47',
+                rarity: 'Covert',
+                price: '$67.80',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszcdD4b09i_jImXmOXLP7LWnn8f7Z1yjLHHpIjw0AftqEZtYmr0J9TBewd5ZQzVqFG-weToh8S8v8-YzCZjuyk8pSGKjdTPpRA/512fx512f',
+                category: 'rifles'
+            },
+            // M4A4 Skins
+            {
+                id: 'm4a4_howl',
+                name: 'M4A4 | Howl',
+                weapon: 'M4A4',
+                rarity: 'Contraband',
+                price: '$4,250.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alIITCmX9e-9B_teTE8YXghRri8xE9Nz2mJ9OVcFU8aV7QqFW2wLq8g8K87ZvMnSdnsiZ053-6nBWxgxkYfOJ-hSvACdOzQg/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'm4a4_asiimov',
+                name: 'M4A4 | Asiimov',
+                weapon: 'M4A4',
+                rarity: 'Covert',
+                price: '$89.40',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDLbUkmJE5dd2j6eQ89uk2AS18hA5NjzzLYOQI1I5Y1zZ-1a-yOzthcK57ZrPzSBr7XUk4H7Zn0K1n1gSOcN-_WTk/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'm4a4_desolate_space',
+                name: 'M4A4 | Desolate Space',
+                weapon: 'M4A4',
+                rarity: 'Classified',
+                price: '$12.45',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO3mb-GkuP1P6jum25V4dB8xLCTpNjw2Qzh_xY4azqmcdCRdwE6aFyF_1m7l-zm1sK7vcvJyHpnvyEi5HyLgVXp1kkfcjAZ0g/512fx512f',
+                category: 'rifles'
+            },
+            // AWP Skins
+            {
+                id: 'awp_dragon_lore',
+                name: 'AWP | Dragon Lore',
+                weapon: 'AWP',
+                rarity: 'Covert',
+                price: '$8,200.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJB5NO6nYeDg7mjYOCBwW5UsZAoieuZpI-t2gW2_RdkZ2vzd4-cdw85ZlvX8gS5xOvm0cS0upSczCMw7CUi5ynbyESygBpIOOVq0-Hb3RQEY_NNrQ/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'awp_asiimov',
+                name: 'AWP | Asiimov',
+                weapon: 'AWP',
+                rarity: 'Covert',
+                price: '$130.20',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t26q4SClvD7PYTQgGpVu5Mn07C-9t723AXs-kI5YzjzLYKVcgU8ZAzY-1i6lOi9h8K4vcmcynFn6D5iuyhRhT6C2g/512fx512f',
+                category: 'rifles'
+            },
+            {
+                id: 'awp_hyper_beast',
+                name: 'AWP | Hyper Beast',
+                weapon: 'AWP',
+                rarity: 'Covert',
+                price: '$78.90',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t26q4SClvD7PYTdn2xZ_Isj2L-Q8Nym0Qztr0M5Y2_3LdSSI1Q3aA3Q81K8l7rohMS9vcvIz3Rj7j5iuygHbQKprw/512fx512f',
+                category: 'rifles'
+            },
+            // Glock Skins
+            {
+                id: 'glock_fade',
+                name: 'Glock-18 | Fade',
+                weapon: 'Glock-18',
+                rarity: 'Restricted',
+                price: '$345.60',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf0Ob3djFN79fnzL-YkvPzDLfTlWNQ48ZOgufE8Yvw0Aw6t9lFNGujJgCUdg46ZlrS_Ae4xb3u1pTtvJqcwXJmuCdq4y7bnEK0gAYMMLI3A9rKYQ/512fx512f',
+                category: 'pistols'
+            },
+            {
+                id: 'glock_water_elemental',
+                name: 'Glock-18 | Water Elemental',
+                weapon: 'Glock-18',
+                rarity: 'Restricted',
+                price: '$23.50',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf1OD3di59_oSJmImMn-O6NeLQzmpQ-vl-xoGSqNqkjlDj_UVla2D3d46VcFdqYwqB-1K6k7zoh5-5vs6YziY26HI8pSGKVP4xKjo/512fx512f',
+                category: 'pistols'
+            },
+            // Desert Eagle Skins
+            {
+                id: 'deagle_blaze',
+                name: 'Desert Eagle | Blaze',
+                weapon: 'Desert Eagle',
+                rarity: 'Restricted',
+                price: '$420.80',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposr-kLAtl7PLZTjlH7du6kb-HnvD8J_WCkGoFuZ1y2r2S89Sn2Ve1-RVqMmCnLdeTdVU9ZV2E-wO9x7vph8Lo75zPziZns3Qk4n7ZywO1hxgaOfJjhvbZRgrF/512fx512f',
+                category: 'pistols'
+            },
+            {
+                id: 'deagle_printstream',
+                name: 'Desert Eagle | Printstream',
+                weapon: 'Desert Eagle',
+                rarity: 'Classified',
+                price: '$78.30',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposr-kLAtl7PLZTjlH9N29mZKEhfLLP7LWnn8f6soj07XA99X32Q20rhE-Yj2nctCXI1c8aFiC_1S6lOjpgJO7tJybmCQ3uigrsS3D30vgujLpLXU/512fx512f',
+                category: 'pistols'
+            },
+            // Knives
+            {
+                id: 'karambit_doppler',
+                name: 'Karambit | Doppler',
+                weapon: 'Karambit',
+                rarity: 'Covert',
+                price: '$1,250.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf2PLacDBA5ciJlY20hPbkI6fum25V4dB8xLiQ9tT33wXi8hBpMT-mJteWJlBqZ1zX-AC8we28g8Tv6MnLnHBqvHUr5X-Lmhezi01SLrs4NF1Lvg/512fx512f',
+                category: 'knives'
+            },
+            {
+                id: 'm9_fade',
+                name: 'M9 Bayonet | Fade',
+                weapon: 'M9 Bayonet',
+                rarity: 'Covert',
+                price: '$1,890.50',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf1fI3dDxB7dCJnJm1jfbkMqfum25V4dB8xLiVod7z3Q3s_EQ4MW-lI4HEdVM4Nw3QrAW-xO--hpLptMjAzCAwvnUn7CiMmhGxgE0ZO7Y8hKTCVGfIXkc/512fx512f',
+                category: 'knives'
+            },
+            {
+                id: 'butterfly_fade',
+                name: 'Butterfly Knife | Fade',
+                weapon: 'Butterfly Knife',
+                rarity: 'Covert',
+                price: '$2,100.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf1fI3dDxB7dCJnJm1jfbkJ6fum25V4dB8xLzBp9ih2VXl_0JvYzj7JdSVcFM8M1yGrwe8k7jph5O56M-azHo17nMk4SyLmhGx1klEOOY4haGcVRrKHkc/512fx512f',
+                category: 'knives'
+            },
+            // Gloves
+            {
+                id: 'sport_pandoras_box',
+                name: 'Sport Gloves | Pandoras Box',
+                weapon: 'Sport Gloves',
+                rarity: 'Extraordinary',
+                price: '$18,500.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXA5QNJlC5YVFZf7n7-WqkJwN6GBjl3LAdOu_mkOQhvazvEcC9N6dCJgoGYkfLwMq_ummJW4NE_3byUrISh0VXmr0VqMGv7cYaRegU5MFHZ_lnovOq5g8S8vJTKmHcxvHQqsHiLyMKxnkkDbeE_1OzJWQ/512fx512f',
+                category: 'gloves'
+            },
+            {
+                id: 'driver_king_snake',
+                name: 'Driver Gloves | King Snake',
+                weapon: 'Driver Gloves',
+                rarity: 'Extraordinary',
+                price: '$1,250.00',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXA5QNJlC5YVFZf7n7-WqkJwN6GBjl3LAdOu_mkOQhvazvEcC9N6dCJgoGYkPvgDKvumXlQ5sN02L-QodSt3Qzu_EptYWimLY6TegU_YQ2ErlLox-2-hJK86p3Bzng3uyJ353zZm0Lh1BxObrc4gPSACQLJ8VpLHNM/512fx512f',
+                category: 'gloves'
+            },
+            {
+                id: 'hand_wraps_cobalt_skulls',
+                name: 'Hand Wraps | Cobalt Skulls',
+                weapon: 'Hand Wraps',
+                rarity: 'Extraordinary',
+                price: '$890.50',
+                image: 'https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXA5QNJlC5YVFZf7n7-WqkJwN6GBjl3LAdOu_mkOQhvazvZdC9P6dCJgoGYkfLwMq_ummJW4NE_37rAoISt3AXt8xBkMGDwcoTGIw5qMFCEq1btyOi5g8S96ZvPmCth7HMrtyuJyMOz0kocf-dn1urIWw/512fx512f',
+                category: 'gloves'
+            }
+        ];
+
+        // Global variables
+        let allSkins = mockSkinsData;
+        let filteredSkins1 = mockSkinsData;
+        let filteredSkins2 = mockSkinsData;
+        let selectedSkin1 = null;
+        let selectedSkin2 = null;
+
+        // Weapon categories for filtering
+        const weaponCategories = {
+            'rifles': ['AK-47', 'M4A4', 'M4A1-S', 'AWP', 'SSG 08', 'AUG', 'SG 553', 'FAMAS', 'Galil AR', 'SCAR-20', 'G3SG1'],
+            'pistols': ['Glock-18', 'USP-S', 'P2000', 'Desert Eagle', 'P250', 'Tec-9', 'Five-SeveN', 'CZ75-Auto', 'R8 Revolver', 'Dual Berettas'],
+            'smgs': ['MP7', 'MP9', 'MP5-SD', 'UMP-45', 'P90', 'PP-Bizon', 'MAC-10'],
+            'knives': ['Karambit', 'M9 Bayonet', 'Bayonet', 'Flip Knife', 'Gut Knife', 'Falchion Knife', 'Bowie Knife', 'Butterfly Knife', 'Huntsman Knife', 'Shadow Daggers'],
+            'gloves': ['Sport Gloves', 'Driver Gloves', 'Hand Wraps', 'Moto Gloves', 'Specialist Gloves', 'Bloodhound Gloves']
+        };
+
+        // Initialize the application
+        function initializeApp() {
+            populateWeaponFilters();
+            displaySkins('skinResults1', filteredSkins1);
+            displaySkins('skinResults2', filteredSkins2);
+            setupEventListeners();
+            showNotification('CS2 Skin Comparison loaded successfully!', 'success');
+        }
+
+        // Populate weapon filter dropdowns
+        function populateWeaponFilters() {
+            const filter1 = document.getElementById('weaponFilter1');
+            const filter2 = document.getElementById('weaponFilter2');
+            
+            // Get unique weapons from mock data
+            const uniqueWeapons = [...new Set(mockSkinsData.map(skin => skin.weapon))].sort();
+            
+            uniqueWeapons.forEach(weapon => {
+                const option1 = document.createElement('option');
+                option1.value = weapon;
+                option1.textContent = weapon;
+                filter1.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = weapon;
+                option2.textContent = weapon;
+                filter2.appendChild(option2);
+            });
+        }
+
+        // Display skins in results container
+        function displaySkins(containerId, skins) {
+            const container = document.getElementById(containerId);
+            
+            if (skins.length === 0) {
+                container.innerHTML = '<div class="gallery-loading">No skins found matching your criteria</div>';
+                return;
+            }
+
+            let html = '';
+            skins.forEach(skin => {
+                const rarityColor = getRarityColor(skin.rarity);
+                html += `
+                    <div class="skin-option" onclick="selectSkin('${containerId}', '${skin.id}')">
+                        <img src="${skin.image}" alt="${skin.name}" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA4MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjQwIiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+'" />
+                        <div class="skin-option-info">
+                            <div class="skin-option-name">${skin.name}</div>
+                            <div class="skin-option-weapon">${skin.weapon}</div>
+                            <div class="skin-option-price" style="color: ${rarityColor};">${skin.price}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Get rarity color
+        function getRarityColor(rarity) {
+            const colors = {
+                'Consumer Grade': '#b0c3d9',
+                'Industrial Grade': '#5e98d9',
+                'Mil-Spec': '#4b69ff',
+                'Restricted': '#8847ff',
+                'Classified': '#d32ce6',
+                'Covert': '#eb4b4b',
+                'Contraband': '#e4ae39',
+                'Extraordinary': '#ffd700'
+            };
+            return colors[rarity] || '#ffffff';
+        }
+
+        // Select a skin for comparison
+        function selectSkin(containerId, skinId) {
+            const skin = allSkins.find(s => s.id === skinId);
+            if (!skin) return;
+
+            const isFirstSelector = containerId === 'skinResults1';
+            const comparisonId = isFirstSelector ? 'comparison1' : 'comparison2';
+            const infoId = isFirstSelector ? 'info1' : 'info2';
+            
+            // Store selected skin
+            if (isFirstSelector) {
+                selectedSkin1 = skin;
+            } else {
+                selectedSkin2 = skin;
+            }
+
+            // Update visual selection
+            document.querySelectorAll(`#${containerId} .skin-option`).forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+
+            // Update comparison display
+            updateComparisonDisplay(comparisonId, infoId, skin);
+            
+            // Open affiliate link functionality
+            const comparisonImage = document.getElementById(comparisonId);
+            const img = comparisonImage.querySelector('img');
+            if (img) {
+                img.onclick = () => openAffiliateLink(skin.name);
+            }
+        }
+
+        // Update comparison display
+        function updateComparisonDisplay(comparisonId, infoId, skin) {
+            const comparisonDiv = document.getElementById(comparisonId);
+            const infoDiv = document.getElementById(infoId);
+            
+            // Update image
+            comparisonDiv.innerHTML = `<img src="${skin.image}" alt="${skin.name}" onclick="openAffiliateLink('${skin.name}')" />`;
+            
+            // Update info
+            const rarityColor = getRarityColor(skin.rarity);
+            document.getElementById(`skinName${infoId.slice(-1)}`).textContent = skin.name;
+            document.getElementById(`weaponName${infoId.slice(-1)}`).textContent = `Weapon: ${skin.weapon}`;
+            document.getElementById(`rarityName${infoId.slice(-1)}`).textContent = `Rarity: ${skin.rarity}`;
+            document.getElementById(`price${infoId.slice(-1)}`).textContent = skin.price;
+            document.getElementById(`rarity${infoId.slice(-1)}`).textContent = skin.rarity;
+            document.getElementById(`rarity${infoId.slice(-1)}`).style.color = rarityColor;
+            
+            infoDiv.style.display = 'block';
+        }
+
+        // Filter skins based on search and weapon filter
+        function filterSkins(selectorNumber) {
+            const searchInput = document.getElementById(`search${selectorNumber}`);
+            const weaponFilter = document.getElementById(`weaponFilter${selectorNumber}`);
+            const resultsContainer = `skinResults${selectorNumber}`;
+            
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedWeapon = weaponFilter.value;
+            
+            let filtered = allSkins.filter(skin => {
+                const matchesSearch = skin.name.toLowerCase().includes(searchTerm) || 
+                                    skin.weapon.toLowerCase().includes(searchTerm);
+                const matchesWeapon = !selectedWeapon || skin.weapon === selectedWeapon;
+                
+                return matchesSearch && matchesWeapon;
+            });
+            
+            if (selectorNumber === 1) {
+                filteredSkins1 = filtered;
+            } else {
+                filteredSkins2 = filtered;
+            }
+            
+            displaySkins(resultsContainer, filtered);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search inputs
+            document.getElementById('search1').addEventListener('input', () => filterSkins(1));
+            document.getElementById('search2').addEventListener('input', () => filterSkins(2));
+            
+            // Weapon filters
+            document.getElementById('weaponFilter1').addEventListener('change', () => filterSkins(1));
+            document.getElementById('weaponFilter2').addEventListener('change', () => filterSkins(2));
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    clearSelections();
+                }
+            });
+        }
+
+        // Clear all selections
+        function clearSelections() {
+            selectedSkin1 = null;
+            selectedSkin2 = null;
+            
+            // Reset comparison displays
+            document.getElementById('comparison1').innerHTML = `
+                <div class="comparison-placeholder">
+                    <div class="placeholder-icon">🎨</div>
+                    <div>Select a skin above to compare</div>
+                </div>
+            `;
+            document.getElementById('comparison2').innerHTML = `
+                <div class="comparison-placeholder">
+                    <div class="placeholder-icon">🎨</div>
+                    <div>Select a skin above to compare</div>
+                </div>
+            `;
+            
+            // Hide info panels
+            document.getElementById('info1').style.display = 'none';
+            document.getElementById('info2').style.display = 'none';
+            
+            // Clear selections
+            document.querySelectorAll('.skin-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            showNotification('Selections cleared', 'success');
+        }
+
+        // Open affiliate link
+        function openAffiliateLink(skinName = '') {
+            const affiliateUrl = 'https://tradeit.gg/?aff=csloadout';
+            window.open(affiliateUrl, '_blank');
+            showNotification(`Opening TradeIt.gg to find "${skinName}" - Happy trading! 🎮`, 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'linear-gradient(45deg, #28a745, #20c997)' : 
+                            type === 'warning' ? 'linear-gradient(45deg, #ffc107, #fd7e14)' :
+                            'linear-gradient(45deg, #dc3545, #e74c3c)';
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                background: ${bgColor};
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add comparison features
+        function compareSkins() {
+            if (!selectedSkin1 || !selectedSkin2) {
+                showNotification('Please select two skins to compare', 'warning');
+                return;
+            }
+
+            const comparison = {
+                skin1: selectedSkin1,
+                skin2: selectedSkin2,
+                priceDifference: calculatePriceDifference(selectedSkin1.price, selectedSkin2.price),
+                recommendation: getRecommendation(selectedSkin1, selectedSkin2)
+            };
+
+            showComparisonModal(comparison);
+        }
+
+        // Calculate price difference
+        function calculatePriceDifference(price1, price2) {
+            const num1 = parseFloat(price1.replace(/[$,]/g, ''));
+            const num2 = parseFloat(price2.replace(/[$,]/g, ''));
+            const diff = Math.abs(num1 - num2);
+            return `${diff.toFixed(2)}`;
+        }
+
+        // Get recommendation based on comparison
+        function getRecommendation(skin1, skin2) {
+            const price1 = parseFloat(skin1.price.replace(/[$,]/g, ''));
+            const price2 = parseFloat(skin2.price.replace(/[$,]/g, ''));
+            
+            if (price1 > price2) {
+                return `${skin1.name} is more expensive but may have better investment potential`;
+            } else if (price2 > price1) {
+                return `${skin2.name} is more expensive but may have better investment potential`;
+            } else {
+                return 'Both skins have similar pricing - choose based on visual preference';
+            }
+        }
+
+        // Add keyboard shortcuts info
+        function showKeyboardShortcuts() {
+            showNotification('Keyboard shortcuts: ESC - Clear selections', 'info');
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+            .skin-option:hover {
+                animation: pulse 0.3s ease;
+            }
+            .comparison-image img {
+                transition: all 0.3s ease;
+            }
+            .comparison-image img:hover {
+                transform: scale(1.05);
+                filter: brightness(1.2);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Add some utility functions for enhanced user experience
+        function resetFilters() {
+            document.getElementById('search1').value = '';
+            document.getElementById('search2').value = '';
+            document.getElementById('weaponFilter1').value = '';
+            document.getElementById('weaponFilter2').value = '';
+            
+            filteredSkins1 = allSkins;
+            filteredSkins2 = allSkins;
+            
+            displaySkins('skinResults1', filteredSkins1);
+            displaySkins('skinResults2', filteredSkins2);
+            
+            showNotification('Filters reset', 'success');
+        }
+
+        // Add random skin selection for fun
+        function selectRandomSkin(selectorNumber) {
+            const availableSkins = selectorNumber === 1 ? filteredSkins1 : filteredSkins2;
+            if (availableSkins.length === 0) {
+                showNotification('No skins available to select', 'warning');
+                return;
+            }
+            
+            const randomSkin = availableSkins[Math.floor(Math.random() * availableSkins.length)];
+            const containerId = `skinResults${selectorNumber}`;
+            selectSkin(containerId, randomSkin.id);
+            
+            showNotification(`Random skin selected: ${randomSkin.name}`, 'success');
+        }
+
+        // Enhanced search with suggestions
+        function setupSearchSuggestions() {
+            const searches = ['search1', 'search2'];
+            
+            searches.forEach(searchId => {
+                const input = document.getElementById(searchId);
+                
+                input.addEventListener('focus', () => {
+                    if (!input.value) {
+                        const popularSkins = ['Dragon Lore', 'Howl', 'Asiimov', 'Fade', 'Doppler'];
+                        const randomSkin = popularSkins[Math.floor(Math.random() * popularSkins.length)];
+                        input.placeholder = `Try searching for "${randomSkin}"...`;
+                    }
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.placeholder = 'Search skins...';
+                });
+            });
+        }
+
+        // Call setup functions after DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            setupSearchSuggestions();
+        });
+    </script>
+</body>
+</html>
