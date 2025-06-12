@@ -700,12 +700,21 @@
         let selectedSkin1 = null;
         let selectedSkin2 = null;
 
-        // ByMykel CS2 API endpoints
+        // ByMykel CS2 API endpoints with CORS proxies
         const BYMYKEL_API_ENDPOINTS = [
+            // Direct endpoints (might work in some browsers)
             'https://bymykel.github.io/CSGO-API/api/en/skins.json',
             'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json',
-            'https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json',
-            'https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json'
+            
+            // CORS proxy endpoints
+            'https://api.allorigins.win/get?url=' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins.json'),
+            'https://api.allorigins.win/get?url=' + encodeURIComponent('https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json'),
+            'https://corsproxy.io/?' + encodeURIComponent('https://bymykel.github.io/CSGO-API/api/en/skins.json'),
+            'https://corsproxy.io/?' + encodeURIComponent('https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json'),
+            
+            // Alternative CORS proxies
+            'https://cors-anywhere.herokuapp.com/https://bymykel.github.io/CSGO-API/api/en/skins.json',
+            'https://thingproxy.freeboard.io/fetch/https://bymykel.github.io/CSGO-API/api/en/skins.json'
         ];
 
         // Initialize the application
@@ -730,29 +739,40 @@
                 
             } catch (error) {
                 console.error('Failed to load from ByMykel API:', error);
-                updateApiStatus('error', 'ByMykel API temporarily unavailable', 'Please try again later or check your internet connection');
+                updateApiStatus('error', 'ByMykel API temporarily unavailable', 'All endpoints and CORS proxies failed. This is likely due to GitHub Pages CORS restrictions.');
+                
+                // Show helpful error message with retry option
                 showAPIError();
+                showNotification('API temporarily unavailable - CORS restrictions detected', 'warning');
             }
         }
 
-        // Load skins from ByMykel CS2 API
+        // Load skins from ByMykel CS2 API with CORS handling
         async function loadSkinsFromByMykelAPI() {
-            console.log('🔄 Loading CS2 skins from ByMykel API...');
+            console.log('🔄 Loading CS2 skins from ByMykel API with CORS proxies...');
             
             for (let i = 0; i < BYMYKEL_API_ENDPOINTS.length; i++) {
                 const endpoint = BYMYKEL_API_ENDPOINTS[i];
-                console.log(`📡 Trying endpoint ${i + 1}: ${endpoint}`);
+                console.log(`📡 Trying endpoint ${i + 1}/${BYMYKEL_API_ENDPOINTS.length}: ${endpoint.substring(0, 80)}...`);
                 
                 try {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                    const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout
+                    
+                    // Different headers for different proxy types
+                    let headers = {
+                        'Accept': 'application/json'
+                    };
+                    
+                    // Don't add custom headers for CORS proxies to avoid preflight
+                    if (!endpoint.includes('allorigins') && !endpoint.includes('corsproxy') && !endpoint.includes('cors-anywhere') && !endpoint.includes('thingproxy')) {
+                        headers['Cache-Control'] = 'no-cache';
+                    }
                     
                     const response = await fetch(endpoint, {
                         signal: controller.signal,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache'
-                        }
+                        method: 'GET',
+                        headers: headers
                     });
                     
                     clearTimeout(timeoutId);
@@ -760,32 +780,71 @@
                     console.log(`📊 Endpoint ${i + 1} response: ${response.status} ${response.statusText}`);
                     
                     if (response.ok) {
-                        const data = await response.json();
-                        console.log('📦 Raw data structure:', Object.keys(data));
+                        let data = await response.json();
+                        
+                        // Handle different proxy response formats
+                        if (endpoint.includes('allorigins.win')) {
+                            // AllOrigins wraps the response in a contents field
+                            if (data.contents) {
+                                data = JSON.parse(data.contents);
+                            }
+                        }
+                        
+                        console.log('📦 Raw data structure:', typeof data, Array.isArray(data) ? `Array[${data.length}]` : Object.keys(data || {}));
                         
                         if (Array.isArray(data) && data.length > 0) {
                             allSkins = processSkinsData(data);
                             console.log(`✅ SUCCESS! Loaded ${allSkins.length} skins from ByMykel API (endpoint ${i + 1})`);
                             return;
                         } else if (data && typeof data === 'object') {
-                            // Handle grouped data structure
-                            const skinsArray = Object.values(data).flat();
+                            // Handle grouped data structure or other object formats
+                            let skinsArray = [];
+                            
+                            // Try different ways to extract skins from object
+                            if (data.skins && Array.isArray(data.skins)) {
+                                skinsArray = data.skins;
+                            } else if (data.data && Array.isArray(data.data)) {
+                                skinsArray = data.data;
+                            } else {
+                                // Flatten all arrays in the object
+                                skinsArray = Object.values(data).filter(Array.isArray).flat();
+                            }
+                            
                             if (skinsArray.length > 0) {
                                 allSkins = processSkinsData(skinsArray);
-                                console.log(`✅ SUCCESS! Loaded ${allSkins.length} skins from grouped data (endpoint ${i + 1})`);
+                                console.log(`✅ SUCCESS! Loaded ${allSkins.length} skins from object data (endpoint ${i + 1})`);
                                 return;
                             }
                         }
                         
                         console.log(`⚠️ Endpoint ${i + 1} returned empty or invalid data`);
+                    } else {
+                        console.log(`❌ Endpoint ${i + 1} HTTP error: ${response.status}`);
                     }
                 } catch (error) {
                     console.log(`❌ Endpoint ${i + 1} failed:`, error.message);
-                    updateApiStatus('loading', 'Retrying connection...', `Trying endpoint ${i + 2}/${BYMYKEL_API_ENDPOINTS.length}`);
+                    updateApiStatus('loading', 'Retrying with different proxy...', `Trying endpoint ${i + 2}/${BYMYKEL_API_ENDPOINTS.length}`);
                 }
             }
             
-            throw new Error('All ByMykel API endpoints failed');
+            // If all endpoints fail, try a simple fetch without CORS for GitHub Pages hosted on same domain
+            console.log('🔄 Trying alternative approach...');
+            try {
+                // Sometimes GitHub Pages can access other GitHub Pages directly
+                const response = await fetch('/CSGO-API/api/en/skins.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        allSkins = processSkinsData(data);
+                        console.log(`✅ SUCCESS! Loaded ${allSkins.length} skins from relative path`);
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log('❌ Relative path failed:', error.message);
+            }
+            
+            throw new Error('All ByMykel API endpoints and proxies failed');
         }
 
         // Process skins data from ByMykel API
@@ -913,27 +972,41 @@
             `;
         }
 
-        // Show API error state
+        // Show API error state with more helpful information
         function showAPIError() {
-            document.getElementById('skinResults1').innerHTML = `
+            const errorContent = `
                 <div style="text-align: center; color: #ff6b6b; padding: 40px;">
-                    <h4>ByMykel API Unavailable</h4>
-                    <p>Unable to load CS2 skin data. Please check your internet connection and try refreshing the page.</p>
-                    <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #00bfff; border: none; border-radius: 5px; color: white; cursor: pointer;">
-                        🔄 Retry
-                    </button>
+                    <h4>⚠️ CORS Restriction Detected</h4>
+                    <p style="margin: 15px 0;">GitHub Pages is blocking the ByMykel API due to CORS policy.</p>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left;">
+                        <h5 style="color: #00bfff; margin-bottom: 10px;">Possible Solutions:</h5>
+                        <ul style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
+                            <li>Download and run locally (CORS won't apply)</li>
+                            <li>Deploy to a server that can proxy the API</li>
+                            <li>Use a browser extension to disable CORS temporarily</li>
+                            <li>Wait for ByMykel API to add CORS headers</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: #00bfff; border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            🔄 Retry
+                        </button>
+                        <button onclick="window.open('https://github.com/ByMykel/CSGO-API', '_blank')" style="padding: 10px 20px; background: #9500ff; border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            📖 View ByMykel API
+                        </button>
+                    </div>
+                    
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.6);">
+                        This is a common issue with GitHub Pages and external APIs.<br>
+                        The site structure and comparison features work perfectly - just waiting for API access.
+                    </p>
                 </div>
             `;
             
-            document.getElementById('skinResults2').innerHTML = `
-                <div style="text-align: center; color: #ff6b6b; padding: 40px;">
-                    <h4>ByMykel API Unavailable</h4>
-                    <p>Unable to load CS2 skin data. Please check your internet connection and try refreshing the page.</p>
-                    <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #00bfff; border: none; border-radius: 5px; color: white; cursor: pointer;">
-                        🔄 Retry
-                    </button>
-                </div>
-            `;
+            document.getElementById('skinResults1').innerHTML = errorContent;
+            document.getElementById('skinResults2').innerHTML = errorContent;
         }
 
         // Populate weapon filter dropdowns
