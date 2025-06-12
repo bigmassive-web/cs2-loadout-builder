@@ -547,7 +547,7 @@
             border-left-color: #51cf66;
         }
 
-        .footer {
+        .site-footer {
             background: linear-gradient(135deg, #0a0a0a, #001122);
             border-top: 2px solid rgba(0, 191, 255, 0.3);
             margin-top: 60px;
@@ -593,20 +593,25 @@
             line-height: 1.6;
         }
 
-        .footer-bottom {
+        .footer-disclaimers {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 30px;
             padding-top: 20px;
             text-align: center;
             color: #888888;
+            font-size: 0.9rem;
         }
 
-        .footer-bottom a {
+        .footer-disclaimers p {
+            margin-bottom: 10px;
+        }
+
+        .footer-disclaimers a {
             color: #00bfff;
             text-decoration: none;
         }
 
-        .footer-bottom a:hover {
+        .footer-disclaimers a:hover {
             color: #ffffff;
         }
 
@@ -683,12 +688,216 @@
                 </a>
             </div>
         </div>
+    </div>
+
+    <div class="main-container">
+        <div class="header">
+            <h1>⚖️ CS2 Skin Comparison</h1>
+            <p>Compare CS2 skins using ByMykel API data</p>
+        </div>
+
+        <!-- Left Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>🔄 TradeIt.gg</h3>
+                    <p class="banner-subtitle">Trade CS2 Skins Instantly</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🎁</div>
+                        <div class="bonus-text">
+                            <strong>First Trade Bonus</strong>
+                            <span class="bonus-amount">$5.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">💰</div>
+                        <div class="bonus-text">
+                            <strong>Topup Bonus</strong>
+                            <span class="bonus-amount">35%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Start Trading Now
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Instant trades<br>
+                    ✨ 1000+ skins available<br>
+                    ✨ Secure & trusted
+                </p>
+            </div>
+        </div>
+
+        <div class="comparison-container">
+            <!-- API Status -->
+            <div class="api-status loading" id="apiStatus">
+                <div class="loading-spinner"></div>
+                <strong>Loading CS2 skins from ByMykel API...</strong>
+                <p>Fetching latest skin data from GitHub repository</p>
+            </div>
+
+            <div class="skin-selectors">
+                <div class="skin-selector-card">
+                    <h3>🔍 Select First Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search1" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter1">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults1">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+
+                <div class="skin-selector-card">
+                    <h3>🔍 Select Second Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search2" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter2">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults2">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-display">
+                <div class="comparison-item">
+                    <h4>First Skin</h4>
+                    <div class="comparison-image" id="comparison1">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
+                        </div>
+                    </div>
+                    <div class="comparison-info" id="info1" style="display: none;">
+                        <h5 id="skinName1">Skin Name</h5>
+                        <p id="weaponName1">Weapon: -</p>
+                        <p id="rarityName1">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity1">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Collection</div>
+                                <div class="stat-value" id="collection1">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Second Skin</h4>
+                    <div class="comparison-image" id="comparison2">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
+                        </div>
+                    </div>
+                    <div class="comparison-info" id="info2" style="display: none;">
+                        <h5 id="skinName2">Skin Name</h5>
+                        <p id="weaponName2">Weapon: -</p>
+                        <p id="rarityName2">Rarity: -</p>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Rarity</div>
+                                <div class="stat-value" id="rarity2">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Collection</div>
+                                <div class="stat-value" id="collection2">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>💎 SkinSwap</h3>
+                    <p class="banner-subtitle">Premium CS2 Marketplace</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🚀</div>
+                        <div class="bonus-text">
+                            <strong>Premium Skins</strong>
+                            <span class="bonus-amount">Verified</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🔒</div>
+                        <div class="bonus-text">
+                            <strong>Secure Trading</strong>
+                            <span class="bonus-amount">100%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://skinswap.com/r/csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Browse Premium Skins
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Verified sellers<br>
+                    ✨ Rare collections<br>
+                    ✨ Instant delivery
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CS Loadouts</h4>
+                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Available Tools</h4>
+                <ul>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
+                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
+                    <li><a href="#">Skin Comparison</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Coming Soon</h4>
+                <ul>
+                    <li>Skin Calculator</li>
+                    <li>Trade Tracker</li>
+                    <li>CS2 News Feed</li>
+                    <li>Weapon Guides</li>
+                    <li>Market Trends Analysis</li>
+                    <li>Pro Player Loadouts</li>
+                    <li>Skin Database</li>
+                </ul>
+                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
+            </div>
+        </div>
         
-        <div class="footer-bottom">
+        <div class="footer-disclaimers">
             <p>Not affiliated with Valve Corporation or Counter-Strike. All game assets are property of their respective owners.</p>
-            <p class="affiliate-disclosure">
-                As affiliates of TradeIt.gg and SkinSwap, we may earn commissions from qualifying purchases made through our links.
-            </p>
+            <p>As affiliates of TradeIt.gg and SkinSwap, we may earn commissions from qualifying purchases made through our links.</p>
         </div>
     </footer>
 
@@ -1141,209 +1350,3 @@
     </script>
 </body>
 </html>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <div class="header">
-            <h1>⚖️ CS2 Skin Comparison</h1>
-            <p>Compare CS2 skins using ByMykel API data</p>
-        </div>
-
-        <!-- Left Ad Space -->
-        <div class="ad-space">
-            <div class="affiliate-banner tradeit-banner">
-                <div class="banner-header">
-                    <h3>🔄 TradeIt.gg</h3>
-                    <p class="banner-subtitle">Trade CS2 Skins Instantly</p>
-                </div>
-                
-                <div class="bonus-highlights">
-                    <div class="bonus-item">
-                        <div class="bonus-icon">🎁</div>
-                        <div class="bonus-text">
-                            <strong>First Trade Bonus</strong>
-                            <span class="bonus-amount">$5.00</span>
-                        </div>
-                    </div>
-                    
-                    <div class="bonus-item">
-                        <div class="bonus-icon">💰</div>
-                        <div class="bonus-text">
-                            <strong>Topup Bonus</strong>
-                            <span class="bonus-amount">35%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="banner-cta tradeit-cta">
-                    Start Trading Now
-                </a>
-                
-                <p class="banner-features">
-                    ✨ Instant trades<br>
-                    ✨ 1000+ skins available<br>
-                    ✨ Secure & trusted
-                </p>
-            </div>
-        </div>
-
-        <div class="comparison-container">
-            <!-- API Status -->
-            <div class="api-status loading" id="apiStatus">
-                <div class="loading-spinner"></div>
-                <strong>Loading CS2 skins from ByMykel API...</strong>
-                <p>Fetching latest skin data from GitHub repository</p>
-            </div>
-
-            <div class="skin-selectors">
-                <div class="skin-selector-card">
-                    <h3>🔍 Select First Skin</h3>
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" id="search1" placeholder="Search skins...">
-                        <select class="weapon-filter" id="weaponFilter1">
-                            <option value="">All Weapons</option>
-                        </select>
-                    </div>
-                    <div class="skin-results" id="skinResults1">
-                        <div class="loading-spinner"></div>
-                    </div>
-                </div>
-
-                <div class="skin-selector-card">
-                    <h3>🔍 Select Second Skin</h3>
-                    <div class="skin-search-container">
-                        <input type="text" class="skin-search" id="search2" placeholder="Search skins...">
-                        <select class="weapon-filter" id="weaponFilter2">
-                            <option value="">All Weapons</option>
-                        </select>
-                    </div>
-                    <div class="skin-results" id="skinResults2">
-                        <div class="loading-spinner"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="comparison-display">
-                <div class="comparison-item">
-                    <h4>First Skin</h4>
-                    <div class="comparison-image" id="comparison1">
-                        <div class="comparison-placeholder">
-                            <div class="placeholder-icon">🎨</div>
-                            <div>Select a skin above to compare</div>
-                        </div>
-                    </div>
-                    <div class="comparison-info" id="info1" style="display: none;">
-                        <h5 id="skinName1">Skin Name</h5>
-                        <p id="weaponName1">Weapon: -</p>
-                        <p id="rarityName1">Rarity: -</p>
-                        <div class="comparison-stats">
-                            <div class="stat-item">
-                                <div class="stat-label">Rarity</div>
-                                <div class="stat-value" id="rarity1">-</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Collection</div>
-                                <div class="stat-value" id="collection1">-</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="comparison-item">
-                    <h4>Second Skin</h4>
-                    <div class="comparison-image" id="comparison2">
-                        <div class="comparison-placeholder">
-                            <div class="placeholder-icon">🎨</div>
-                            <div>Select a skin above to compare</div>
-                        </div>
-                    </div>
-                    <div class="comparison-info" id="info2" style="display: none;">
-                        <h5 id="skinName2">Skin Name</h5>
-                        <p id="weaponName2">Weapon: -</p>
-                        <p id="rarityName2">Rarity: -</p>
-                        <div class="comparison-stats">
-                            <div class="stat-item">
-                                <div class="stat-label">Rarity</div>
-                                <div class="stat-value" id="rarity2">-</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Collection</div>
-                                <div class="stat-value" id="collection2">-</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Ad Space -->
-        <div class="ad-space">
-            <div class="affiliate-banner tradeit-banner">
-                <div class="banner-header">
-                    <h3>💎 SkinSwap</h3>
-                    <p class="banner-subtitle">Premium CS2 Marketplace</p>
-                </div>
-                
-                <div class="bonus-highlights">
-                    <div class="bonus-item">
-                        <div class="bonus-icon">🚀</div>
-                        <div class="bonus-text">
-                            <strong>Premium Skins</strong>
-                            <span class="bonus-amount">Verified</span>
-                        </div>
-                    </div>
-                    
-                    <div class="bonus-item">
-                        <div class="bonus-icon">🔒</div>
-                        <div class="bonus-text">
-                            <strong>Secure Trading</strong>
-                            <span class="bonus-amount">100%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <a href="https://skinswap.com/r/csloadout" target="_blank" class="banner-cta tradeit-cta">
-                    Browse Premium Skins
-                </a>
-                
-                <p class="banner-features">
-                    ✨ Verified sellers<br>
-                    ✨ Rare collections<br>
-                    ✨ Instant delivery
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>CS Loadouts</h4>
-                <p>The ultimate destination for Counter-Strike 2 loadout creation and customization. Build your perfect weapon configurations and share them with the community.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Available Tools</h4>
-                <ul>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/">Loadout Builder</a></li>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html">Price Game</a></li>
-                    <li><a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html">Price Guessing</a></li>
-                    <li><a href="#">Skin Comparison</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Coming Soon</h4>
-                <ul>
-                    <li>Skin Calculator</li>
-                    <li>Trade Tracker</li>
-                    <li>CS2 News Feed</li>
-                    <li>Weapon Guides</li>
-                    <li>Market Trends Analysis</li>
-                    <li>Pro Player Loadouts</li>
-                    <li>Skin Database</li>
-                </ul>
-                <p style="color: #ffffff; font-weight: bold; margin-top: 15px;">More exciting features in development!</p>
-            </div>
