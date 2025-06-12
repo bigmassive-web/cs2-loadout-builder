@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Skin Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #001122);
+            color: #ff6600;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: rgba(0, 191, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #9500ff, #00bfff);
+            border-color: transparent;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 30px;
+        }
+
+        .ad-space {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            height: 800px;
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(90deg, #9500ff, #00bfff);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .comparison-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .skin-selectors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .skin-selector-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .skin-selector-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .skin-selector-card h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+            text-align: center;
+        }
+
+        .skin-search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .skin-search {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .skin-search::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .weapon-filter {
+            min-width: 150px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .weapon-filter option {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .skin-results {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .skin-results::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .skin-results::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .skin-results::-webkit-scrollbar-thumb {
+            background: rgba(0, 191, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .skin-option {
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .skin-option:hover {
+            background: rgba(0, 191, 255, 0.1);
+            border-left-color: #00bfff;
+            transform: translateX(5px);
+        }
+
+        .skin-option.selected {
+            background: rgba(0, 191, 255, 0.2);
+            border-left-color: #00bfff;
+        }
+
+        .skin-option img {
+            width: 80px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .skin-option-info {
+            flex: 1;
+        }
+
+        .skin-option-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .skin-option-weapon {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .comparison-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comparison-item h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .comparison-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-image img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .comparison-image::after {
+            content: '🔗 Click to buy on TradeIt.gg';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, rgba(255, 165, 0, 0.9), rgba(255, 140, 0, 0.9));
+            color: #000;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .comparison-image:hover::after {
+            opacity: 1;
+        }
+
+        .comparison-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .comparison-placeholder .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .comparison-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 191, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #00bfff;
+        }
+
+        .comparison-info h5 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .comparison-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .affiliate-banner {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9));
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .tradeit-banner {
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05));
+        }
+
+        .csloadouts-banner {
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(0, 123, 255, 0.05));
+        }
+
+        .csloadouts-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 8px;
+            margin-right: -8px;
+        }
+
+        .csloadouts-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .csloadouts-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .csloadouts-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 191, 255, 0.5);
+            border-radius: 2px;
+        }
+
+        .banner-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        .banner-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .bonus-highlights {
+            margin: 20px 0;
+        }
+
+        .bonus-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+
+        .bonus-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        .bonus-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .bonus-text strong {
+            display: block;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .bonus-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffa500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .banner-cta {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tradeit-cta {
+            background: linear-gradient(45deg, #ffa500, #ff8c00);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .tradeit-cta:hover {
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.4);
+        }
+
+        .csloadouts-cta {
+            background: linear-gradient(45deg, #00bfff, #0080ff);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+        }
+
+        .csloadouts-cta:hover {
+            background: linear-gradient(45deg, #0080ff, #00bfff);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 191, 255, 0.4);
+        }
+
+        .banner-features {
+            font-size: 0.65rem;
+            line-height: 1.3;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .csloadouts-features {
+            margin: 8px 0;
+            flex-shrink: 0;
+        }
+
+        .feature-section {
+            margin-bottom: 10px;
+            padding: 8px 6px;
+            background: rgba(0, 191, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .feature-section.coming-soon {
+            background: rgba(255, 165, 0, 0.05);
+            border-color: rgba(255, 165, 0, 0.1);
+        }
+
+        .feature-category {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .feature-item-inline {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 3px;
+            font-size: 0.65rem;
+        }
+
+        .feature-item-inline .feature-icon {
+            font-size: 0.7rem;
+            width: 12px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .feature-item-inline .feature-text {
+            color: #ffffff;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+
+        .csloadouts-cta-section {
+            margin-top: 10px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Skin Gallery Styles */
+        .skin-gallery {
+            background: linear-gradient(135deg, #0a0a0a, #001122);
+            border-top: 2px solid rgba(0, 191, 255, 0.3);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+
+        .skin-gallery-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .skin-gallery h2 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .skin-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skin-gallery-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .skin-gallery-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .skin-gallery-grid::-webkit-scrollbar-thumb {
+            background: rgba(0, 191, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        .gallery-skin-item {
+            position: relative;
+            aspect-ratio: 1.6;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-skin-item:hover {
+            transform: scale(1.05);
+            border-color: #ffa500;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+            z-index: 10;
+        }
+
+        .gallery-skin-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-skin-item:hover img {
+            filter: brightness(1.2);
+        }
+
+        .gallery-skin-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 8px 6px 4px;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-skin-item:hover .gallery-skin-overlay {
+            opacity: 1;
+        }
+
+        .gallery-skin-name {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .gallery-skin-weapon {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .gallery-loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 40px;
+            font-size: 1.1rem;
+        }
+
+        .gallery-stats {
+            text-align: center;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        .gallery-stats span {
+            color: #00bfff;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0a0a0a, #001122);
+            border-top: 2px solid rgba(0, 191, 255, 0.3);
+            margin-top: 60px;
+            padding: 40px 0 20px;
+            color: #ffffff;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #00bfff;
+        }
+
+        .footer-section p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #888888;
+        }
+
+        .footer-bottom a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .ad-space {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 15px;
+            }
+            
+            .skin-selectors {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-display {
+                grid-template-columns: 1fr;
+            }
+            
+            .skin-search-container {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="nav-content">
+            <div class="nav-logo">CS Loadouts</div>
+            <div class="nav-menu">
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/" class="nav-btn">
+                    🔫 Loadout Builder
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html" class="nav-btn">
+                    💰 Price Game
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html" class="nav-btn">
+                    🎯 Price Guessing
+                </a>
+                <a href="#" class="nav-btn active">
+                    ⚖️ Skin Comparison
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="header">
+            <h1>⚖️ CS2 Skin Comparison</h1>
+            <p>Compare CS2 skins side by side to make the perfect choice</p>
+        </div>
+
+        <!-- Left Ad Space -->
+        <div class="ad-space">
+            <div class="affiliate-banner tradeit-banner">
+                <div class="banner-header">
+                    <h3>🔄 TradeIt.gg</h3>
+                    <p class="banner-subtitle">Trade CS2 Skins Instantly</p>
+                </div>
+                
+                <div class="bonus-highlights">
+                    <div class="bonus-item">
+                        <div class="bonus-icon">🎁</div>
+                        <div class="bonus-text">
+                            <strong>First Trade Bonus</strong>
+                            <span class="bonus-amount">$5.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bonus-item">
+                        <div class="bonus-icon">💰</div>
+                        <div class="bonus-text">
+                            <strong>Topup Bonus</strong>
+                            <span class="bonus-amount">35%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://tradeit.gg/?aff=csloadout" target="_blank" class="banner-cta tradeit-cta">
+                    Start Trading Now
+                </a>
+                
+                <p class="banner-features">
+                    ✨ Instant trades<br>
+                    ✨ 1000+ skins available<br>
+                    ✨ Secure & trusted
+                </p>
+            </div>
+        </div>
+
+        <div class="comparison-container">
+            <div class="skin-selectors">
+                <div class="skin-selector-card">
+                    <h3>🔍 Select First Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search1" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter1">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults1">
+                        <div class="gallery-loading">Loading CS2 skins...</div>
+                    </div>
+                </div>
+
+                <div class="skin-selector-card">
+                    <h3>🔍 Select Second Skin</h3>
+                    <div class="skin-search-container">
+                        <input type="text" class="skin-search" id="search2" placeholder="Search skins...">
+                        <select class="weapon-filter" id="weaponFilter2">
+                            <option value="">All Weapons</option>
+                        </select>
+                    </div>
+                    <div class="skin-results" id="skinResults2">
+                        <div class="gallery-loading">Loading CS2 skins...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-display">
+                <div class="comparison-item">
+                    <h4>First Skin</h4>
+                    <div class="comparison-image" id="comparison1">
+                        <div class="comparison-placeholder">
+                            <div class="placeholder-icon">🎨</div>
+                            <div>Select a skin above to compare</div>
+                        </div>
+                    </div>
