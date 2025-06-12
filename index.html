@@ -193,13 +193,13 @@
     <!-- Skin Gallery Section -->
     <div class="skin-gallery">
         <div class="skin-gallery-content">
-            <h2>🎨 CS2 Skin Gallery</h2>
+            <h2>🎮 My Selected Loadout</h2>
             <div class="gallery-stats" id="galleryStats">
-                <span id="skinCount">0</span> skins loaded
+                <span id="skinCount">0</span> weapons selected
             </div>
             <div class="skin-gallery-grid" id="skinGalleryGrid">
                 <div class="gallery-loading">
-                    Loading CS2 skins...
+                    No weapons selected yet. Choose weapons above to see them here!
                 </div>
             </div>
         </div>
@@ -307,6 +307,7 @@
                 // Always create the weapon categories first, regardless of API status
                 createWeaponCategories();
                 updateLoadoutList();
+                updateSelectedWeaponsGallery(); // Initialize empty gallery
                 
                 // Test API connectivity first
                 console.log('Testing API connectivity...');
@@ -317,12 +318,10 @@
                     await loadAPIData();
                     populateWeaponSelectors();
                     populateRarityFilters();
-                    populateSkinGallery();
                     showNotification('Successfully loaded all CS2 skins!', 'success');
                 } catch (apiError) {
                     console.log('API failed, creating basic weapon selectors...');
                     populateBasicWeaponSelectors();
-                    showSkinGalleryPlaceholder();
                     showNotification('CS2 API temporarily unavailable. Basic interface loaded.', 'warning');
                 }
             } catch (error) {
@@ -331,7 +330,7 @@
                 createWeaponCategories();
                 populateBasicWeaponSelectors();
                 updateLoadoutList();
-                showSkinGalleryPlaceholder();
+                updateSelectedWeaponsGallery();
                 showNotification('Interface loaded in offline mode.', 'warning');
             }
         }
@@ -918,6 +917,9 @@
             updatePreviewItem('preview-rifle-glove', rifle, glove);
             updatePreviewItem('preview-pistol-glove', pistol, glove);
             updatePreviewItem('preview-smg-glove', smg, glove);
+            
+            // Update selected weapons gallery
+            updateSelectedWeaponsGallery();
         }
 
         // Update individual preview item
@@ -1031,20 +1033,6 @@
             }
         }
 
-        function updateLoadoutList() {
-            const list = document.getElementById('loadoutList');
-            list.innerHTML = '';
-            
-            loadouts.forEach(loadout => {
-                const item = document.createElement('li');
-                item.className = `loadout-item ${loadout.id === currentLoadoutId ? 'active' : ''}`;
-                item.dataset.loadout = loadout.id;
-                item.textContent = loadout.name;
-                item.onclick = () => loadLoadout(loadout.id);
-                list.appendChild(item);
-            });
-        }
-
         function closeModal() {
             document.getElementById('newLoadoutModal').style.display = 'none';
             document.getElementById('loadoutName').value = '';
@@ -1084,64 +1072,91 @@
             }
         });
 
-        // Populate skin gallery at bottom of page
-        function populateSkinGallery() {
+        // Update selected weapons gallery at bottom of page
+        function updateSelectedWeaponsGallery() {
             const galleryGrid = document.getElementById('skinGalleryGrid');
             const skinCount = document.getElementById('skinCount');
             
-            if (!galleryGrid) return;
+            if (!galleryGrid || !skinCount) return;
             
-            // Combine all skins and gloves
-            const allSkins = [...apiData.skins, ...apiData.gloves];
+            const currentLoadout = loadouts.find(l => l.id === currentLoadoutId);
+            const selectedWeapons = currentLoadout ? currentLoadout.weapons : {};
             
-            if (allSkins.length === 0) {
-                showSkinGalleryPlaceholder();
+            // Get array of selected weapons
+            const weaponEntries = Object.entries(selectedWeapons);
+            
+            // Update count
+            skinCount.textContent = weaponEntries.length;
+            
+            // Clear gallery
+            galleryGrid.innerHTML = '';
+            
+            if (weaponEntries.length === 0) {
+                galleryGrid.innerHTML = `
+                    <div class="gallery-loading">
+                        No weapons selected yet.<br>
+                        Choose weapons above to see your loadout here!
+                    </div>
+                `;
                 return;
             }
             
-            // Update stats
-            skinCount.textContent = allSkins.length;
-            
-            // Clear loading message
-            galleryGrid.innerHTML = '';
-            
-            // Add all skins to gallery
-            allSkins.forEach(skin => {
-                const skinItem = document.createElement('div');
-                skinItem.className = 'gallery-skin-item';
-                skinItem.onclick = () => openAffiliateLink(skin.name);
+            // Add each selected weapon to gallery
+            weaponEntries.forEach(([category, weaponData]) => {
+                const weaponItem = document.createElement('div');
+                weaponItem.className = 'gallery-skin-item';
+                weaponItem.onclick = () => openAffiliateLink(weaponData.skin);
                 
-                const rarityColor = skin.rarity ? skin.rarity.color : '#b0c3d9';
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                const categoryIcon = getCategoryIcon(category);
                 
-                skinItem.innerHTML = `
-                    <img src="${skin.image}" alt="${skin.name}" 
-                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMTIwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9Ijc1IiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjYwIiB5PSIzOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+'" />
+                weaponItem.innerHTML = `
+                    <img src="${weaponData.image}" alt="${weaponData.skin}" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDE4MCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMzMzIi8+Cjx0ZXh0IHg9IjkwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+'" />
+                    <div class="gallery-skin-info">
+                        <div class="gallery-skin-name">${weaponData.skin}</div>
+                        <div class="gallery-skin-weapon">${weaponData.weapon}</div>
+                        <div class="gallery-skin-category">${categoryIcon} ${categoryName}</div>
+                    </div>
                     <div class="gallery-skin-overlay">
-                        <div class="gallery-skin-name" style="color: ${rarityColor};">${skin.name}</div>
-                        <div class="gallery-skin-weapon">${skin.weapon.name}</div>
+                        🛒 Buy on TradeIt.gg
                     </div>
                 `;
                 
-                galleryGrid.appendChild(skinItem);
+                galleryGrid.appendChild(weaponItem);
             });
             
-            console.log(`✅ Populated gallery with ${allSkins.length} skins`);
+            console.log(`✅ Updated gallery with ${weaponEntries.length} selected weapons`);
         }
 
-        // Show placeholder when skin gallery can't load
-        function showSkinGalleryPlaceholder() {
-            const galleryGrid = document.getElementById('skinGalleryGrid');
-            const skinCount = document.getElementById('skinCount');
+        // Get category icon for display
+        function getCategoryIcon(category) {
+            const icons = {
+                rifles: '🔫',
+                pistols: '🔫',
+                knives: '🗡️',
+                smgs: '🔫',
+                gloves: '🧤'
+            };
+            return icons[category] || '⚔️';
+        }
+
+        // Update loadout list and refresh gallery
+        function updateLoadoutList() {
+            const list = document.getElementById('loadoutList');
+            list.innerHTML = '';
             
-            if (!galleryGrid) return;
+            loadouts.forEach(loadout => {
+                const item = document.createElement('li');
+                item.className = `loadout-item ${loadout.id === currentLoadoutId ? 'active' : ''}`;
+                item.dataset.loadout = loadout.id;
+                item.textContent = loadout.name;
+                item.onclick = () => loadLoadout(loadout.id);
+                list.appendChild(item);
+            });
             
-            skinCount.textContent = '0';
-            galleryGrid.innerHTML = `
-                <div class="gallery-loading">
-                    <div style="color: #ffffff; margin-bottom: 10px;">CS2 API Unavailable</div>
-                    <div style="font-size: 0.9rem;">Deploy this site to load real CS2 skin gallery</div>
-                </div>
-            `;
+            // Update gallery when loadout list changes
+            updateSelectedWeaponsGallery();
         }
 
         // Add animations
@@ -2218,97 +2233,75 @@
 
         .skin-gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 8px;
-            max-height: 600px;
-            overflow-y: auto;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.02);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar-thumb {
-            background: rgba(0, 191, 255, 0.5);
-            border-radius: 4px;
-        }
-
-        .skin-gallery-grid::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 191, 255, 0.7);
+            min-height: 200px;
         }
 
         .gallery-skin-item {
             position: relative;
-            aspect-ratio: 1.6;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            text-align: center;
         }
 
         .gallery-skin-item:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
             border-color: #ffa500;
-            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-            z-index: 10;
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.3);
         }
 
         .gallery-skin-item img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.3s ease;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .gallery-skin-item:hover img {
             filter: brightness(1.2);
+            transform: scale(1.05);
         }
 
-        .gallery-skin-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        .gallery-skin-info {
             color: white;
-            padding: 8px 6px 4px;
-            font-size: 0.7rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-skin-item:hover .gallery-skin-overlay {
-            opacity: 1;
         }
 
         .gallery-skin-name {
             font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 2px;
         }
 
         .gallery-skin-weapon {
-            font-size: 0.6rem;
+            font-size: 0.8rem;
             opacity: 0.8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .gallery-skin-category {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .gallery-loading {
+            grid-column: 1 / -1;
             text-align: center;
             color: rgba(255, 255, 255, 0.7);
             padding: 40px;
@@ -2325,4 +2318,26 @@
         .gallery-stats span {
             color: #00bfff;
             font-weight: bold;
+        }
+
+        .gallery-skin-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 165, 0, 0.9);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .gallery-skin-item:hover .gallery-skin-overlay {
+            opacity: 1;
         }
