@@ -10,10 +10,34 @@
         .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(15px); border-bottom: 2px solid rgba(0, 191, 255, 0.3); z-index: 1000; padding: 15px 0; box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2); }
         .nav-content { max-width: 1600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-logo { font-size: 1.5rem; font-weight: bold; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .nav-menu { display: flex; gap: 15px; }
+        .nav-menu { display: flex; gap: 15px; flex-wrap: wrap; }
         .nav-btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; color: white; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
         .nav-btn:hover { background: rgba(0, 191, 255, 0.2); border-color: rgba(0, 191, 255, 0.5); transform: translateY(-2px); }
         .nav-btn.active { background: linear-gradient(45deg, #9500ff, #00bfff); border-color: transparent; }
+        
+        @media (max-width: 1400px) {
+            .nav-menu {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+        
         .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { text-align: center; margin-bottom: 40px; padding: 30px 0; background: linear-gradient(90deg, #9500ff, #00bfff); border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3); }
         .header h1 { font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px; color: white; }
@@ -59,10 +83,18 @@
         <div class="nav-content">
             <div class="nav-logo">CS Loadouts</div>
             <div class="nav-menu">
-                <a href="#" class="nav-btn">🔫 Loadout Builder</a>
-                <a href="#" class="nav-btn">💰 Price Game</a>
-                <a href="#" class="nav-btn active">🎯 Price Guessing</a>
-                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/skin-comparison" class="nav-btn">⚖️ Skin Compare</a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/" class="nav-btn">
+                    🔫 Loadout Builder
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/skin-comparison" class="nav-btn">
+                    ⚖️ Skin Comparison
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-game.html" class="nav-btn">
+                    💰 Price Game
+                </a>
+                <a href="https://bigmassive-web.github.io/cs2-loadout-builder/price-guessing.html" class="nav-btn active">
+                    🎯 Price Guessing
+                </a>
             </div>
         </div>
     </div>
